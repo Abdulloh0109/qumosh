@@ -1,0 +1,307 @@
+@import 'tailwindcss';
+
+/* ═══════════════════════════════════════════════════════════════════
+   QUMASH design tokens → Tailwind theme.
+   Components style themselves with Tailwind utilities (text-cyan, bg-bg2,
+   border-white/10, font-mono…). This file holds only the theme, the base
+   layer, keyframes, and the few things utilities can't express cleanly
+   (gradients/glows, the chart container, and the core-generated news HTML).
+   ═══════════════════════════════════════════════════════════════════ */
+@theme {
+  /* Refined fintech palette — muted, with one soft accent (cyan/blue) */
+  --color-bg1: #0b0f17;
+  --color-bg2: #0f1420;
+  --color-bg3: #161d2b;
+  --color-text: #e8ebf2;
+  --color-text2: #aeb6c6;
+  --color-dim: #7f8a9e;
+  --color-mute: #566072;
+  --color-green: #3ad29a;
+  --color-red: #f06a72;
+  --color-orange: #e0a23b;
+  --color-yellow: #d9b43a;
+  --color-cyan: #56bce0;
+  --color-purple: #9a8cf5;
+  --color-blue: #5b8def;
+  --color-gold: #d6ad5c;
+  --color-pink: #e25fa0;
+  --color-teal: #33c4ad;
+
+  --font-sans: 'Outfit', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+/* Legacy CSS-variable aliases — components use inline style={{ color: 'var(--green)' }}
+   etc. with the original names; map them onto the Tailwind theme tokens. */
+:root {
+  --cyan: var(--color-cyan);
+  --gold: var(--color-gold);
+  --green: var(--color-green);
+  --red: var(--color-red);
+  --orange: var(--color-orange);
+  --yellow: var(--color-yellow);
+  --purple: var(--color-purple);
+  --blue: var(--color-blue);
+  --pink: var(--color-pink);
+  --teal: var(--color-teal);
+  --dim: var(--color-dim);
+  --mute: var(--color-mute);
+  --text: var(--color-text);
+  --text-2: var(--color-text2);
+  --bg-1: var(--color-bg1);
+  --bg-2: var(--color-bg2);
+  --bg-3: var(--color-bg3);
+  --bg2: var(--color-bg2);
+  --bord: rgba(255, 255, 255, 0.09);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-soft: rgba(255, 255, 255, 0.05);
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.45;
+    background:
+      radial-gradient(900px 480px at 50% -8%, rgba(86, 188, 224, 0.045), transparent 70%),
+      linear-gradient(180deg, var(--color-bg2) 0%, var(--color-bg1) 100%);
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: rgba(58, 215, 238, 0.25);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+  select option {
+    background: var(--color-bg3);
+    color: #e2e8f0;
+  }
+  input[type='checkbox'] {
+    accent-color: var(--color-cyan);
+  }
+}
+
+/* ── Utilities Tailwind can't express inline ────────────────────────── */
+@utility mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+}
+/* Soft depth halo (not neon) for the brand wordmark. */
+@utility glow-cyan {
+  text-shadow: 0 0 24px rgba(86, 188, 224, 0.18);
+}
+@utility glow-gold {
+  text-shadow: 0 0 24px rgba(214, 173, 92, 0.16);
+}
+
+/* ── Animations ─────────────────────────────────────────────────────── */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+@keyframes pulse-alert {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(240, 96, 106, 0);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(240, 96, 106, 0.3);
+  }
+}
+
+/* ── Candlestick chart container (lightweight-charts mounts here) ────── */
+#chartContainer {
+  width: 100%;
+  height: 340px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+#chartContainer:empty::after {
+  content: 'Юкланмоқда...';
+  display: block;
+  padding: 140px 0;
+  text-align: center;
+  color: var(--color-mute);
+  font-size: 12px;
+}
+.chart-wrap:fullscreen,
+.chart-wrap.fs-fallback {
+  background: var(--color-bg1);
+  padding: 14px 20px;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+.chart-wrap.fs-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  margin: 0;
+}
+.chart-wrap:fullscreen .chart-area,
+.chart-wrap.fs-fallback .chart-area {
+  flex: 1;
+  min-height: 0;
+}
+.chart-wrap:fullscreen #chartContainer,
+.chart-wrap.fs-fallback #chartContainer {
+  height: 100% !important;
+}
+
+/* ── Core-generated news analysis panel (calendar.buildAnalysisHtml).
+      These class names live in JS HTML strings injected via
+      dangerouslySetInnerHTML, so they must stay as plain global CSS. ──── */
+.news-detail {
+  margin-top: 8px;
+  padding: 11px 12px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  animation: fadeIn 0.25s ease-out;
+}
+.nd-h {
+  font-size: 9px;
+  color: var(--color-cyan);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+.nd-p {
+  font-size: 11px;
+  color: #cbd5e1;
+  line-height: 1.55;
+}
+.nd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  font-size: 11px;
+}
+.nd-grid > div {
+  padding: 5px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 5px;
+}
+.nd-grid .nd-l {
+  color: var(--color-dim);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  display: block;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.nd-grid b {
+  color: var(--color-gold);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+.nd-trend {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #cbd5e1;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 5px;
+}
+.nd-trend.up {
+  border-left: 3px solid var(--color-green);
+  color: #bbf7d0;
+}
+.nd-trend.dn {
+  border-left: 3px solid var(--color-red);
+  color: #fecaca;
+}
+.nd-trend.flat {
+  border-left: 3px solid var(--color-orange);
+  color: #fde68a;
+}
+.nd-trend b {
+  color: #fff;
+  font-family: var(--font-mono);
+}
+.nd-scen {
+  padding: 7px 10px;
+  margin: 3px 0;
+  border-radius: 5px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  font-family: var(--font-sans);
+}
+.nd-scen.up {
+  background: rgba(46, 204, 143, 0.07);
+  border-left: 3px solid var(--color-green);
+  color: #bbf7d0;
+}
+.nd-scen.dn {
+  background: rgba(240, 96, 106, 0.07);
+  border-left: 3px solid var(--color-red);
+  color: #fecaca;
+}
+.nd-scen.flat {
+  background: rgba(245, 166, 35, 0.06);
+  border-left: 3px solid var(--color-orange);
+  color: #fde68a;
+}
+.nd-scen b {
+  color: #fff;
+  font-weight: 700;
+}
+.nd-stats {
+  font-size: 10.5px;
+  color: var(--color-dim);
+  line-height: 1.6;
+}
+.nd-stats b {
+  color: var(--color-cyan);
+  font-family: var(--font-mono);
+}

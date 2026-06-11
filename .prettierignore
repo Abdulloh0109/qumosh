@@ -1,0 +1,15 @@
+dist
+node_modules
+js
+css
+data
+package-lock.json
+
+# Ported-verbatim trading core — kept byte-identical from the original app
+# (only import/export lines added). Not auto-formatted, to guarantee parity.
+# utils.js and services/chart.js were rewritten for the port, so they ARE formatted.
+src/core/**/*.js
+!src/core/utils.js
+src/services/feed.js
+src/services/macro.js
+src/services/telegram.js
