@@ -4,20 +4,20 @@ import { CFG, ST } from '../state.js';
 // QUMASH v8 — DAILY PROFILE & WEEKLY NARRATIVE
 // Globals: detectDailyProfile, detectWeeklyNarrative, isMondayBlocked
 // ═══════════════════════════════════════════════════════════════════
-// TTrades PDF'дан:
-//   - London Reversal: London юқори/паст ҳосил қилади ва қайтади → NY continuation
+// TTrades PDF'dan:
+//   - London Reversal: London yuqori/past hosil qiladi va qaytadi → NY continuation
 //   - New York Reversal: London consolidates/opposing run → NY reversal
-//   - Invalidation: London експansion қилса → NY'да ишламанг
+//   - Invalidation: London ekspansion qilsa → NY'da ishlamang
 //
 // Weekly Profile:
-//   Mon, Tue, Wed бир йўналишда expansion → Thu reversal expected
-//   Битта кун expansion бўлмаса → narrative йўқ
+//   Mon, Tue, Wed bir yoʻnalishda expansion → Thu reversal expected
+//   Bitta kun expansion boʻlmasa → narrative yoʻq
 //
 // Monday Rule:
-//   - Monday кам volatil
-//   - News йўқ
-//   - Олдинги кунлар йўқ → weekly profile applicable эмас
-//   → Default: Monday'да T2 setup'лар блок (T1 қолади)
+//   - Monday kam volatil
+//   - News yoʻq
+//   - Oldingi kunlar yoʻq → weekly profile applicable emas
+//   → Default: Monday'da T2 setup'lar blok (T1 qoladi)
 // ═══════════════════════════════════════════════════════════════════
 
 const SESSION_RANGE_UTC = {
@@ -65,18 +65,18 @@ function detectDailyProfile(candles, atrNow, currentTime) {
   if (dow === 0 || dow === 6) { out.why = 'weekend'; return out; }
 
   const london = buildSessionRange(candles, 'LONDON', now);
-  if (!london) { out.why = 'London data йўқ'; return out; }
+  if (!london) { out.why = 'London data yoʻq'; return out; }
   out.londonRange = london;
 
   // London still active — wait
   if (utc < SESSION_RANGE_UTC.LONDON.end) {
-    out.why = 'London ҳали актив';
+    out.why = 'London hali aktiv';
     return out;
   }
 
   // Asia range for context
   const asia = buildSessionRange(candles, 'ASIA', now);
-  if (!asia) { out.why = 'Asia range йўқ'; return out; }
+  if (!asia) { out.why = 'Asia range yoʻq'; return out; }
 
   // Did London form a high/low and reverse? (=London Reversal)
   // → London high above Asia high AND closed back below mid-range, OR vice versa
@@ -88,7 +88,7 @@ function detectDailyProfile(candles, atrNow, currentTime) {
     out.profile = 'LONDON_REVERSAL';
     out.dir = -1;
     out.nyValid = utc >= SESSION_RANGE_UTC.NY.start && utc < SESSION_RANGE_UTC.NY.end;
-    out.why = 'London пиш yuqori → NY continuation SHORT';
+    out.why = 'London pish yuqori → NY continuation SHORT';
     return out;
   }
 
@@ -97,12 +97,12 @@ function detectDailyProfile(candles, atrNow, currentTime) {
     out.profile = 'LONDON_REVERSAL';
     out.dir = 1;
     out.nyValid = utc >= SESSION_RANGE_UTC.NY.start && utc < SESSION_RANGE_UTC.NY.end;
-    out.why = 'London paст → NY continuation LONG';
+    out.why = 'London past → NY continuation LONG';
     return out;
   }
 
   // London consolidation / opposing run — NY Reversal candidate
-  // London range кам ёки equal AND no clear directional close
+  // London range kam yoki equal AND no clear directional close
   const londonExpanded = Math.abs(london.close - london.open) >= atrNow * 1.0
                         && london.rangeSize >= atrNow * 2.0;
   if (londonExpanded) {
@@ -110,7 +110,7 @@ function detectDailyProfile(candles, atrNow, currentTime) {
     out.profile = 'EXPANSION';
     out.dir = london.close > london.open ? 1 : -1;
     out.nyValid = false;
-    out.why = `London експansion ${out.dir > 0 ? 'BUY' : 'SELL'} → NY participate этмаслик`;
+    out.why = `London ekspansion ${out.dir > 0 ? 'BUY' : 'SELL'} → NY participate etmaslik`;
     return out;
   }
 
@@ -118,7 +118,7 @@ function detectDailyProfile(candles, atrNow, currentTime) {
   out.profile = 'NY_REVERSAL';
   out.dir = 0;  // direction determined when NY runs
   out.nyValid = utc >= SESSION_RANGE_UTC.NY.start && utc < SESSION_RANGE_UTC.NY.end;
-  out.why = 'London consolidated → NY reversal каttакоч';
+  out.why = 'London consolidated → NY reversal kattakoch';
 
   // If we're in NY, look for NY's opposing run direction
   if (out.nyValid) {
@@ -142,7 +142,7 @@ function detectWeeklyNarrative(candles, currentTime) {
   const dow = today.getUTCDay();
 
   // Need at least Mon/Tue/Wed data
-  if (dow < 3) { out.why = 'haftaн boshlanishi'; return out; }
+  if (dow < 3) { out.why = 'haftan boshlanishi'; return out; }
 
   // Get this Monday 00:00 UTC
   const thisDayUTC = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
@@ -167,7 +167,7 @@ function detectWeeklyNarrative(candles, currentTime) {
   };
 
   const mon = dayRange(0), tue = dayRange(1), wed = dayRange(2);
-  if (!mon || !tue || !wed) { out.why = 'кунлик data йетарли эмас'; return out; }
+  if (!mon || !tue || !wed) { out.why = 'kunlik data yetarli emas'; return out; }
 
   // All three same direction → Thursday counter-week reversal expected
   if (mon.dir === tue.dir && tue.dir === wed.dir) {
@@ -175,7 +175,7 @@ function detectWeeklyNarrative(candles, currentTime) {
     out.weekDir = mon.dir;
     out.why = `Mon/Tue/Wed ${mon.dir > 0 ? 'UP' : 'DN'} → Thu reversal ${mon.dir > 0 ? 'SELL' : 'BUY'}`;
   } else {
-    out.why = 'Mon/Tue/Wed yo\'naлиш бирхил эмас';
+    out.why = 'Mon/Tue/Wed yo\'nalish birxil emas';
   }
   return out;
 }
@@ -210,7 +210,7 @@ function scoreDailyProfile(side, currentTime) {
   } else if (dp.dir !== 0 && dp.dir !== sigDir) {
     out.aligned = false;
     out.score = -Math.min(4, (CFG.wDailyProfile || 6) / 2);  // penalty against profile
-    out.why = `${dp.profile} ${dp.dir > 0 ? 'BUY' : 'SELL'} қарши`;
+    out.why = `${dp.profile} ${dp.dir > 0 ? 'BUY' : 'SELL'} qarshi`;
   }
   return out;
 }

@@ -34,7 +34,7 @@ export function ChecklistGrid({
   return (
     <div className="grid [grid-template-columns:repeat(auto-fill,minmax(280px,1fr))] gap-1.5 text-[16px]">
       {items.length === 0 ? (
-        <div className="col-span-full p-2 text-mute">{placeholder ?? 'Кутилмоқда...'}</div>
+        <div className="col-span-full p-2 text-mute">{placeholder ?? 'Kutilmoqda...'}</div>
       ) : (
         items.map((it, i) => (
           <div

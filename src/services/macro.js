@@ -1,8 +1,8 @@
 import { log } from '../core/utils.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v6 — РЕАЛ MACRO FEED'лар
-// Yahoo Finance API (CORS proxies орқали) — DXY index + US 10Y yield
+// QUMASH v6 — REAL MACRO FEED'lar
+// Yahoo Finance API (CORS proxies orqali) — DXY index + US 10Y yield
 // ═══════════════════════════════════════════════════════════════════
 
 const MACRO = {
@@ -60,7 +60,7 @@ async function refreshMacroFeeds() {
     MACRO.dxy.lastUpdate = Date.now();
     log('MACRO', `📊 DXY: ${last.v.toFixed(2)} (${MACRO.dxy.change > 0 ? '+' : ''}${MACRO.dxy.change.toFixed(2)}%)`, dxyResult.via);
   } else {
-    log('MACRO', '⚠ DXY юкланмади');
+    log('MACRO', '⚠ DXY yuklanmadi');
   }
 
   // US 10Y yield
@@ -75,7 +75,7 @@ async function refreshMacroFeeds() {
     MACRO.us10y.lastUpdate = Date.now();
     log('MACRO', `📊 US10Y: ${MACRO.us10y.value.toFixed(2)}% (${MACRO.us10y.change > 0 ? '+' : ''}${MACRO.us10y.change.toFixed(2)}%)`, tnxResult.via);
   } else {
-    log('MACRO', '⚠ US10Y юкланмади');
+    log('MACRO', '⚠ US10Y yuklanmadi');
   }
 
   // VIX

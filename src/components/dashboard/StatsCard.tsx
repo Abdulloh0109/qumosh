@@ -38,21 +38,21 @@ export function StatsCard() {
 
   return (
     <Card col={5} color="green">
-      <CardTitle title="СТАТИСТИКА (ҲАЛОЛ)" acc={expTag} />
+      <CardTitle title="STATISTIKA (HALOL)" acc={expTag} />
       <div className={STAT_GRID}>
-        <Cell label="Жами" value={String(st.total)} />
+        <Cell label="Jami" value={String(st.total)} />
         <Cell
-          label="Ҳақиқий WR"
+          label="Haqiqiy WR"
           value={trueWR !== null ? `${trueWR.toFixed(0)}%` : '—'}
           cls="neut"
         />
-        <Cell label="BE даражаси" value={beRate !== null ? `${beRate.toFixed(0)}%` : '—'} />
-        <Cell label="Зарар даражаси" value={lr !== null ? `${lr.toFixed(0)}%` : '—'} cls="bad" />
-        <Cell label="Ўрт. ютуқ" value={avgW !== null ? `+${avgW.toFixed(2)}R` : '—'} cls="good" />
-        <Cell label="Ўрт. зарар" value={avgL !== null ? `-${avgL.toFixed(2)}R` : '—'} cls="bad" />
-        <Cell label="Кутилма" value={expTag} cls={expCls} />
+        <Cell label="BE darajasi" value={beRate !== null ? `${beRate.toFixed(0)}%` : '—'} />
+        <Cell label="Zarar darajasi" value={lr !== null ? `${lr.toFixed(0)}%` : '—'} cls="bad" />
+        <Cell label="Oʻrt. yutuq" value={avgW !== null ? `+${avgW.toFixed(2)}R` : '—'} cls="good" />
+        <Cell label="Oʻrt. zarar" value={avgL !== null ? `-${avgL.toFixed(2)}R` : '—'} cls="bad" />
+        <Cell label="Kutilma" value={expTag} cls={expCls} />
         <Cell
-          label="Бугун"
+          label="Bugun"
           value={`${st.todayR >= 0 ? '+' : ''}${st.todayR.toFixed(1)}R`}
           cls={todayCls}
         />

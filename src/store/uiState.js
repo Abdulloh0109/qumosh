@@ -18,7 +18,7 @@ export const liveState = {
   /** @type {'settings'|'dashboard'} */
   view: 'settings',
   connected: false,
-  connText: 'Уланмаган',
+  connText: 'Ulanmagan',
   livePrice: '—',
   liveChg: '—',
   /** @type {'up'|'dn'|'flat'} */
@@ -44,7 +44,7 @@ export function setView(view) {
 /** Connection pill state. Mirror of the original feed.setConnUI(). */
 export function setConnUI(on) {
   liveState.connected = on;
-  liveState.connText = on ? 'УЛАНГАН' : 'Узилган';
+  liveState.connText = on ? 'ULANGAN' : 'Uzilgan';
   emit('conn');
 }
 

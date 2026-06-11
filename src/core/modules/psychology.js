@@ -2,15 +2,15 @@ import { CFG, ST } from '../state.js';
 import { detectSession } from '../filters.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v9 — PSYCHOLOGY & DISCIPLINE (Mark Douglas + Falcon FX PDF'дан)
+// QUMASH v9 — PSYCHOLOGY & DISCIPLINE (Mark Douglas + Falcon FX PDF'dan)
 // Globals: buildPsychChecklist, detectRiskState, getPsychQuote
 // ═══════════════════════════════════════════════════════════════════
-// Mark Douglas "Trading in the Zone"'дан:
+// Mark Douglas "Trading in the Zone"'dan:
 //   - Probabilistic thinking
-//   - Each trade = независимая статистика
+//   - Each trade = nezavisimaya statistika
 //   - Mistakes = part of edge, not personal failure
 //
-// Falcon FX'дан:
+// Falcon FX'dan:
 //   - "News creates volatility, not direction"
 //   - "Consistency develops through focusing on winning trades, not losses"
 //   - "Humble yourself or the market will do it for you"
@@ -44,7 +44,7 @@ function getPsychQuote() {
   return PSYCH_QUOTES[idx];
 }
 
-// ─── DETECT RISK STATE (бугунги хатарни баҳолаш) ────────────────────
+// ─── DETECT RISK STATE (bugungi xatarni baholash) ────────────────────
 function detectRiskState() {
   const out = { state: 'NORMAL', warnings: [], advice: '' };
 
@@ -55,8 +55,8 @@ function detectRiskState() {
   const last2 = recent.slice(0, 2);
   if (last2.length === 2 && last2.every(t => t.exit === 'sl')) {
     out.state = 'REVENGE_RISK';
-    out.warnings.push('🔴 Oxirgi 2 битim — SL. Revenge trading хавфи.');
-    out.advice = '🧘 Tanaffus oling. 1-2 soat charts\'dан uzoq turing.';
+    out.warnings.push('🔴 Oxirgi 2 bitim — SL. Revenge trading xavfi.');
+    out.advice = '🧘 Tanaffus oling. 1-2 soat charts\'dan uzoq turing.';
   }
 
   // Drawdown
@@ -71,7 +71,7 @@ function detectRiskState() {
   if (last3.length === 3 && last3.every(t => t.exit === 'tp')) {
     if (out.state === 'NORMAL') {
       out.state = 'STREAK';
-      out.warnings.push('🔥 Oxirgi 3 битим — TP. Overconfidence хавфи.');
+      out.warnings.push('🔥 Oxirgi 3 bitim — TP. Overconfidence xavfi.');
       out.advice = '⚠️ Risk standart darajada qoldiring. Lot oshirmang.';
     }
   }
@@ -120,7 +120,7 @@ function buildPsychChecklist() {
   if (closed10 > 0) {
     const wr = (wins10 / closed10 * 100).toFixed(0);
     items.push({
-      q: '📈 Oxirgi 10 битим WR',
+      q: '📈 Oxirgi 10 bitim WR',
       answer: `${wr}% (${wins10}/${closed10})`,
       signal: wr >= 50 ? 'good' : wr >= 30 ? 'neutral' : 'warn',
       detail: wr >= 50 ? 'Tizim ishlamoqda' : 'Filterlar kuchli emas',

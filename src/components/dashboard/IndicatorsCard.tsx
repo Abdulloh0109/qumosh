@@ -26,21 +26,21 @@ export function IndicatorsCard() {
   if (!ind || !regime) {
     return (
       <Card col={4}>
-        <CardTitle title="ИНДИКАТОРЛАР" />
-        <div className="py-2 text-center text-[16px] text-mute">Маълумот йиғилмоқда…</div>
+        <CardTitle title="INDIKATORLAR" />
+        <div className="py-2 text-center text-[16px] text-mute">Maʼlumot yigʻilmoqda…</div>
       </Card>
     );
   }
 
   return (
     <Card col={4}>
-      <CardTitle title="ИНДИКАТОРЛАР" />
+      <CardTitle title="INDIKATORLAR" />
       <div className="grid grid-cols-2 gap-[4px]">
         <Cell name="ATR" value={fmt(ind.atr, 3)} />
         <Cell name="ATR pct" value={`${(regime.atrPct * 100).toFixed(0)}%`} />
         <Cell name="RSI" value={ind.rsi !== null ? ind.rsi.toFixed(1) : '—'} />
         <Cell name="Hurst" value={regime.hurst.toFixed(2)} />
-        <Cell name="EMA200" value={ind.close > ind.ema200 ? 'ЮҚОРИ 🟢' : 'ПАСТ 🔴'} />
+        <Cell name="EMA200" value={ind.close > ind.ema200 ? 'YUQORI 🟢' : 'PAST 🔴'} />
         <Cell
           name="MACD"
           value={
@@ -50,7 +50,7 @@ export function IndicatorsCard() {
         <Cell name="ALMA" value={ind.closeMA > ind.openMA ? '🟢 BULL' : '🔴 BEAR'} />
         <Cell name="HA-ST" value={ind.stTrend === 1 ? '🟢 UP' : '🔴 DN'} />
         <Cell name="FVG" value={ind.fvgBull ? '🟢 Bull' : ind.fvgBear ? '🔴 Bear' : '—'} />
-        <Cell name="HTF мойиллик" value={htf?.txt ?? '—'} />
+        <Cell name="HTF moyillik" value={htf?.txt ?? '—'} />
       </div>
     </Card>
   );

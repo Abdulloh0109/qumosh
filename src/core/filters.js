@@ -8,8 +8,8 @@ import { log, clamp, nowMs } from './utils.js';
 // QUMASH v7 — REVERSAL HUNTER FILTERS
 // Globals: detectRegime, detectLiquiditySweep, computeCorrelation, etc.
 // ═══════════════════════════════════════════════════════════════════
-// Битта мукаммал тунинг қилинган режим. soft/medium/hard preset'лар
-// олиб ташланди — конфигурацияни 01-config.js'да қаранг.
+// Bitta mukammal tuning qilingan rejim. soft/medium/hard preset'lar
+// olib tashlandi — konfiguratsiyani 01-config.js'da qarang.
 // ═══════════════════════════════════════════════════════════════════
 
 // ─── LAYER 1: REGIME ENGINE ──────────────────────────────────────────
@@ -62,12 +62,12 @@ function detectLiquiditySweep(candles, atrNow) {
     return {detected:true, dir:-1, level:recentHigh, why:`Sell sweep @${recentHigh.toFixed(2)}`};
   if (last.l < recentLow && last.c > recentLow + closeBack && last.c > last.o)
     return {detected:true, dir:1, level:recentLow, why:`Buy sweep @${recentLow.toFixed(2)}`};
-  return {detected:false, dir:0, level:null, why:'йўқ'};
+  return {detected:false, dir:0, level:null, why:'yoʻq'};
 }
 
 // ─── LAYER 3: DXY CORRELATION ────────────────────────────────────────
 function computeCorrelation(currentTime) {
-  const out = {dxy:null, dxyDir:'flat', risk:null, riskDir:'flat', safe:null, safeDir:'flat', yields:null, yieldsDir:'flat', verdict:'flat', verdictTxt:'МАЪЛУМОТ ЙИҒИЛМОҚДА', divergence:0, bullScore:0, bearScore:0, source:'synth'};
+  const out = {dxy:null, dxyDir:'flat', risk:null, riskDir:'flat', safe:null, safeDir:'flat', yields:null, yieldsDir:'flat', verdict:'flat', verdictTxt:'MAʼLUMOT YIGʻILMOQDA', divergence:0, bullScore:0, bearScore:0, source:'synth'};
   const need = ['EURUSD','USDJPY','GBPUSD'];
   for (const k of need) if (!ST.feeds[k] || ST.feeds[k].length < 20) return out;
   // Helper: pct change at currentTime (latest if undefined)
@@ -124,8 +124,8 @@ function computeCorrelation(currentTime) {
   if (out.riskDir==='dn') bull++; if (out.riskDir==='up') bear++;
   if (bull >= 3 && bear <= 1) { out.verdict='bull'; out.verdictTxt='BULLISH XAU (+haven)'; }
   else if (bear >= 3 && bull <= 1) { out.verdict='bear'; out.verdictTxt='BEARISH XAU (USD/yields)'; }
-  else if (Math.abs(bull-bear) <= 1) { out.verdict='mix'; out.verdictTxt='MIXED — фейкаут зона'; }
-  else { out.verdict='flat'; out.verdictTxt='тинч'; }
+  else if (Math.abs(bull-bear) <= 1) { out.verdict='mix'; out.verdictTxt='MIXED — feykaut zona'; }
+  else { out.verdict='flat'; out.verdictTxt='tinch'; }
   out.bullScore=bull; out.bearScore=bear;
   if (dXau !== null && out.dxy !== null) out.divergence = Math.abs((dXau*100) + out.dxy);
   return out;
@@ -162,36 +162,36 @@ function detectSession(currentTime) {
     return `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
   };
 
-  if (dow === 0 || dow === 6) return {session:'WEEKEND', quality:0, txt:'Дам олиш'};
-  if (dow === 5 && utc >= 16) return {session:'FRI_LATE', quality:0.2, txt:'Жума охири ⚠️'};
-  if (utc >= 7 && utc < 10) return {session:'LONDON', quality:1.0, txt:`Лондон ✅ → ${localEnd(10)}`};
+  if (dow === 0 || dow === 6) return {session:'WEEKEND', quality:0, txt:'Dam olish'};
+  if (dow === 5 && utc >= 16) return {session:'FRI_LATE', quality:0.2, txt:'Juma oxiri ⚠️'};
+  if (utc >= 7 && utc < 10) return {session:'LONDON', quality:1.0, txt:`London ✅ → ${localEnd(10)}`};
   if (utc >= 12.5 && utc < 15.5) return {session:'NY', quality:1.0, txt:`NY ✅ → ${localEnd(15.5)}`};
-  if (utc >= 15.5 && utc < 17) return {session:'NY_AFTER', quality:0.7, txt:`NY кейин → ${localEnd(17)}`};
-  if (utc >= 10 && utc < 12.5) return {session:'LUNCH', quality:0.4, txt:`Туш — фейкаут → ${localEnd(12.5)}`};
-  if (utc >= 0 && utc < 7) return {session:'ASIA', quality:0.5, txt:`Осиё → ${localEnd(7)}`};
-  if (utc >= 17) return {session:'LATE', quality:0.3, txt:`Кеч → ${localEnd(24)}`};
-  return {session:'OTHER', quality:0.5, txt:'бошқа'};
+  if (utc >= 15.5 && utc < 17) return {session:'NY_AFTER', quality:0.7, txt:`NY keyin → ${localEnd(17)}`};
+  if (utc >= 10 && utc < 12.5) return {session:'LUNCH', quality:0.4, txt:`Tush — feykaut → ${localEnd(12.5)}`};
+  if (utc >= 0 && utc < 7) return {session:'ASIA', quality:0.5, txt:`Osiyo → ${localEnd(7)}`};
+  if (utc >= 17) return {session:'LATE', quality:0.3, txt:`Kech → ${localEnd(24)}`};
+  return {session:'OTHER', quality:0.5, txt:'boshqa'};
 }
 
 // ─── LAYER 6: NEWS BLACKOUT ──────────────────────────────────────────
-// Фақат HIGH impact ивентларни блоклайди (low/med — бозор реакцияси кам)
+// Faqat HIGH impact iventlarni bloklaydi (low/med — bozor reaktsiyasi kam)
 function detectNews(currentTime) {
-  if (!CFG.newsBlock) return {clear:true, txt:'филтр ўчиқ', minutes:999};
+  if (!CFG.newsBlock) return {clear:true, txt:'filtr oʻchiq', minutes:999};
   const now = currentTime != null ? currentTime : nowMs();
   const beforeMs = (CFG.newsBlockBefore || 10) * 60 * 1000;
   const afterMs = (CFG.newsBlockAfter || 3) * 60 * 1000;
   for (const ev of CAL.events) {
-    // ⭐ ФАҚАТ HIGH impact ва USD/EUR/GBP — паст таъсирлиси блокламайди
+    // ⭐ FAQAT HIGH impact va USD/EUR/GBP — past taʼsirlisi bloklamaydi
     if (ev.impact !== 'high') continue;
     const evTime = ev.date.getTime();
     const diff = evTime - now;
     // Block window: [-afterMs ... +beforeMs] from event (event in past = -, future = +)
     if ((diff >= 0 && diff <= beforeMs) || (diff < 0 && Math.abs(diff) <= afterMs)) {
       const diffMin = Math.round(diff / 60000);
-      return {clear:false, txt:`🚨 ${ev.name} ${diff>0?'+':''}${diffMin}мин`, minutes:Math.abs(diffMin), event:ev.name};
+      return {clear:false, txt:`🚨 ${ev.name} ${diff>0?'+':''}${diffMin}min`, minutes:Math.abs(diffMin), event:ev.name};
     }
   }
-  return {clear:true, txt:'тоза', minutes:999};
+  return {clear:true, txt:'toza', minutes:999};
 }
 
 // ─── LAYER 7: EQUAL HIGHS/LOWS (LIQUIDITY MAGNETS) ───────────────────
@@ -395,7 +395,7 @@ function loadAdaptiveWeights() {
         for (const rg of REGIMES) for (const f of FILTERS) {
           if (typeof o[f] === 'number') ST.adaptWeights[rg][f] = o[f];
         }
-        log('INFO', '🔄 v5→v6 миграция: вазнлар тарихи кучирилди');
+        log('INFO', '🔄 v5→v6 migratsiya: vaznlar tarixi kuchirildi');
       }
     }
     // Load history
@@ -428,7 +428,7 @@ function getRegimeStats(regime) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// CANDLESTICK PATTERN DETECTION (17 та classic япон шамчaси)
+// CANDLESTICK PATTERN DETECTION (17 ta classic yapon shamchasi)
 // ═══════════════════════════════════════════════════════════════════
 
 const PATTERN_WEIGHTS = {
@@ -657,7 +657,7 @@ function computeCandlestickScore(side, patterns, regimeKind, pdZone) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// FVG (Fair Value Gap) DETECTION — разворот учун ажoйиб
+// FVG (Fair Value Gap) DETECTION — razvorot uchun ajoyib
 // ═══════════════════════════════════════════════════════════════════
 
 // 3-bar FVG formula:
@@ -711,7 +711,7 @@ function detectFVGs(candles, atr) {
     }
   }
 
-  // Mark mitigated FVGs (бошидан oxirigacha price чизганлар)
+  // Mark mitigated FVGs (boshidan oxirigacha price chizganlar)
   for (const fvg of fvgs) {
     for (let j = fvg.createdAt + 1; j < candles.length; j++) {
       const c = candles[j];
@@ -721,7 +721,7 @@ function detectFVGs(candles, atr) {
     }
   }
 
-  // Filter: faqat un-mitigated va не очень old
+  // Filter: faqat un-mitigated va ne ochen old
   return fvgs.filter(f => !f.mitigated && f.age <= CFG.fvgMaxAge);
 }
 
@@ -750,9 +750,9 @@ function findActiveFVG(fvgs, currentPrice, side) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// HTF ENGULFING DETECTION (Double Engulfing concept'дан)
+// HTF ENGULFING DETECTION (Double Engulfing concept'dan)
 // ═══════════════════════════════════════════════════════════════════
-// LTF (M15) engulfing'ни taqviya qiladi: HTF (H1)'da ҳaм engulfing bo'lsa = синергия
+// LTF (M15) engulfing'ni taqviya qiladi: HTF (H1)'da ham engulfing bo'lsa = sinergiya
 
 function detectHTFEngulfing(htfCandles) {
   if (!htfCandles || htfCandles.length < 2) return { bull: false, bear: false };

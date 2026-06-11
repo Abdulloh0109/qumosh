@@ -8,7 +8,6 @@ import {
   type SessionKey,
 } from '../app/settings';
 import { connect, shouldAutoReconnect } from '../app/controls';
-import { LangToggle } from '../app/lang';
 import { cx } from '../app/cx';
 import gbFlag from 'flag-icons/flags/4x3/gb.svg';
 import usFlag from 'flag-icons/flags/4x3/us.svg';
@@ -21,13 +20,13 @@ const SECTION_H =
   "mt-5 mb-[11px] flex items-center gap-2 border-b border-white/[0.05] pb-1.5 text-[16px] font-semibold uppercase tracking-[1px] text-dim before:h-[11px] before:w-[3px] before:rounded-[2px] before:bg-cyan before:content-['']";
 
 const TF_OPTIONS = [
-  { value: 60, label: 'M1 (скалп)' },
-  { value: 300, label: 'M5 (скалп)' },
-  { value: 900, label: 'M15 (тавсия)' },
+  { value: 60, label: 'M1 (skalp)' },
+  { value: 300, label: 'M5 (skalp)' },
+  { value: 900, label: 'M15 (tavsiya)' },
   { value: 1800, label: 'M30' },
   { value: 3600, label: 'H1' },
-  { value: 14400, label: 'H4 (свинг)' },
-  { value: 86400, label: 'D1 (контекст)' },
+  { value: 14400, label: 'H4 (sving)' },
+  { value: 86400, label: 'D1 (kontekst)' },
 ];
 const HTF_OPTIONS = [
   { value: 2, label: '2x' },
@@ -49,9 +48,9 @@ interface RegimeMeta {
 }
 const REGIMES: RegimeMeta[] = [
   { key: 'TREND_UP', icon: '📈', name: 'TREND UP', hint: '(yuqori)' },
-  { key: 'TREND_DN', icon: '📉', name: 'TREND DN', hint: '(пастга)' },
-  { key: 'RANGE', icon: '═', name: 'RANGE', hint: '(чегарада)' },
-  { key: 'CHOP', icon: '⊿', name: 'CHOP', hint: '(чалкаш)' },
+  { key: 'TREND_DN', icon: '📉', name: 'TREND DN', hint: '(pastga)' },
+  { key: 'RANGE', icon: '═', name: 'RANGE', hint: '(chegarada)' },
+  { key: 'CHOP', icon: '⊿', name: 'CHOP', hint: '(chalkash)' },
 ];
 
 type SessionQuality = 'best' | 'good' | 'neutral' | 'warn';
@@ -68,37 +67,37 @@ interface SessionMeta {
   note?: string;
 }
 const SESSIONS: SessionMeta[] = [
-  { key: 'LONDON', cc: ['gb'], name: 'Лондон', time: '12:00–15:00', tz: 'UZT', quality: 'good' },
+  { key: 'LONDON', cc: ['gb'], name: 'London', time: '12:00–15:00', tz: 'UZT', quality: 'good' },
   {
     key: 'OVERLAP',
     cc: ['gb', 'us'],
-    name: 'Лондон+Нью-Йорк',
+    name: 'London+Nyu-York',
     time: '17:30–20:30',
     tz: 'UZT',
     quality: 'best',
   },
-  { key: 'NY', cc: ['us'], name: 'Нью-Йорк', time: '20:30–22:00', tz: 'UZT', quality: 'good' },
+  { key: 'NY', cc: ['us'], name: 'Nyu-York', time: '20:30–22:00', tz: 'UZT', quality: 'good' },
   {
     key: 'NY_AFTER',
     cc: ['us'],
-    name: 'Нью-Йорк кейин',
+    name: 'Nyu-York keyin',
     time: '22:00+',
     tz: 'UZT',
     quality: 'warn',
     note: '-7R',
   },
-  { key: 'ASIA', cc: ['jp'], name: 'Осиё', time: '05:00–12:00', tz: 'UZT', quality: 'neutral' },
+  { key: 'ASIA', cc: ['jp'], name: 'Osiyo', time: '05:00–12:00', tz: 'UZT', quality: 'neutral' },
   {
     key: 'LUNCH',
     emoji: '🍽',
-    name: 'Туш',
+    name: 'Tush',
     time: '15:00–17:30',
     tz: 'UZT',
     quality: 'warn',
     note: '-4R',
   },
-  { key: 'FRI_LATE', emoji: '📅', name: 'Жума охири', quality: 'warn', note: 'риск' },
-  { key: 'LATE', emoji: '🌙', name: 'Кеч', time: '22:00–05:00', tz: 'UZT', quality: 'neutral' },
+  { key: 'FRI_LATE', emoji: '📅', name: 'Juma oxiri', quality: 'warn', note: 'risk' },
+  { key: 'LATE', emoji: '🌙', name: 'Kech', time: '22:00–05:00', tz: 'UZT', quality: 'neutral' },
 ];
 
 /** Quality → visual accent (Binance-yellow theme: best=gold⭐, good=green✓, warn=red⚠). */
@@ -227,7 +226,7 @@ function SessionCard({
             {ss.tz && <span className="text-[11px] text-mute">{ss.tz}</span>}
           </>
         ) : (
-          <span className="text-[12px] text-mute">ҳафта якуни</span>
+          <span className="text-[12px] text-mute">hafta yakuni</span>
         )}
         {ss.note && (
           <span className="ml-auto rounded bg-red/10 px-1.5 py-[2px] text-[11.5px] font-bold text-red">
@@ -265,9 +264,6 @@ export function SettingsPanel() {
       id="settingsPanel"
       className="mb-6 w-full rounded-lg border border-[#2b3139] bg-bg2 px-[34px] py-[30px] max-md:mx-auto max-md:my-3 max-md:px-4 max-md:py-[22px]"
     >
-      <div className="mb-3 flex justify-end">
-        <LangToggle />
-      </div>
       <h1 className="mb-1.5 text-[30px] leading-[1.1] font-black tracking-[-0.7px]">
         <span className="text-cyan glow-cyan">QUMASH</span>{' '}
         <span className="text-gold glow-gold">REVERSAL HUNTER</span>{' '}
@@ -277,29 +273,30 @@ export function SettingsPanel() {
       </h1>
       <div className="mt-[9px] mb-[22px] text-[16px] leading-[1.55] text-dim [&_b]:font-semibold [&_b]:text-cyan">
         <b>
-          14 қатламли филтр + Бурилиш триггерлари (Sweep / FVG / CHoCH / MSS) + Авто-янгилик режими
+          14 qatlamli filtr + Burilish triggerlari (Sweep / FVG / CHoCH / MSS) + Avto-yangilik
+          rejimi
         </b>
         <br />
-        Битта мукаммал созланган режим. Smart SL — FVG/OB четига; min R:R 1:3. T1 (≥60), T2 (≥45 +
-        бурилиш). Сигналлар муҳим янгиликларда ҳам автоматик ишлайди.
+        Bitta mukammal sozlangan rejim. Smart SL — FVG/OB chetiga; min R:R 1:3. T1 (≥60), T2 (≥45 +
+        burilish). Signallar muhim yangiliklarda ham avtomatik ishlaydi.
       </div>
 
-      <div className={SECTION_H}>МАЪЛУМОТ МАНБАСИ</div>
+      <div className={SECTION_H}>MAʼLUMOT MANBASI</div>
       <div className="grid grid-cols-3 gap-2.5 max-md:grid-cols-1">
         <SelectField
-          label="Таймфрейм"
+          label="Taymfreym"
           value={s.tf}
           options={TF_OPTIONS}
           onChange={(v) => set('tf', +v)}
         />
         <SelectField
-          label="HTF мултипликатор"
+          label="HTF multiplikator"
           value={s.htf}
           options={HTF_OPTIONS}
           onChange={(v) => set('htf', +v)}
         />
         <SelectField
-          label="Йўналиш"
+          label="Yoʻnalish"
           value={s.dir}
           options={DIR_OPTIONS}
           onChange={(v) => set('dir', v as Settings['dir'])}
@@ -312,7 +309,7 @@ export function SettingsPanel() {
         <div className="mb-[11px]">
           <Toggle
             id="setTgEnabled"
-            label="Telegram алертлар"
+            label="Telegram alertlar"
             checked={s.tgEnabled}
             onChange={(v) => set('tgEnabled', v)}
           />
@@ -332,29 +329,29 @@ export function SettingsPanel() {
         />
       </div>
 
-      <div className={SECTION_H}>ИШЛАШ РЕЖИМИ</div>
+      <div className={SECTION_H}>ISHLASH REJIMI</div>
       <div className="grid [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))] gap-2">
         <Toggle
           id="setNewsBlock"
-          label="Янгилик блоки (юқори таъсирли воқеалар)"
+          label="Yangilik bloki (yuqori taʼsirli voqealar)"
           checked={s.newsBlock}
           onChange={(v) => set('newsBlock', v)}
         />
         <Toggle
           id="setSessionFilter"
-          label="Кам сифатли сеансни блоклаш"
+          label="Kam sifatli seansni bloklash"
           checked={s.sessionFilter}
           onChange={(v) => set('sessionFilter', v)}
         />
         <Toggle
           id="setAdaptive"
-          label="Мослашувчан баҳолаш (ўз-ўзини ривожлантириш)"
+          label="Moslashuvchan baholash (oʻz-oʻzini rivojlantirish)"
           checked={s.adaptive}
           onChange={(v) => set('adaptive', v)}
         />
       </div>
 
-      <div className={SECTION_H}>ҚАЙСИ РЕЖИМДА СИГНАЛ ҚАБУЛ ҚИЛИШ</div>
+      <div className={SECTION_H}>QAYSI REJIMDA SIGNAL QABUL QILISH</div>
       <div className="grid [grid-template-columns:repeat(auto-fit,minmax(210px,1fr))] gap-1.5">
         {REGIMES.map((r) => (
           <SessChk key={r.key} checked={s.regimes[r.key]} onChange={(v) => setRegime(r.key, v)}>
@@ -363,11 +360,11 @@ export function SettingsPanel() {
         ))}
       </div>
       <div className="py-[5px] text-[16px] leading-[1.5] text-dim">
-        💡 XAU ўсувчи трендда — TREND_DN режимдаги SHORT сигналлар кўпинча ёлғон. Backtest бўйича
-        қарши режимни ўчиринг.
+        💡 XAU oʻsuvchi trendda — TREND_DN rejimdagi SHORT signallar koʻpincha yolgʻon. Backtest
+        boʻyicha qarshi rejimni oʻchiring.
       </div>
 
-      <div className={SECTION_H}>ҚАЙСИ СЕАНСДА СИГНАЛ ҚАБУЛ ҚИЛИШ</div>
+      <div className={SECTION_H}>QAYSI SEANSDA SIGNAL QABUL QILISH</div>
       <div className="grid grid-cols-4 gap-2 max-md:grid-cols-2">
         {SESSIONS.map((ss) => (
           <SessionCard
@@ -379,135 +376,135 @@ export function SettingsPanel() {
         ))}
       </div>
       <div className="py-[5px] text-[16px] leading-[1.5] text-dim">
-        💡 Тошкент вақтида (UTC+5). Энг яхши: <b className="text-green">17:30-22:00</b>{' '}
-        (Лондон+Нью-Йорк кесишуви + Нью-Йорк).
+        💡 Toshkent vaqtida (UTC+5). Eng yaxshi: <b className="text-green">17:30-22:00</b>{' '}
+        (London+Nyu-York kesishuvi + Nyu-York).
       </div>
 
-      <div className={SECTION_H}>v8: PDF МОДУЛЛАР (TTrades, Hanzo, 5SOP, Kathy Lien)</div>
+      <div className={SECTION_H}>v8: PDF MODULLAR (TTrades, Hanzo, 5SOP, Kathy Lien)</div>
       <div className="grid grid-cols-4 gap-2 max-md:grid-cols-2">
         <Toggle
           id="setTTrades"
-          label="🎯 TTrades CISD (C2/C3 свинг + проекциялар)"
+          label="🎯 TTrades CISD (C2/C3 sving + proektsiyalar)"
           checked={s.ttrades}
           onChange={(v) => set('ttrades', v)}
         />
         <Toggle
           id="setDailyProfile"
-          label="🇬🇧🇺🇸 Кунлик профил (London/New York бурилиши)"
+          label="🇬🇧🇺🇸 Kunlik profil (London/New York burilishi)"
           checked={s.dailyProfile}
           onChange={(v) => set('dailyProfile', v)}
         />
         <Toggle
           id="setMondayBlock"
-          label="🚫 Душанба қоидаси (T2'ни душанбада блок)"
+          label="🚫 Dushanba qoidasi (T2'ni dushanbada blok)"
           checked={s.mondayBlock}
           onChange={(v) => set('mondayBlock', v)}
         />
         <Toggle
           id="setCompression"
-          label="🌀 Сиқилиш (Hanzo Shadow Codes)"
+          label="🌀 Siqilish (Hanzo Shadow Codes)"
           checked={s.compression}
           onChange={(v) => set('compression', v)}
         />
         <Toggle
           id="setHLQ"
-          label="🔥 HLQ уйғунлиги (OB+FVG+EQ)"
+          label="🔥 HLQ uygʻunligi (OB+FVG+EQ)"
           checked={s.hlq}
           onChange={(v) => set('hlq', v)}
         />
         <Toggle
           id="setQMR"
-          label="📐 QMR патерни (Quasimodo Reversal)"
+          label="📐 QMR paterni (Quasimodo Reversal)"
           checked={s.qmr}
           onChange={(v) => set('qmr', v)}
         />
         <Toggle
           id="setMacro"
-          label="🌍 Макро контекст (Risk-Off/On режими)"
+          label="🌍 Makro kontekst (Risk-Off/On rejimi)"
           checked={s.macro}
           onChange={(v) => set('macro', v)}
         />
       </div>
 
-      <div className={SECTION_H}>v9: ICT BIBLE + ДИВЕРГЕНЦИЯ + MMXM + ПСИХОЛОГИЯ</div>
+      <div className={SECTION_H}>v9: ICT BIBLE + DIVERGENTSIYA + MMXM + PSIXOLOGIYA</div>
       <div className="grid grid-cols-4 gap-2 max-md:grid-cols-2">
         <Toggle
           id="setDivergence"
-          label="🔥 Дивергенция механизми (RSI/MACD T1+T2+Stinger)"
+          label="🔥 Divergentsiya mexanizmi (RSI/MACD T1+T2+Stinger)"
           checked={s.divergence}
           onChange={(v) => set('divergence', v)}
         />
         <Toggle
           id="setKeyLevels"
-          label="📍 ICT асосий даражалар (PDH/PDL/PWH/PWL+Midnight Open)"
+          label="📍 ICT asosiy darajalar (PDH/PDL/PWH/PWL+Midnight Open)"
           checked={s.keyLevels}
           onChange={(v) => set('keyLevels', v)}
         />
         <Toggle
           id="setSMT"
-          label="📊 SMT дивергенцияси (XAU vs AUD/EUR)"
+          label="📊 SMT divergentsiyasi (XAU vs AUD/EUR)"
           checked={s.smt}
           onChange={(v) => set('smt', v)}
         />
         <Toggle
           id="setAMD"
-          label="⚡ AMD Power of 3 (Осиё/London/New York)"
+          label="⚡ AMD Power of 3 (Osiyo/London/New York)"
           checked={s.amd}
           onChange={(v) => set('amd', v)}
         />
         <Toggle
           id="setICTBlocks"
-          label="📦 ICT блоклари (Breaker + Rejection)"
+          label="📦 ICT bloklari (Breaker + Rejection)"
           checked={s.ictBlocks}
           onChange={(v) => set('ictBlocks', v)}
         />
         <Toggle
           id="setPsychBlock"
-          label="🧠 Психология блоки (drawdown'да кириш ўчирилади)"
+          label="🧠 Psixologiya bloki (drawdown'da kirish oʻchiriladi)"
           checked={s.psychBlock}
           onChange={(v) => set('psychBlock', v)}
         />
       </div>
 
-      <div className={SECTION_H}>v10: ГРАФИК ШАКЛЛАР + ФИБОНАЧЧИ + INDUCEMENT</div>
+      <div className={SECTION_H}>v10: GRAFIK SHAKLLAR + FIBONACHCHI + INDUCEMENT</div>
       <div className="grid [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))] gap-2">
         <Toggle
           id="setChartPatterns"
-          label="📐 Классик график шакллар (H&S, Double Top/Bot, Wedge, Triangle, Flag)"
+          label="📐 Klassik grafik shakllar (H&S, Double Top/Bot, Wedge, Triangle, Flag)"
           checked={s.chartPatterns}
           onChange={(v) => set('chartPatterns', v)}
         />
         <Toggle
           id="setFibonacci"
-          label="📏 Тўлиқ Фибоначчи тизими (retracement + extension)"
+          label="📏 Toʻliq Fibonachchi tizimi (retracement + extension)"
           checked={s.fibonacci}
           onChange={(v) => set('fibonacci', v)}
         />
         <Toggle
           id="setInducement"
-          label="🎯 Inducement + Algo Candle (сифатли кириш фильтри)"
+          label="🎯 Inducement + Algo Candle (sifatli kirish filtri)"
           checked={s.inducement}
           onChange={(v) => set('inducement', v)}
         />
       </div>
 
-      <div className={SECTION_H}>v11–v12: ЯНГИЛИК САВДОСИ + M5 КУН ИЧИ + УСТУНЛИК</div>
+      <div className={SECTION_H}>v11–v12: YANGILIK SAVDOSI + M5 KUN ICHI + USTUNLIK</div>
       <div className="grid grid-cols-3 gap-2 max-md:grid-cols-1">
         <Toggle
           id="setNewsDriven"
-          label="📰 Янгилик асосида савдо режими (5 мин кутиб янгилик+техник таҳлил)"
+          label="📰 Yangilik asosida savdo rejimi (5 min kutib yangilik+texnik tahlil)"
           checked={s.newsDriven}
           onChange={(v) => set('newsDriven', v)}
         />
         <Toggle
           id="setM5"
-          label="⚡ M5 кун ичи бурилишни аниқлаш (микро-CHoCH/sweep/FVG)"
+          label="⚡ M5 kun ichi burilishni aniqlash (mikro-CHoCH/sweep/FVG)"
           checked={s.m5}
           onChange={(v) => set('m5', v)}
         />
         <Toggle
           id="setOverride"
-          label="🟢 Устунлик иерархияси (кучли модел триггери заиф фильтрни босиб ўтади)"
+          label="🟢 Ustunlik ierarxiyasi (kuchli model triggeri zaif filtrni bosib oʻtadi)"
           checked={s.override}
           onChange={(v) => set('override', v)}
         />
@@ -517,15 +514,15 @@ export function SettingsPanel() {
         className="mt-3.5 w-full cursor-pointer rounded-lg bg-cyan p-3.5 font-sans text-[15px] font-extrabold tracking-[1.2px] text-bg1 transition duration-200 hover:bg-gold hover:brightness-105"
         onClick={() => connect(s)}
       >
-        DERIV'ГА УЛАНИШ ВА БОШЛАШ
+        DERIV'GA ULANISH VA BOSHLASH
       </button>
 
       <div className="mt-3.5 rounded-[10px] border border-red/20 bg-red/[0.06] px-[13px] py-[11px] text-[16px] leading-[1.55] text-[#fca5a5] [&_b]:text-[#fecaca]">
-        <b>⚠️ Огоҳлантириш</b>
+        <b>⚠️ Ogohlantirish</b>
         <br />
-        Сигналлар таҳлил мақсадида. Тизим ўз филтр вазнларини вақт ўтиши билан ўзгартиради.
-        Маълумотларни сақлаш/импорт қилиш — дашборд'нинг ўнг бурчагидаги <b>💾</b> ва <b>📥</b>{' '}
-        тугмалари орқали.
+        Signallar tahlil maqsadida. Tizim oʻz filtr vaznlarini vaqt oʻtishi bilan oʻzgartiradi.
+        Maʼlumotlarni saqlash/import qilish — dashbord'ning oʻng burchagidagi <b>💾</b> va <b>📥</b>{' '}
+        tugmalari orqali.
       </div>
 
       <button
@@ -533,7 +530,7 @@ export function SettingsPanel() {
         className="mt-2 cursor-pointer border-none bg-none text-[16px] text-dim"
         onClick={() => setS(structuredClone(DEFAULT_SETTINGS))}
       >
-        ↺ Стандарт созламалар
+        ↺ Standart sozlamalar
       </button>
     </div>
   );

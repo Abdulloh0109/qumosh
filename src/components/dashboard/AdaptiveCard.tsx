@@ -23,18 +23,18 @@ const TAG: Record<string, string> = {
 };
 
 const F_LABELS: Record<string, string> = {
-  regime: 'Регим',
+  regime: 'Regim',
   sweep: 'Sweep',
   dxy: 'DXY',
   premium: 'Prem/Disc',
-  session: 'Сеанс',
+  session: 'Seans',
   liquidity: 'Liq Mag',
   almast: 'ALMA+ST',
   momentum: 'Momentum',
   mss: 'MSS/BOS',
   ob: 'OrderBlk',
   ote: 'OTE',
-  candlestick: 'Шамча',
+  candlestick: 'Shamcha',
   fvg: 'FVG',
   htf_eng: 'HTF Eng',
 };
@@ -62,20 +62,20 @@ export function AdaptiveCard() {
 
   return (
     <Card col={4} color="purple">
-      <CardTitle title="МОСЛАШУВЧАН ВАЗНЛАР" acc="ўз-ўзини ўрганиш" />
+      <CardTitle title="MOSLASHUVCHAN VAZNLAR" acc="oʻz-oʻzini oʻrganish" />
       <div>
         <div className={ADAPT_HEADER}>
           <span className={ADAPT_REGIME_LABEL}>
-            Ҳозирги: <b className="font-mono text-cyan">{regimeLabel}</b>
+            Hozirgi: <b className="font-mono text-cyan">{regimeLabel}</b>
           </span>
           <span className={ADAPT_REGIME_N}>
-            {regimeStats.n} битим
+            {regimeStats.n} bitim
             {regimeStats.n > 0 ? ` · WR ${(regimeStats.wr * 100).toFixed(0)}%` : ''}
           </span>
         </div>
         {visible.length === 0 ? (
           <div className="py-2 text-center text-[16px] text-mute">
-            Ушбу режимда 8+ битимдан кейин ишлайди
+            Ushbu rejimda 8+ bitimdan keyin ishlaydi
           </div>
         ) : (
           visible.map((x) => {

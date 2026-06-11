@@ -32,14 +32,14 @@ export function autoHtfMult(tfSec: number): number {
 export function changeTF(newGran: number): void {
   if (newGran === cfg.granularity) return;
   if (!st.connected) {
-    log('WARN', '⚠️ Аввал уланиш керак');
+    log('WARN', '⚠️ Avval ulanish kerak');
     return;
   }
   const hadActiveTrade = st.condition !== 0;
   if (hadActiveTrade) {
     log(
       'INFO',
-      `📊 ТФ ${tfLabel(cfg.granularity)} → ${tfLabel(newGran)} (битим очиқ — давом этади)`,
+      `📊 TF ${tfLabel(cfg.granularity)} → ${tfLabel(newGran)} (bitim ochiq — davom etadi)`,
     );
   }
   const oldGran = cfg.granularity;
@@ -69,8 +69,8 @@ export function changeTF(newGran: number): void {
   resetChartForTF();
   log(
     'INFO',
-    `🔄 ТФ ўзгарди: ${tfLabel(oldGran)} → ${tfLabel(newGran)}`,
-    `HTF=${cfg.htfMult}x авто`,
+    `🔄 TF oʻzgardi: ${tfLabel(oldGran)} → ${tfLabel(newGran)}`,
+    `HTF=${cfg.htfMult}x avto`,
   );
 
   try {
@@ -91,7 +91,7 @@ export function connect(settings: Settings): void {
   setView('dashboard');
   log(
     'INFO',
-    '🚀 QUMASH v7 REVERSAL HUNTER ишга тушди',
+    '🚀 QUMASH v7 REVERSAL HUNTER ishga tushdi',
     `TF=${tfLabel(cfg.granularity)} HTF=${cfg.htfMult}x T1≥${cfg.tier1} T2≥${cfg.tier2}`,
   );
   log(
@@ -100,7 +100,7 @@ export function connect(settings: Settings): void {
   );
   if (cfg.tgEnabled) {
     tgSend(
-      `✅ <b>QUMASH v7 REVERSAL HUNTER</b> ишга тушди\n📊 XAUUSD ${tfLabel(cfg.granularity)}\n🎯 T1≥${cfg.tier1} T2≥${cfg.tier2} (R:R мин 1:${cfg.minRR})\n🤖 Сигнал кутилмоқда...`,
+      `✅ <b>QUMASH v7 REVERSAL HUNTER</b> ishga tushdi\n📊 XAUUSD ${tfLabel(cfg.granularity)}\n🎯 T1≥${cfg.tier1} T2≥${cfg.tier2} (R:R min 1:${cfg.minRR})\n🤖 Signal kutilmoqda...`,
     );
   }
   try {
@@ -152,7 +152,7 @@ export function startNewsAutoRefresh(): () => void {
       buildCalendar()
         .then(() => {
           refreshNewsUI();
-          log('NEWS', '📅 Calendar янгиланди (actual ушлaш)');
+          log('NEWS', '📅 Calendar yangilandi (actual ushlash)');
         })
         .catch(() => {});
     }
@@ -196,8 +196,8 @@ export function exportData(): void {
   a.href = url;
   a.click();
   URL.revokeObjectURL(url);
-  toast.success('💾 Снапшот юклаб олинди.', {
-    description: 'Файлни data/ папкасига кучиринг (керак бўлса).',
+  toast.success('💾 Snapshot yuklab olindi.', {
+    description: 'Faylni data/ papkasiga kuchiring (kerak boʻlsa).',
   });
 }
 
@@ -208,7 +208,7 @@ export function importData(file: File): void {
     try {
       snap = JSON.parse(String(e.target?.result));
     } catch (err) {
-      toast.error('❌ Импорт хатоси: ' + (err as Error).message);
+      toast.error('❌ Import xatosi: ' + (err as Error).message);
       return;
     }
 
@@ -258,23 +258,23 @@ export function importData(file: File): void {
           Object.assign(st, snap.stats);
         }
         toast.success(
-          '✅ Импорт муваффақиятли. Тизимни қайта ишга туширсангиз ўзгаришлар тўлиқ ишлайди.',
+          '✅ Import muvaffaqiyatli. Tizimni qayta ishga tushirsangiz oʻzgarishlar toʻliq ishlaydi.',
         );
         log(
           'INFO',
-          '📥 Импорт',
+          '📥 Import',
           `weights:${Object.keys(snap.adaptWeights || {}).length}, history:${(snap.history || []).length}`,
         );
       } catch (err) {
-        toast.error('❌ Импорт хатоси: ' + (err as Error).message);
+        toast.error('❌ Import xatosi: ' + (err as Error).message);
       }
     };
 
     if (snap.version !== 'qumash_v5_pro') {
-      toast.warning('Бу файл версияси номаълум. Импорт қилаверайми?', {
+      toast.warning('Bu fayl versiyasi nomaʼlum. Import qilaveraymi?', {
         duration: Infinity,
-        action: { label: 'Ҳа, импорт', onClick: applyImport },
-        cancel: { label: 'Йўқ', onClick: () => {} },
+        action: { label: 'Ha, import', onClick: applyImport },
+        cancel: { label: 'Yoʻq', onClick: () => {} },
       });
     } else {
       applyImport();

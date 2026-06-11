@@ -1,7 +1,7 @@
 import { CFG } from '../state.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v9 — ICT KEY LEVELS + JUDAS SWING (ICT Bible PDF'дан)
+// QUMASH v9 — ICT KEY LEVELS + JUDAS SWING (ICT Bible PDF'dan)
 // Globals: detectKeyLevels, detectJudasSwing, scoreKeyLevels
 // ═══════════════════════════════════════════════════════════════════
 // PDH = Previous Day High, PDL = Previous Day Low
@@ -11,7 +11,7 @@ import { CFG } from '../state.js';
 // Midnight Open (NY EST midnight = UTC 05:00) — kunlik bias filter
 // Above midnight open → bullish bias, below → bearish bias
 //
-// JUDAS SWING (ICT концепция):
+// JUDAS SWING (ICT kontseptsiya):
 //   Engineered false move that runs stops then reverses
 //   Targets: PDH/PDL, PWH/PWL, Asian range, prior session stops
 //   Forms typically in London session (manipulation phase of AMD)

@@ -1,10 +1,10 @@
 import { CFG } from '../state.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v9 — DIVERGENCE ENGINE (ICT Materials + Divergence_notes PDF'дан)
+// QUMASH v9 — DIVERGENCE ENGINE (ICT Materials + Divergence_notes PDF'dan)
 // Globals: detectDivergence, scoreDivergence
 // ═══════════════════════════════════════════════════════════════════
-// Divergence типлари:
+// Divergence tiplari:
 //   TYPE 1 (Regular / Reversal):
 //     - Bullish: price LL, indicator HL → trend reversal UP
 //     - Bearish: price HH, indicator LH → trend reversal DOWN
@@ -57,7 +57,7 @@ function detectDivergence(candles, rsiSeries, macdHistSeries) {
 
   const lookback = 50;
 
-  // ─── BEARISH divergence (на highs) ──
+  // ─── BEARISH divergence (na highs) ──
   const swingHighsRSI = findLast2Swings(candles, rsiSeries, lookback, true);
   if (swingHighsRSI) {
     const { p1, p2 } = swingHighsRSI;
@@ -79,7 +79,7 @@ function detectDivergence(candles, rsiSeries, macdHistSeries) {
     }
   }
 
-  // ─── BULLISH divergence (на lows) ──
+  // ─── BULLISH divergence (na lows) ──
   const swingLowsRSI = findLast2Swings(candles, rsiSeries, lookback, false);
   if (swingLowsRSI) {
     const { p1, p2 } = swingLowsRSI;
@@ -146,12 +146,12 @@ function detectStinger(divergences) {
   if (t1Bull && t2Bull) {
     // T1 nested INSIDE T2: T1's swings should be within T2's range
     if (t1Bull.p1.idx >= t2Bull.p1.idx && t1Bull.p2.idx <= t2Bull.p2.idx + 5) {
-      return { type: 'STINGER_BULL', dir: 1, t1: t1Bull, t2: t2Bull, why: 'T1↑ ichidа T2↑ (nested)' };
+      return { type: 'STINGER_BULL', dir: 1, t1: t1Bull, t2: t2Bull, why: 'T1↑ ichida T2↑ (nested)' };
     }
   }
   if (t1Bear && t2Bear) {
     if (t1Bear.p1.idx >= t2Bear.p1.idx && t1Bear.p2.idx <= t2Bear.p2.idx + 5) {
-      return { type: 'STINGER_BEAR', dir: -1, t1: t1Bear, t2: t2Bear, why: 'T1↓ ichidа T2↓ (nested)' };
+      return { type: 'STINGER_BEAR', dir: -1, t1: t1Bear, t2: t2Bear, why: 'T1↓ ichida T2↓ (nested)' };
     }
   }
   return null;

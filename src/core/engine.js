@@ -28,7 +28,7 @@ import { setActiveTradeLines, refreshChartMarkers, clearActivePriceLines } from 
 import { tgSend, tgSendEntry, tgSendTP, tgSendSL } from '../services/telegram.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v5 PRO — Сигнал энжин + state machine
+// QUMASH v5 PRO — Signal enjin + state machine
 // Globals: computeBaseIndicators, computeEurekaScore, runSignalEvaluation, etc.
 // ═══════════════════════════════════════════════════════════════════
 
@@ -139,12 +139,12 @@ function checkMTFConfluence(side, htf) {
   alignment = clamp(alignment, -1, 1);
   // Aligned threshold: alignment > -0.2 (not strongly opposed)
   const aligned = alignment >= -0.2;
-  return {aligned, score: (alignment + 1) / 2, reason: reasons.join(', ') || 'нейтрал', alignment};
+  return {aligned, score: (alignment + 1) / 2, reason: reasons.join(', ') || 'neytral', alignment};
 }
 
 // ─── EUREKA SCORING (14 layers + per-regime adaptive + multi-TF confluence + reversal trigger) ─
-// candlesParam: бу argument backtest учун керак — sliced candles узатилади.
-// Live'да argument берилмаса, ST.candles ишлатилади.
+// candlesParam: bu argument backtest uchun kerak — sliced candles uzatiladi.
+// Live'da argument berilmasa, ST.candles ishlatiladi.
 function computeEurekaScore(side, ind, regime, sweep, corr, premdisc, session, news, magnets, htf, struct, ob, ote, fvgs = [], htfEng = {bull:false, bear:false}, candlesParam = null) {
   const isLong = side === 'L';
   let score = 0;
@@ -276,7 +276,7 @@ function computeEurekaScore(side, ind, regime, sweep, corr, premdisc, session, n
   score += wCandle; breakdown.candlestick = wCandle;
   if (_patternName) breakdown._patternName = _patternName;
 
-  // Layer 12: FVG (Fair Value Gap) — разворот учун асосий
+  // Layer 12: FVG (Fair Value Gap) — razvorot uchun asosiy
   let wFVG = 0;
   let _activeFVG = null;
   if (typeof findActiveFVG === 'function' && fvgs && fvgs.length > 0) {
@@ -286,8 +286,8 @@ function computeEurekaScore(side, ind, regime, sweep, corr, premdisc, session, n
       // Score = base × (1 - age decay) × position factor
       const ageDecay = Math.max(0.5, 1 - (af.age / CFG.fvgMaxAge));
 
-      // Position factor: ближe to FVG edge in trade direction = stronger
-      // For BUY: closer to bot edge = stronger (price reverse эҳтимоли катта)
+      // Position factor: blije to FVG edge in trade direction = stronger
+      // For BUY: closer to bot edge = stronger (price reverse ehtimoli katta)
       // For SELL: closer to top edge = stronger
       let posFactor = 1.0;
       if (isLong) {
@@ -319,12 +319,12 @@ function computeEurekaScore(side, ind, regime, sweep, corr, premdisc, session, n
 }
 
 // ─── REVERSAL TRIGGER CHECK ──────────────────────────────────────────
-// Setup сифатини белгилайди: разворот учун камида биттаси бўлиши керак
+// Setup sifatini belgilaydi: razvorot uchun kamida bittasi boʻlishi kerak
 //   (1) Liquidity Sweep (institutional stop hunt)
-//   (2) CHoCH event (тренд ўзгариши бошланиши)
-//   (3) FVG entry zone (нарх gap'га қайтган)
-//   (4) MSS event (структура buzилиши, тренд йўқ)
-// Хеч қайси бўлмаса — setup "тренд давоми" саналади ва Т1 талаб қилинади.
+//   (2) CHoCH event (trend oʻzgarishi boshlanishi)
+//   (3) FVG entry zone (narx gap'ga qaytgan)
+//   (4) MSS event (struktura buzilishi, trend yoʻq)
+// Xech qaysi boʻlmasa — setup "trend davomi" sanaladi va T1 talab qilinadi.
 function hasReversalTrigger(side, sweep, struct, fvgs, ind, regime) {
   const isLong = side === 'L';
   const triggers = [];
@@ -341,19 +341,19 @@ function hasReversalTrigger(side, sweep, struct, fvgs, ind, regime) {
 }
 
 // ─── TIER FOR (REVERSAL HUNTER) ──────────────────────────────────────
-// Фақат T1/T2 — паст балли setup'лар умуман очилмайди.
-// Тренд давоми (reversal trigger йўқ) учун T1 талаб қилинади.
-// v8: Monday'да T2 блок (TTrades qoidasi)
+// Faqat T1/T2 — past balli setup'lar umuman ochilmaydi.
+// Trend davomi (reversal trigger yoʻq) uchun T1 talab qilinadi.
+// v8: Monday'da T2 blok (TTrades qoidasi)
 function tierFor(score, hasReversal) {
   if (score >= CFG.tier1) return {tier:'T1', risk:CFG.tier1Risk};
   if (score >= CFG.tier2 && hasReversal) {
-    // v8: Monday'да фақат T1 қабул қилинади (T2 reject)
+    // v8: Monday'da faqat T1 qabul qilinadi (T2 reject)
     if (CFG.mondayBlock && typeof isMondayBlocked === 'function' && isMondayBlocked()) {
       return null;
     }
     return {tier:'T2', risk:CFG.tier2Risk};
   }
-  return null; // signal rad — слабый setup
+  return null; // signal rad — slabiy setup
 }
 
 // ─── SIGNAL EVALUATION ───────────────────────────────────────────────
@@ -378,7 +378,7 @@ function runSignalEvaluation(fireSignals = true) {
   const fvgs = detectFVGs(ST.candles, ind.atr);
   const htfEng = detectHTFEngulfing(ST.candlesHTF || []);  // ⭐ FIX: ST.candlesHTF (was ST.htfCandles bug)
 
-  // ⭐ v8: PDF'лардан янги модуллар — TTrades, Daily Profile, Compression, HLQ, QMR, Macro
+  // ⭐ v8: PDF'lardan yangi modullar — TTrades, Daily Profile, Compression, HLQ, QMR, Macro
   ST.lastAtr = ind.atr;
   const snapBase = { fvg: { bullFVGs: fvgs.filter(f => f.type === 'bull'), bearFVGs: fvgs.filter(f => f.type === 'bear') }, ob, magnets };
   const ttrades = (typeof scoreTTrades === 'function') ? scoreTTrades(ST.candles, ST.candlesHTF, ind.atr) : { score: 0, dir: 0 };
@@ -431,7 +431,7 @@ function runSignalEvaluation(fireSignals = true) {
   const scoreL = computeEurekaScore('L', ind, regime, sweep, corr, pd, ses, news, magnets, htf, struct, ob, ote, fvgs, htfEng);
   const scoreS = computeEurekaScore('S', ind, regime, sweep, corr, pd, ses, news, magnets, htf, struct, ob, ote, fvgs, htfEng);
 
-  // ⭐ v8 + v9 + v10 + v11: PDF модуллар score'ларни қўшиш
+  // ⭐ v8 + v9 + v10 + v11: PDF modullar score'larni qoʻshish
   const ttL = (ttrades.dir === 1) ? ttrades.score : 0;
   const ttS = (ttrades.dir === -1) ? ttrades.score : 0;
   const v8AddL = ttL + (dpL.score || 0) + (chlL.score || 0) + (macroL.score || 0);
@@ -477,7 +477,7 @@ function runSignalEvaluation(fireSignals = true) {
     _newsDriven: ndS,
   };
 
-  // ⭐ Reversal triggers (v7) + v8: TTrades CISD ва QMR + v9: Judas + Stinger
+  // ⭐ Reversal triggers (v7) + v8: TTrades CISD va QMR + v9: Judas + Stinger
   const reversalL = hasReversalTrigger('L', sweep, struct, fvgs, ind, regime);
   const reversalS = hasReversalTrigger('S', sweep, struct, fvgs, ind, regime);
   if (ttrades.dir === 1 && ttrades.cisd && ttrades.cisd.confirmed) reversalL.push('CISD');
@@ -516,14 +516,14 @@ function runSignalEvaluation(fireSignals = true) {
 
   // Gates
   let gateOK = true, gateFail = '';
-  if (ses.session === 'WEEKEND') { gateOK = false; gateFail = 'дам олиш'; }
+  if (ses.session === 'WEEKEND') { gateOK = false; gateFail = 'dam olish'; }
   // Session whitelist
-  if (CFG.allowedSessions && CFG.allowedSessions[ses.session] === false) { gateOK = false; gateFail = `сеанс блок: ${ses.session}`; }
+  if (CFG.allowedSessions && CFG.allowedSessions[ses.session] === false) { gateOK = false; gateFail = `seans blok: ${ses.session}`; }
   // Regime whitelist
-  if (CFG.allowedRegimes && CFG.allowedRegimes[regime.kind] === false) { gateOK = false; gateFail = `режим блок: ${regime.kind}`; }
+  if (CFG.allowedRegimes && CFG.allowedRegimes[regime.kind] === false) { gateOK = false; gateFail = `rejim blok: ${regime.kind}`; }
 
-  // ⚡ AUTO NEWS MODE — ҳамма муҳим янгиликда автоматик ишлайди
-  // Эълондан 3 мин кейин очилади, news+tech синергияси билан signal беради
+  // ⚡ AUTO NEWS MODE — hamma muhim yangilikda avtomatik ishlaydi
+  // Eʼlondan 3 min keyin ochiladi, news+tech sinergiyasi bilan signal beradi
   let newsModeActive = null;
   if (CFG.newsMode === 'auto' && typeof findActiveNewsEvent === 'function') {
     newsModeActive = findActiveNewsEvent();
@@ -531,14 +531,14 @@ function runSignalEvaluation(fireSignals = true) {
   }
 
   if (newsModeActive) {
-    // News active window'да — news.clear гейт скип қилинади (chunki news directional ҳаракат беради)
-    if (CFG.sessionFilter && ses.quality < 0.5) { gateOK = false; gateFail = 'сеанс: ' + ses.txt; }
+    // News active window'da — news.clear geyt skip qilinadi (chunki news directional harakat beradi)
+    if (CFG.sessionFilter && ses.quality < 0.5) { gateOK = false; gateFail = 'seans: ' + ses.txt; }
   } else {
     // ⭐ v12 (2-variant): 3-PHASE NEWS GATE
-    // Phase 1: T-30..T+5  → BLOCK (хавфли волатиллик)
-    // Phase 2: T+5..T+15  → faqat v11 News-Driven ишлайди (стандарт сигнал блок)
-    // Phase 3: T+15..T+45 → ҳам v11, ҳам стандарт сигнал ишлайди (тех анализ мос келса)
-    // Phase 4: T+45+      → нормал mode (news.clear = true)
+    // Phase 1: T-30..T+5  → BLOCK (xavfli volatillik)
+    // Phase 2: T+5..T+15  → faqat v11 News-Driven ishlaydi (standart signal blok)
+    // Phase 3: T+15..T+45 → ham v11, ham standart signal ishlaydi (tex analiz mos kelsa)
+    // Phase 4: T+45+      → normal mode (news.clear = true)
     let newsPhase = 0;
     let v11Override = false;
     let standardAllowed = true;
@@ -575,7 +575,7 @@ function runSignalEvaluation(fireSignals = true) {
       if (!news.clear && !v11Override) {
         gateOK = false; gateFail = news.txt;
       }
-      // Standart signal'ni блок қилиш — буни fireSignal'да текширамиз via _lastSnapshot.newsPhase
+      // Standart signal'ni blok qilish — buni fireSignal'da tekshiramiz via _lastSnapshot.newsPhase
     } else if (newsPhase === 3) {
       // T+15..T+45: ham v11, ham standart signal'lar (news.clear = true bo'lsa standart, false bo'lsa v11 override)
       if (!news.clear && !v11Override) {
@@ -585,20 +585,20 @@ function runSignalEvaluation(fireSignals = true) {
     _lastSnapshot.newsPhase = newsPhase;
     _lastSnapshot.newsStandardAllowed = standardAllowed;
 
-    if (CFG.sessionFilter && ses.quality < 0.5) { gateOK = false; gateFail = 'сеанс: ' + ses.txt; }
+    if (CFG.sessionFilter && ses.quality < 0.5) { gateOK = false; gateFail = 'seans: ' + ses.txt; }
   }
-  if (regime.kind === 'CHOP' && CFG.strict) { gateOK = false; gateFail = 'CHOP режим (қаттиқ)'; }
+  if (regime.kind === 'CHOP' && CFG.strict) { gateOK = false; gateFail = 'CHOP rejim (qattiq)'; }
   // ⭐ VOLATILITY GATE — block extreme high or low volatility
   const atrPct = (ind.atr / ind.close) * 100;
-  if (CFG.atrPctMin && atrPct < CFG.atrPctMin) { gateOK = false; gateFail = `волатиллик паст ${atrPct.toFixed(2)}% < ${CFG.atrPctMin}%`; }
-  if (CFG.atrPctMax && atrPct > CFG.atrPctMax) { gateOK = false; gateFail = `волатиллик юқори ${atrPct.toFixed(2)}% > ${CFG.atrPctMax}%`; }
+  if (CFG.atrPctMin && atrPct < CFG.atrPctMin) { gateOK = false; gateFail = `volatillik past ${atrPct.toFixed(2)}% < ${CFG.atrPctMin}%`; }
+  if (CFG.atrPctMax && atrPct > CFG.atrPctMax) { gateOK = false; gateFail = `volatillik yuqori ${atrPct.toFixed(2)}% > ${CFG.atrPctMax}%`; }
 
   // ⭐ v8: Monday rule — TTrades qoidasi
   if (typeof isMondayBlocked === 'function' && isMondayBlocked()) {
-    // Monday'да T1 қолдиради (T2 авток. block)
+    // Monday'da T1 qoldiradi (T2 avtok. block)
     _lastSnapshot.mondayWarning = true;
   }
-  // ⭐ v8: Daily Profile invalidation — если London expansion, NY participate этмаслик
+  // ⭐ v8: Daily Profile invalidation — esli London expansion, NY participate etmaslik
   const dpAny = dpL.profile || dpS.profile;
   if (dpAny && dpAny.profile === 'EXPANSION' && dpAny.nyValid === false && ses.session === 'NY') {
     if (CFG.dailyProfileEnabled) {
@@ -606,7 +606,7 @@ function runSignalEvaluation(fireSignals = true) {
       gateFail = `London expansion → NY skip (${dpAny.why})`;
     }
   }
-  // ⭐ v9: Psychology block — drawdown/revenge'да entry'ни блок
+  // ⭐ v9: Psychology block — drawdown/revenge'da entry'ni blok
   if (typeof checkPsychBlock === 'function') {
     const psychBlock = checkPsychBlock();
     if (psychBlock.block) {
@@ -631,7 +631,7 @@ function runSignalEvaluation(fireSignals = true) {
       // Check if override applies to current gate fail
       if (overrideAppliesToGate(gateFail, bestLevel)) {
         const overrideWhy = overrideResultL.canOverride ? overrideResultL.why : overrideResultS.why;
-        log('SIG', `🟢 OVERRIDE L${bestLevel}: ${overrideWhy} → "${gateFail}" gate'ни override қилди`);
+        log('SIG', `🟢 OVERRIDE L${bestLevel}: ${overrideWhy} → "${gateFail}" gate'ni override qildi`);
         gateOK = true;
         _lastSnapshot.overrideApplied = { level: bestLevel, why: overrideWhy, originalGate: gateFail };
         gateFail = '';
@@ -639,7 +639,7 @@ function runSignalEvaluation(fireSignals = true) {
     }
   }
 
-  // Tier — Reversal Hunter: фақат T1/T2, T2 фақат reversal trigger билан
+  // Tier — Reversal Hunter: faqat T1/T2, T2 faqat reversal trigger bilan
   const longTier = tierFor(scoreL.score, reversalL.length > 0);
   const shortTier = tierFor(scoreS.score, reversalS.length > 0);
   const wantLong = (CFG.direction === 'BOTH' || CFG.direction === 'LONG');
@@ -648,7 +648,7 @@ function runSignalEvaluation(fireSignals = true) {
   // ⭐ MULTI-TF CONFLUENCE — block signals against HTF
   const mtfLong = checkMTFConfluence('L', htf);
   const mtfShort = checkMTFConfluence('S', htf);
-  // Reversal Hunter: HTF қарши бўлмаса етарли (>= 0.4) — реверсал ҳолатлар учун ҳатто tighter эмас
+  // Reversal Hunter: HTF qarshi boʻlmasa etarli (>= 0.4) — reversal holatlar uchun hatto tighter emas
   const mtfThreshold = 0.4;
 
   // ⭐ SCORE-DIFF GATE — avoid 21 vs 23 type fakes (need clear winner)
@@ -670,17 +670,17 @@ function runSignalEvaluation(fireSignals = true) {
   _lastSnapshot.mtfShort = mtfShort;
 
   if (!gateOK) {
-    if (Math.random() < 0.1) log('FILT', `⛔ Гейт: ${gateFail}`);
+    if (Math.random() < 0.1) log('FILT', `⛔ Geyt: ${gateFail}`);
   } else if (blocked) {} else if (!cooldownOK) {}
-  // ⚡ NEWS-MODE signal: news direction + tech setup mos келиши керак
+  // ⚡ NEWS-MODE signal: news direction + tech setup mos kelishi kerak
   else if (newsModeActive && typeof evaluateNewsModeSignal === 'function') {
     const ev = evaluateNewsModeSignal(newsModeActive, scoreL, scoreS);
     if (ev && ev.qualifies) {
       const targetSide = ev.targetSide;
       const targetScoreObj = (targetSide === 'L' ? scoreL : scoreS);
       const targetReversal = (targetSide === 'L' ? reversalL : reversalS);
-      // ⭐ Alignment: news yo'nалиши tech yo'nалиши билан мос бўлиши керак
-      // (tech score targetSide'да ҳеч бўлмаса 30+ бўлиши керак)
+      // ⭐ Alignment: news yo'nalishi tech yo'nalishi bilan mos boʻlishi kerak
+      // (tech score targetSide'da hech boʻlmasa 30+ boʻlishi kerak)
       const techScore = (targetSide === 'L' ? scoreL.score : scoreS.score);
       const techAligned = !CFG.newsAlignmentRequired || techScore >= 30;
       if (techAligned) {
@@ -698,15 +698,15 @@ function runSignalEvaluation(fireSignals = true) {
     }
   }
   else if (wantLong && longTier && !mtfLong.aligned) {
-    if (Math.random() < 0.3) log('MTF', `⚠ LONG блокланди: HTF қарши (${mtfLong.reason})`);
+    if (Math.random() < 0.3) log('MTF', `⚠ LONG bloklandi: HTF qarshi (${mtfLong.reason})`);
   } else if (wantShort && shortTier && !mtfShort.aligned) {
-    if (Math.random() < 0.3) log('MTF', `⚠ SHORT блокланди: HTF қарши (${mtfShort.reason})`);
+    if (Math.random() < 0.3) log('MTF', `⚠ SHORT bloklandi: HTF qarshi (${mtfShort.reason})`);
   } else if (longTrigger && (!shortTrigger || scoreL.score >= scoreS.score) && ST.condition <= 0) {
-    // ⭐ v12 (2-variant): Phase 2 check — fақat NEWS_DRIVEN signal'lar otsin
+    // ⭐ v12 (2-variant): Phase 2 check — faqat NEWS_DRIVEN signal'lar otsin
     const isPhase2 = _lastSnapshot.newsPhase === 2;
     const hasNewsDrivenL = (_lastSnapshot.reversalL || []).includes('NEWS_DRIVEN');
     if (isPhase2 && !hasNewsDrivenL) {
-      if (Math.random() < 0.3) log('NEWS', `⏳ Phase 2 (T+5..T+15): фақат NEWS_DRIVEN signal — стандарт LONG блок`);
+      if (Math.random() < 0.3) log('NEWS', `⏳ Phase 2 (T+5..T+15): faqat NEWS_DRIVEN signal — standart LONG blok`);
     } else {
       fireSignal('L', ind, scoreL, longTier, _lastSnapshot);
     }
@@ -715,7 +715,7 @@ function runSignalEvaluation(fireSignals = true) {
     const isPhase2 = _lastSnapshot.newsPhase === 2;
     const hasNewsDrivenS = (_lastSnapshot.reversalS || []).includes('NEWS_DRIVEN');
     if (isPhase2 && !hasNewsDrivenS) {
-      if (Math.random() < 0.3) log('NEWS', `⏳ Phase 2 (T+5..T+15): фақат NEWS_DRIVEN signal — стандарт SHORT блок`);
+      if (Math.random() < 0.3) log('NEWS', `⏳ Phase 2 (T+5..T+15): faqat NEWS_DRIVEN signal — standart SHORT blok`);
     } else {
       fireSignal('S', ind, scoreS, shortTier, _lastSnapshot);
     }
@@ -728,14 +728,14 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
   const isLong = side === 'L';
   const entry = ind.close;
 
-  // ⚡ SMART SL — мажбурий: FVG → OB → ATR fallback
-  // Барча setup'лар учун кичик SL'га интилами
+  // ⚡ SMART SL — majburiy: FVG → OB → ATR fallback
+  // Barcha setup'lar uchun kichik SL'ga intilami
   let sl;
   let slType = 'ATR';
   const stdSlDist = ind.atr * CFG.slATR;
   const stdSL = isLong ? entry - stdSlDist : entry + stdSlDist;
 
-  // 1) FVG edge'и (энг яхши)
+  // 1) FVG edge'i (eng yaxshi)
   if (CFG.smartSLenabled && scoreObj.breakdown && scoreObj.breakdown._fvg) {
     const fvg = scoreObj.breakdown._fvg;
     const buf = ind.atr * CFG.smartSLbuffer;
@@ -743,11 +743,11 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
     let candidateSL = isLong ? fvg.bot - buf : fvg.top + buf;
     const dist = Math.abs(entry - candidateSL);
     if (dist < minDist) candidateSL = isLong ? entry - minDist : entry + minDist;
-    // FVG edge SL фақат ATR×slATR'дан кам бўлсагина ишлатилади (катта бўлса fallback'га ўтади)
+    // FVG edge SL faqat ATR×slATR'dan kam boʻlsagina ishlatiladi (katta boʻlsa fallback'ga oʻtadi)
     sl = (Math.abs(entry - candidateSL) <= stdSlDist) ? candidateSL : stdSL;
     if (sl !== stdSL) slType = 'FVG-edge';
   }
-  // 2) Active OB edge'и (FVG бўлмаса)
+  // 2) Active OB edge'i (FVG boʻlmasa)
   if (!sl || sl === stdSL) {
     if (CFG.smartSLenabled && snap.ob) {
       const activeOB = isLong ? snap.ob.activeBull : snap.ob.activeBear;
@@ -764,7 +764,7 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
       }
     }
   }
-  // 2.5) ⭐ v8: TTrades CISD swing point — energi pasт SL, лекин валидиз
+  // 2.5) ⭐ v8: TTrades CISD swing point — energi past SL, lekin validiz
   if (!sl || sl === stdSL) {
     if (CFG.ttradesEnabled && snap.ttrades && snap.ttrades.swing) {
       const sw = snap.ttrades.swing;
@@ -782,14 +782,14 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
   // 3) Fallback — ATR
   if (!sl) sl = stdSL;
 
-  // TP айни ATR'дан, лекин эфективная R:R'ни хисоблаймиз
+  // TP ayni ATR'dan, lekin efektivnaya R:R'ni xisoblaymiz
   const slDistActual = Math.abs(entry - sl);
   let tp1 = isLong ? entry + ind.atr*CFG.tp1ATR : entry - ind.atr*CFG.tp1ATR;
   let tp2 = isLong ? entry + ind.atr*CFG.tp2ATR : entry - ind.atr*CFG.tp2ATR;
   let tp3 = isLong ? entry + ind.atr*CFG.tp3ATR : entry - ind.atr*CFG.tp3ATR;
   let tpSource = 'ATR';
 
-  // ⭐ v8: Liquidity-based TPs — TTrades stiliда: target at liquidity levels / projections
+  // ⭐ v8: Liquidity-based TPs — TTrades stilida: target at liquidity levels / projections
   if (snap.magnets) {
     const liqTarget = isLong ? snap.magnets.nearestAbove : snap.magnets.nearestBelow;
     if (liqTarget) {
@@ -830,14 +830,14 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
     }
   }
 
-  // ⭐ R:R MIN CHECK — паст R:R сигналлар кучсиз, рад қилинади
+  // ⭐ R:R MIN CHECK — past R:R signallar kuchsiz, rad qilinadi
   const rrEffective = Math.abs(tp1 - entry) / slDistActual;
   if (rrEffective < (CFG.minRR || 1.5)) {
-    log('FILT', `⛔ R:R 1:${rrEffective.toFixed(2)} < 1:${CFG.minRR} — сигнал рад этилди`);
+    log('FILT', `⛔ R:R 1:${rrEffective.toFixed(2)} < 1:${CFG.minRR} — signal rad etildi`);
     return;
   }
 
-  // Reversal trigger номлари
+  // Reversal trigger nomlari
   const triggers = (isLong ? snap.reversalL : snap.reversalS) || [];
 
   ST.snap = {
@@ -847,18 +847,18 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
     breakdown:scoreObj.breakdown, bothSrc:scoreObj.dual,
     epoch:ST.candles[ST.candles.length-1].epoch, time:nowMs(),
     regime:snap.regime.kind,
-    sweep:snap.sweep.detected ? snap.sweep.why : 'йўқ',
+    sweep:snap.sweep.detected ? snap.sweep.why : 'yoʻq',
     corrVerdict:snap.corr.verdictTxt,
     pdZone:snap.pd.zone, pdPos:snap.pd.pos,
-    structEvent:snap.struct.event || 'йўқ',
-    obActive: isLong ? (snap.ob.activeBull ? `${snap.ob.activeBull.bot.toFixed(1)}-${snap.ob.activeBull.top.toFixed(1)}` : 'йўқ') : (snap.ob.activeBear ? `${snap.ob.activeBear.bot.toFixed(1)}-${snap.ob.activeBear.top.toFixed(1)}` : 'йўқ'),
-    inOTE: snap.ote.inOTE ? 'ха' : 'йўқ',
+    structEvent:snap.struct.event || 'yoʻq',
+    obActive: isLong ? (snap.ob.activeBull ? `${snap.ob.activeBull.bot.toFixed(1)}-${snap.ob.activeBull.top.toFixed(1)}` : 'yoʻq') : (snap.ob.activeBear ? `${snap.ob.activeBear.bot.toFixed(1)}-${snap.ob.activeBear.top.toFixed(1)}` : 'yoʻq'),
+    inOTE: snap.ote.inOTE ? 'xa' : 'yoʻq',
     candlestickPattern: scoreObj.breakdown._patternName || null,
     fvgInfo: scoreObj.breakdown._fvg || null,
     htfEngBull: snap.htfEng?.bull || false,
     htfEngBear: snap.htfEng?.bear || false,
     newsMode: scoreObj.breakdown._newsMode || null,
-    triggers,                              // reversal trigger номлари (CISD, QMR included)
+    triggers,                              // reversal trigger nomlari (CISD, QMR included)
     // ⭐ v12: override info if applied
     overrideApplied: _lastSnapshot.overrideApplied || null,
     // ⭐ v12 (2-variant): news phase info
@@ -918,7 +918,7 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
   const htfTxt = (ST.snap.htfEngBull && isLong) || (ST.snap.htfEngBear && !isLong) ? ' 🔄HTF-Eng' : '';
   const trigTxt = triggers.length ? ` [${triggers.join('+')}]` : '';
   log('SIG', `${isLong?'🟢 BUY':'🔴 SELL'} @${fmtPx(entry)}`, `${tier.tier} ${scoreObj.score.toFixed(0)} ${tier.risk}% [${slType} 1:${ST.snap.rrEffective}R]${trigTxt}${patTxt}${fvgTxt}${htfTxt}`);
-  log('FILT', `${snap.regime.kind} | ${snap.sweep.detected?'SWEEP':'no'} | DXY:${snap.corr.verdict} | ${snap.pd.zone} | ${snap.ses.txt} | ${snap.struct.event||'-'} | OB:${ST.snap.obActive!=='йўқ'?'✓':'-'} | OTE:${ST.snap.inOTE}${patTxt}${fvgTxt}${htfTxt}`);
+  log('FILT', `${snap.regime.kind} | ${snap.sweep.detected?'SWEEP':'no'} | DXY:${snap.corr.verdict} | ${snap.pd.zone} | ${snap.ses.txt} | ${snap.struct.event||'-'} | OB:${ST.snap.obActive!=='yoʻq'?'✓':'-'} | OTE:${ST.snap.inOTE}${patTxt}${fvgTxt}${htfTxt}`);
   ST.history.unshift({
     ts: new Date().toLocaleTimeString('uz-UZ', {hour12:false, hour:'2-digit', minute:'2-digit'}),
     side, score:scoreObj.score.toFixed(0), tier:tier.tier,
@@ -1046,7 +1046,7 @@ function closeTrade(type, exitPrice, r) {
     const W = ST.adaptWeights[regime];
     if (W) {
       const changed = FILTERS.filter(f => Math.abs((W[f] || 1.0) - 1.0) > 0.05).slice(0, 3);
-      if (changed.length) log('ADAPT', `⚙ ${regime} режимида вазнлар янгиланди`, changed.map(f => `${f}:${W[f].toFixed(2)}`).join(' '));
+      if (changed.length) log('ADAPT', `⚙ ${regime} rejimida vaznlar yangilandi`, changed.map(f => `${f}:${W[f].toFixed(2)}`).join(' '));
     }
   }
   // Refresh chart markers to show exit
@@ -1088,35 +1088,35 @@ function restoreActiveTrade() {
       localStorage.removeItem(ACTIVE_TRADE_KEY);
       return false;
     }
-    // ⭐ TF mismatch — savedTF != current TF: bar counts/ATR хавфли. Битим бекор.
+    // ⭐ TF mismatch — savedTF != current TF: bar counts/ATR xavfli. Bitim bekor.
     if (data.tf && data.tf !== CFG.granularity) {
-      log('WARN', `🔄 Битим бекор: сақлаш TF=${data.tf} ≠ жорий TF=${CFG.granularity}`);
+      log('WARN', `🔄 Bitim bekor: saqlash TF=${data.tf} ≠ joriy TF=${CFG.granularity}`);
       localStorage.removeItem(ACTIVE_TRADE_KEY);
       return false;
     }
-    // ⭐ SL/TP3 ALREADY HIT during browser-offline period? — текширамиз
+    // ⭐ SL/TP3 ALREADY HIT during browser-offline period? — tekshiramiz
     const isLong = data.condition > 0;
     const lastPrice = ST.lastPrice || (ST.candles.length ? ST.candles[ST.candles.length - 1].c : null);
     if (lastPrice && data.snap) {
-      // SL уриб ўтган ёки нархдан анча узоқ — фантом trade'дан қочамиз
+      // SL urib oʻtgan yoki narxdan ancha uzoq — fantom trade'dan qochamiz
       if (isLong && lastPrice <= data.slLine) {
-        log('WARN', `🛑 Битим тикланмади: SL уриб ўтган (нарх ${lastPrice.toFixed(2)} ≤ SL ${data.slLine.toFixed(2)})`);
+        log('WARN', `🛑 Bitim tiklanmadi: SL urib oʻtgan (narx ${lastPrice.toFixed(2)} ≤ SL ${data.slLine.toFixed(2)})`);
         localStorage.removeItem(ACTIVE_TRADE_KEY);
         return false;
       }
       if (!isLong && lastPrice >= data.slLine) {
-        log('WARN', `🛑 Битим тикланмади: SL уриб ўтган (нарх ${lastPrice.toFixed(2)} ≥ SL ${data.slLine.toFixed(2)})`);
+        log('WARN', `🛑 Bitim tiklanmadi: SL urib oʻtgan (narx ${lastPrice.toFixed(2)} ≥ SL ${data.slLine.toFixed(2)})`);
         localStorage.removeItem(ACTIVE_TRADE_KEY);
         return false;
       }
-      // TP3 ҳам ўтган бўлса — битим аллақачон тугаган
+      // TP3 ham oʻtgan boʻlsa — bitim allaqachon tugagan
       if (isLong && lastPrice >= data.snap.tp3) {
-        log('WARN', `🏆 Битим тикланмади: TP3 урилган (нарх ${lastPrice.toFixed(2)} ≥ TP3 ${data.snap.tp3.toFixed(2)})`);
+        log('WARN', `🏆 Bitim tiklanmadi: TP3 urilgan (narx ${lastPrice.toFixed(2)} ≥ TP3 ${data.snap.tp3.toFixed(2)})`);
         localStorage.removeItem(ACTIVE_TRADE_KEY);
         return false;
       }
       if (!isLong && lastPrice <= data.snap.tp3) {
-        log('WARN', `🏆 Битим тикланмади: TP3 урилган`);
+        log('WARN', `🏆 Bitim tiklanmadi: TP3 urilgan`);
         localStorage.removeItem(ACTIVE_TRADE_KEY);
         return false;
       }
@@ -1128,10 +1128,10 @@ function restoreActiveTrade() {
     ST.barsSinceEntry = data.barsSinceEntry || 0;
     const sideTxt = data.condition > 0 ? '🟢 LONG' : '🔴 SHORT';
     const tier = data.snap.tier ? `${data.snap.tier}` : '';
-    log('INFO', `🔄 Тикланди: ${sideTxt} ${tier} @${data.snap.entry.toFixed(2)} (SL ${data.slLine.toFixed(2)})`);
+    log('INFO', `🔄 Tiklandi: ${sideTxt} ${tier} @${data.snap.entry.toFixed(2)} (SL ${data.slLine.toFixed(2)})`);
     return true;
   } catch(e) {
-    log('WARN', 'Битим тиклаш хато: ' + (e.message||'').slice(0,40));
+    log('WARN', 'Bitim tiklash xato: ' + (e.message||'').slice(0,40));
     return false;
   }
 }

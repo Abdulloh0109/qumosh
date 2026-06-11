@@ -1,22 +1,22 @@
 import { CFG } from '../state.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v8 — TTrades CISD MODEL (MoneiacVIP PDF'дан)
+// QUMASH v8 — TTrades CISD MODEL (MoneiacVIP PDF'dan)
 // Globals: detectTTradesSwing, detectCISD, getCandleNumbering
 // ═══════════════════════════════════════════════════════════════════
 // TTrades Model: 3 candle swing formation
-//   Candle 1: high/low'дан олдинги
-//   Candle 2: high/low ҳосил қилади
-//   Candle 3: high/low'дан кейинги (expansion)
+//   Candle 1: high/low'dan oldingi
+//   Candle 2: high/low hosil qiladi
+//   Candle 3: high/low'dan keyingi (expansion)
 //   Candle 4: continuation
 //
 // Two swing types:
-//   1) Candle 2 Closure (reversal): C2 takes C1 high/low ва қайтиб C1 range'ига ёпилади
-//   2) Candle 3 Closure (conditional): C2 қайтмаган, лекин C3 кучли ёпилди
+//   1) Candle 2 Closure (reversal): C2 takes C1 high/low va qaytib C1 range'iga yopiladi
+//   2) Candle 3 Closure (conditional): C2 qaytmagan, lekin C3 kuchli yopildi
 //
-// CISD = Change in State of Delivery — LTF'да swing'ни тасдиқлайди.
+// CISD = Change in State of Delivery — LTF'da swing'ni tasdiqlaydi.
 //   For M15 trade: HTF (H1) swing point → M15 CISD confirmation
-//   (бизнинг tизимда HTF = htfMult × granularity, ёки 4x M15 = H1)
+//   (bizning tizimda HTF = htfMult × granularity, yoki 4x M15 = H1)
 // ═══════════════════════════════════════════════════════════════════
 
 // ─── CANDLE 2 CLOSURE DETECTION ─────────────────────────────────────
@@ -61,7 +61,7 @@ function detectCandle2Closure(candles, idx) {
 }
 
 // ─── CANDLE 3 CLOSURE (conditional rule) ────────────────────────────
-// C2 фейл (C1 range'га қайтмаган), лекин C3 кучли ёпилса swing валид
+// C2 feyl (C1 range'ga qaytmagan), lekin C3 kuchli yopilsa swing valid
 function detectCandle3Closure(candles, idx, atrNow) {
   if (!candles || candles.length < 4 || idx < 2 || idx >= candles.length) return null;
   const c1 = candles[idx - 2];
@@ -115,10 +115,10 @@ function detectTTradesSwing(candles, atrNow, lookback) {
 }
 
 // ─── CISD CONFIRMATION (Change in State of Delivery) ────────────────
-// CISD = LTF'да опposing close candle'нинг очилиш нархидан ёпилиш ўтиб кетади
-//   For bullish swing: топ pastki up-close candle'нинг open'ига price closed below'дан yuqori ёпилиши
-//   ёки oddiy ifoda: trend'нинг охирги counter-candle'и engulfed бўлиши
-// Бизнинг tизимда: LTF candles = primary timeframe (M15), HTF = htfMult ×
+// CISD = LTF'da opposing close candle'ning ochilish narxidan yopilish oʻtib ketadi
+//   For bullish swing: top pastki up-close candle'ning open'iga price closed below'dan yuqori yopilishi
+//   yoki oddiy ifoda: trend'ning oxirgi counter-candle'i engulfed boʻlishi
+// Bizning tizimda: LTF candles = primary timeframe (M15), HTF = htfMult ×
 // Returns: {confirmed: boolean, dir: +1/-1, level: number, why: string}
 function detectCISD(candles, swing) {
   if (!swing || !candles || candles.length < 4) {

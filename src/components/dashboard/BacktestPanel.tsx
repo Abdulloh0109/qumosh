@@ -103,44 +103,44 @@ function Results({ r }: { r: any }) {
   // Interpretation
   const interp: React.ReactNode[] = [];
   if (r.total < 10) {
-    interp.push(<div key="few">Кам битим — тахлил қилишга етмайди.</div>);
+    interp.push(<div key="few">Kam bitim — taxlil qilishga etmaydi.</div>);
   } else {
     if (r.pf >= 1.4)
       interp.push(
         <div key="pf" className="text-[#bbf7d0]">
-          ✅ Profit Factor {pf} — кучли. Тизим бу шароитда фойдали.
+          ✅ Profit Factor {pf} — kuchli. Tizim bu sharoitda foydali.
         </div>,
       );
     else if (r.pf >= 1.0)
       interp.push(
         <div key="pf" className="text-[#fde68a]">
-          ⚠ Profit Factor {pf} — break-even атрофида.
+          ⚠ Profit Factor {pf} — break-even atrofida.
         </div>,
       );
     else
       interp.push(
         <div key="pf" className="text-[#fecaca]">
-          ❌ Profit Factor {pf} — ёмонатига чиқади. Параметрларни кўриб чиқинг.
+          ❌ Profit Factor {pf} — yomonatiga chiqadi. Parametrlarni koʻrib chiqing.
         </div>,
       );
 
     if (r.exp > 0.1)
       interp.push(
         <div key="exp" className="text-[#bbf7d0]">
-          ✅ Expectancy +{exp}R — ҳар битимдан фойда.
+          ✅ Expectancy +{exp}R — har bitimdan foyda.
         </div>,
       );
     else if (r.exp >= -0.1)
       interp.push(
         <div key="exp" className="text-[#fde68a]">
           ⚠ Expectancy {r.exp >= 0 ? '+' : ''}
-          {exp}R — нейтрал.
+          {exp}R — neytral.
         </div>,
       );
     else
       interp.push(
         <div key="exp" className="text-[#fecaca]">
-          ❌ Expectancy {exp}R — ҳар битим ўртача йўқотади.
+          ❌ Expectancy {exp}R — har bitim oʻrtacha yoʻqotadi.
         </div>,
       );
 
@@ -153,13 +153,13 @@ function Results({ r }: { r: any }) {
       if (best[1].r > 0)
         interp.push(
           <div key="rb" className="text-[#bbf7d0]">
-            ✅ Энг яхши режим: <b>{best[0]}</b> {best[1].r.toFixed(2)}R ({best[1].n} битим)
+            ✅ Eng yaxshi rejim: <b>{best[0]}</b> {best[1].r.toFixed(2)}R ({best[1].n} bitim)
           </div>,
         );
       if (worst[1].r < -0.5 && worst[0] !== best[0])
         interp.push(
           <div key="rw" className="text-[#fecaca]">
-            ❌ Энг ёмон режим: <b>{worst[0]}</b> {worst[1].r.toFixed(2)}R ({worst[1].n} битим)
+            ❌ Eng yomon rejim: <b>{worst[0]}</b> {worst[1].r.toFixed(2)}R ({worst[1].n} bitim)
           </div>,
         );
     }
@@ -170,8 +170,8 @@ function Results({ r }: { r: any }) {
       const f = badFilters[0];
       interp.push(
         <div key="bf" className="text-[#fecaca]">
-          ❌ <b>{f[0].toUpperCase()}</b> филтри ёмон ишлайди:{' '}
-          {((f[1].wins / f[1].n) * 100).toFixed(0)}% WR, {f[1].r.toFixed(1)}R ({f[1].n} битим).
+          ❌ <b>{f[0].toUpperCase()}</b> filtri yomon ishlaydi:{' '}
+          {((f[1].wins / f[1].n) * 100).toFixed(0)}% WR, {f[1].r.toFixed(1)}R ({f[1].n} bitim).
         </div>,
       );
     }
@@ -181,7 +181,7 @@ function Results({ r }: { r: any }) {
     if (sessions.length > 0 && sessions[0][1].r > 0)
       interp.push(
         <div key="sb" className="text-[#bbf7d0]">
-          ✅ Энг яхши сеанс: <b>{sessions[0][0]}</b> {sessions[0][1].r.toFixed(2)}R
+          ✅ Eng yaxshi seans: <b>{sessions[0][0]}</b> {sessions[0][1].r.toFixed(2)}R
         </div>,
       );
   }
@@ -195,12 +195,12 @@ function Results({ r }: { r: any }) {
   return (
     <div className="flex flex-col gap-[14px]" style={{ display: 'block' }}>
       <div className="grid grid-cols-8 gap-[7px] max-[1100px]:grid-cols-4">
-        {stat('Жами битимлар', r.total)}
-        {stat('Жами R', `${r.rSum >= 0 ? '+' : ''}${r.rSum.toFixed(2)}`, rColor)}
-        {stat('WR (фойдали)', `${wrPct}%`, wrColor)}
-        {stat('TP3 тўлиқ', `${tp3Pct}%`)}
+        {stat('Jami bitimlar', r.total)}
+        {stat('Jami R', `${r.rSum >= 0 ? '+' : ''}${r.rSum.toFixed(2)}`, rColor)}
+        {stat('WR (foydali)', `${wrPct}%`, wrColor)}
+        {stat('TP3 toʻliq', `${tp3Pct}%`)}
         {stat('Profit Factor', pf, pfColor)}
-        {stat('Expectancy/битим', `${r.exp >= 0 ? '+' : ''}${exp}R`, expColor)}
+        {stat('Expectancy/bitim', `${r.exp >= 0 ? '+' : ''}${exp}R`, expColor)}
         {stat('Max DD', `-${r.maxDD.toFixed(2)}R`, 'var(--red)')}
         {stat(
           'TP3 / BE / SL / TO',
@@ -212,34 +212,34 @@ function Results({ r }: { r: any }) {
 
       {r.total < 30 ? (
         <div className={cx(BT_WARN_BASE, BT_WARN.red)}>
-          ⚠️ <b>{r.total} битим — статистик кучсиз.</b> Хулоса учун камида 100+ битим керак.
+          ⚠️ <b>{r.total} bitim — statistik kuchsiz.</b> Xulosa uchun kamida 100+ bitim kerak.
         </div>
       ) : r.total < 100 ? (
         <div className={cx(BT_WARN_BASE, BT_WARN.yellow)}>
-          ⚠️ <b>{r.total} битим — статистик ўрта.</b> 100+ битим тавсия қилинади.
+          ⚠️ <b>{r.total} bitim — statistik oʻrta.</b> 100+ bitim tavsiya qilinadi.
         </div>
       ) : (
         <div className={cx(BT_WARN_BASE, BT_WARN.green)}>
-          ✅ <b>{r.total} битим — статистик яхши.</b>
+          ✅ <b>{r.total} bitim — statistik yaxshi.</b>
         </div>
       )}
 
       <div className="mb-[10px] rounded-[7px] border border-white/[0.09] bg-black/30 px-[13px] py-[11px] [&_b]:font-mono [&_b]:text-white [&>div]:py-1 [&>div]:text-[16px] [&>div]:leading-[1.5]">
         <div className="mb-[7px] text-[16px] font-extrabold tracking-[1.4px] text-cyan uppercase">
-          📋 ҲУКМ:
+          📋 HUKM:
         </div>
         {interp}
       </div>
 
       <div className="grid grid-cols-2 gap-[10px] max-[900px]:grid-cols-1">
         <BreakdownTable
-          title="Режим бўйича"
+          title="Rejim boʻyicha"
           data={r.perRegime}
           keys={['TREND_UP', 'TREND_DN', 'RANGE', 'CHOP']}
         />
-        <BreakdownTable title="Tier бўйича" data={r.perTier} keys={['T1', 'T2', 'T3']} />
+        <BreakdownTable title="Tier boʻyicha" data={r.perTier} keys={['T1', 'T2', 'T3']} />
         <BreakdownTable
-          title="Сеанс бўйича"
+          title="Seans boʻyicha"
           data={r.perSession}
           keys={[
             'LONDON',
@@ -255,7 +255,7 @@ function Results({ r }: { r: any }) {
         />
         {topFilters.length > 0 && (
           <div className={BT_BD}>
-            <div className={BT_BD_H}>Филтрлар бўйича (улар + бўлганда)</div>
+            <div className={BT_BD_H}>Filtrlar boʻyicha (ular + boʻlganda)</div>
             <table className={BT_BD_T}>
               <thead>
                 <tr>
@@ -294,32 +294,32 @@ function Results({ r }: { r: any }) {
 export function BacktestPanel() {
   const progress = useBacktestProgress();
   const [running, setRunning] = useState(false);
-  const [status, setStatus] = useState('Тайёр');
+  const [status, setStatus] = useState('Tayyor');
   const [result, setResult] = useState<any>(null);
 
   const run = async () => {
     if (BT.running) {
-      toast.warning('Аллақачон ишламоқда...');
+      toast.warning('Allaqachon ishlamoqda...');
       return;
     }
     if (!st.candles || st.candles.length < 250) {
-      toast.warning('Маълумот етарли эмас. Бошида тизимни уланг ва ~5 минут кутинг.');
+      toast.warning('Maʼlumot etarli emas. Boshida tizimni ulang va ~5 minut kuting.');
       return;
     }
     setRunning(true);
-    setStatus('Бажарилмоқда...');
+    setStatus('Bajarilmoqda...');
     setResult(null);
     try {
       const r: any = await runBacktest({});
       if (r) {
         setResult(r);
-        setStatus(`✅ Тугатилди (${r.total} битим)`);
+        setStatus(`✅ Tugatildi (${r.total} bitim)`);
       } else {
-        setStatus('⚠ Натижа йўқ');
+        setStatus('⚠ Natija yoʻq');
       }
     } catch (e) {
-      setStatus('❌ Хато: ' + (e as Error).message);
-      log('BT', '❌ Backtest хато', (e as Error).message);
+      setStatus('❌ Xato: ' + (e as Error).message);
+      log('BT', '❌ Backtest xato', (e as Error).message);
     } finally {
       setRunning(false);
     }
@@ -327,14 +327,14 @@ export function BacktestPanel() {
 
   return (
     <Card col={12}>
-      <CardTitle title="BACKTEST МОТОРИ" acc={status} />
+      <CardTitle title="BACKTEST MOTORI" acc={status} />
       <div className="mb-[10px] flex items-center gap-2">
         <button
           className="rounded-lg border border-white/[0.09] bg-white/5 px-3 py-2 text-[16px] font-semibold text-[#cbd5e1] hover:bg-white/[0.09] disabled:opacity-50"
           disabled={running}
           onClick={run}
         >
-          {running ? '⏳ Ҳисобланмоқда...' : '▶ Backtest бошлаш'}
+          {running ? '⏳ Hisoblanmoqda...' : '▶ Backtest boshlash'}
         </button>
         <div className="relative h-6 flex-1 overflow-hidden rounded-md border border-white/[0.09] bg-black/40">
           <div
@@ -350,7 +350,8 @@ export function BacktestPanel() {
           className="mb-[10px] rounded-[7px] border border-dashed border-cyan bg-cyan/[0.06] px-[11px] py-[9px] text-[16px] leading-[1.5] text-[#cbd5e1]"
           style={{ display: 'block' }}
         >
-          Юкланган шамлар бўйича сигналлар симуляция қилинади. Хулоса учун камида 100+ битим керак.
+          Yuklangan shamlar boʻyicha signallar simulyatsiya qilinadi. Xulosa uchun kamida 100+ bitim
+          kerak.
         </div>
       )}
       {result && <Results r={result} />}

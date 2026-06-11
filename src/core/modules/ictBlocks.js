@@ -1,7 +1,7 @@
 import { CFG } from '../state.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v9 — ICT BLOCK TYPES (ICT Bible + LumiTraders PDF'дан)
+// QUMASH v9 — ICT BLOCK TYPES (ICT Bible + LumiTraders PDF'dan)
 // Globals: detectBreakerBlocks, detectRejectionBlocks, scoreICTBlocks
 // ═══════════════════════════════════════════════════════════════════
 // BREAKER BLOCK:

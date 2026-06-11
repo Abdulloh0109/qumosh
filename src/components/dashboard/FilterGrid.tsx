@@ -28,8 +28,8 @@ export function FilterGrid() {
   if (!snap.ind) {
     return (
       <Card col={3}>
-        <CardTitle title="АКТИВ ФИЛТРЛАР" acc="0/10" />
-        <div className="py-2 text-center text-[16px] text-mute">Маълумот йиғилмоқда…</div>
+        <CardTitle title="AKTIV FILTRLAR" acc="0/10" />
+        <div className="py-2 text-center text-[16px] text-mute">Maʼlumot yigʻilmoqda…</div>
       </Card>
     );
   }
@@ -39,7 +39,7 @@ export function FilterGrid() {
   let curPat: { buy: any[]; sell: any[] } = { buy: [], sell: [] };
   if (st.candles && st.candles.length >= 3) curPat = detectCandlestickPatterns(st.candles);
   const allPat = [...curPat.buy, ...curPat.sell];
-  let patVal = 'йўқ';
+  let patVal = 'yoʻq';
   let patStatus: FilterRow['status'] = 'neut';
   if (allPat.length > 0) {
     const strong = allPat.reduce((m, p) => (p.score > m.score ? p : m), allPat[0]);
@@ -48,7 +48,7 @@ export function FilterGrid() {
   }
 
   // FVG (live)
-  let fvgVal = 'йўқ';
+  let fvgVal = 'yoʻq';
   let fvgStatus: FilterRow['status'] = 'neut';
   if (st.candles) {
     const fvgs = detectFVGs(st.candles, ind.atr);
@@ -73,7 +73,7 @@ export function FilterGrid() {
   }
 
   // HTF Engulfing (live)
-  let htfEngVal = 'йўқ';
+  let htfEngVal = 'yoʻq';
   let htfEngStatus: FilterRow['status'] = 'neut';
   if (st.candlesHTF && st.candlesHTF.length >= 2) {
     const hte = detectHTFEngulfing(st.candlesHTF);
@@ -90,7 +90,7 @@ export function FilterGrid() {
     {
       f: 'regime',
       icon: '🌀',
-      name: 'Регим',
+      name: 'Regim',
       val: `${regime.kind} (${(regime.confidence * 100).toFixed(0)}%)`,
       status: regime.kind === 'CHOP' ? 'fail' : regime.confidence > 0.5 ? 'pass' : 'warn',
     },
@@ -98,7 +98,7 @@ export function FilterGrid() {
       f: 'sweep',
       icon: '💧',
       name: 'Sweep',
-      val: sweep.detected ? sweep.why : 'йўқ',
+      val: sweep.detected ? sweep.why : 'yoʻq',
       status: sweep.detected ? 'pass' : 'neut',
     },
     {
@@ -118,11 +118,17 @@ export function FilterGrid() {
     {
       f: 'session',
       icon: '🕒',
-      name: 'Сеанс',
+      name: 'Seans',
       val: ses.txt,
       status: ses.quality >= 0.7 ? 'pass' : ses.quality >= 0.4 ? 'warn' : 'fail',
     },
-    { f: 'news', icon: '📰', name: 'Янгилик', val: news.txt, status: news.clear ? 'pass' : 'fail' },
+    {
+      f: 'news',
+      icon: '📰',
+      name: 'Yangilik',
+      val: news.txt,
+      status: news.clear ? 'pass' : 'fail',
+    },
     {
       f: 'liquidity',
       icon: '🧲',
@@ -131,11 +137,11 @@ export function FilterGrid() {
         ? `↑${magnets.nearestAbove.price.toFixed(2)}`
         : magnets.nearestBelow
           ? `↓${magnets.nearestBelow.price.toFixed(2)}`
-          : 'йўқ',
+          : 'yoʻq',
       status:
         magnets.nearestAbove?.count >= 2 || magnets.nearestBelow?.count >= 2 ? 'pass' : 'neut',
     },
-    { f: 'candlestick', icon: '🕯', name: 'Шамча', val: patVal, status: patStatus },
+    { f: 'candlestick', icon: '🕯', name: 'Shamcha', val: patVal, status: patStatus },
     { f: 'fvg', icon: '📦', name: 'FVG Gap', val: fvgVal, status: fvgStatus },
     { f: 'htf_eng', icon: '🔄', name: 'HTF Eng', val: htfEngVal, status: htfEngStatus },
   ];
@@ -143,7 +149,7 @@ export function FilterGrid() {
 
   return (
     <Card col={3}>
-      <CardTitle title="АКТИВ ФИЛТРЛАР" acc={`${passes}/10`} />
+      <CardTitle title="AKTIV FILTRLAR" acc={`${passes}/10`} />
       <div className="flex flex-col gap-[3.5px]">
         {filters.map((row) => (
           <div

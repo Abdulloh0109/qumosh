@@ -3,7 +3,7 @@ import { log } from './utils.js';
 import { refreshNewsUI } from '../store/uiState.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v5 PRO — Янгиликлар календари + чуқур таҳлил
+// QUMASH v5 PRO — Yangiliklar kalendari + chuqur tahlil
 // Globals: EVENT_INFO, getDeepEventInfo, buildAnalysisHtml, CAL, fetchRealCalendar
 // ═══════════════════════════════════════════════════════════════════
 
@@ -13,220 +13,220 @@ const CAL = { events: [], past: [], lastFetch: 0, source: 'pattern' };
 // Brief descriptions for common events + XAU-specific deep analysis
 const EVENT_INFO = {
   nfp: {
-    brief: 'Иш ўринлари (NFP)',
-    full: 'Қишлоқ хўжалиги ва давлат ишчиларидан ташқари янги иш ўринлари сони. AQSh меҳнат бозорининг энг кучли индикатори — Fed бевосита шунга қарайди. Натижа кутилмадан 50K+ фарқли бўлса, бозор кескин реакция қилади.',
-    xauHigh: '<b>XAU кескин тушади.</b> Strong economy → Fed hawkish → USD ва yields кучаяди → XAU учун 1:1 тескари.',
-    xauLow: '<b>XAU кўтарилади.</b> Economy weakening → Fed dovish + recession fears → safe haven flow.',
-    xauInline: 'Реакция кам ($3-7). Спред кенгаяди, фойда кам. Кутиш яхшироқ.',
-    swing: '$15-30 (баъзан $40+)',
-    timing: 'Биринчи 5-15 минут — энг катта ҳаракат. 1-2 соат тренд давом этади.',
+    brief: 'Ish oʻrinlari (NFP)',
+    full: 'Qishloq xoʻjaligi va davlat ishchilaridan tashqari yangi ish oʻrinlari soni. AQSh mehnat bozorining eng kuchli indikatori — Fed bevosita shunga qaraydi. Natija kutilmadan 50K+ farqli boʻlsa, bozor keskin reaktsiya qiladi.',
+    xauHigh: '<b>XAU keskin tushadi.</b> Strong economy → Fed hawkish → USD va yields kuchayadi → XAU uchun 1:1 teskari.',
+    xauLow: '<b>XAU koʻtariladi.</b> Economy weakening → Fed dovish + recession fears → safe haven flow.',
+    xauInline: 'Reaktsiya kam ($3-7). Spred kengayadi, foyda kam. Kutish yaxshiroq.',
+    swing: '$15-30 (baʼzan $40+)',
+    timing: 'Birinchi 5-15 minut — eng katta harakat. 1-2 soat trend davom etadi.',
   },
   cpi: {
-    brief: 'Истеъмол нархлари (CPI)',
-    full: 'Истеъмол товарлари ва хизматлари нархининг ой-сайин ўсиши. Fed айнан шуни бошқаришга интилади — мақсад 2%. CPI юқори бўлса, ставка узоқ ушлаб турилади.',
-    xauHigh: '<b>XAU кескин тушади.</b> Юқори инфляция → Fed strict → real yields ўсади → XAU учун энг ёмон сценарий.',
-    xauLow: '<b>XAU кўтарилади.</b> Disinflation → Fed dovish → USD↓ → XAU rally.',
-    xauInline: 'Реакция бўлмаслиги ҳам мумкин. Лекин Core CPIдан фарқ бўлса — кейин ҳаракат бўлади.',
-    swing: '$20-40 — энг катталардан',
-    timing: '1-3 минутда катта спайк. 30-60 минут давом этади. Кечроқ — Powell нутқи бўлса яна давом.',
+    brief: 'Isteʼmol narxlari (CPI)',
+    full: 'Isteʼmol tovarlari va xizmatlari narxining oy-sayin oʻsishi. Fed aynan shuni boshqarishga intiladi — maqsad 2%. CPI yuqori boʻlsa, stavka uzoq ushlab turiladi.',
+    xauHigh: '<b>XAU keskin tushadi.</b> Yuqori inflyatsiya → Fed strict → real yields oʻsadi → XAU uchun eng yomon stsenariy.',
+    xauLow: '<b>XAU koʻtariladi.</b> Disinflation → Fed dovish → USD↓ → XAU rally.',
+    xauInline: 'Reaktsiya boʻlmasligi ham mumkin. Lekin Core CPIdan farq boʻlsa — keyin harakat boʻladi.',
+    swing: '$20-40 — eng kattalardan',
+    timing: '1-3 minutda katta spayk. 30-60 minut davom etadi. Kechroq — Powell nutqi boʻlsa yana davom.',
   },
   ppi: {
-    brief: 'Ишлаб чиқарувчи нархлари (PPI)',
-    full: 'Ишлаб чиқарувчилар нархи. CPI учун олдиндан кўрсаткич — товарлар саёҳати: PPI → CPI → инфляция. Fed диққатида.',
-    xauHigh: '<b>XAU тушади.</b> CPI учун hawkish сигнал.',
-    xauLow: '<b>XAU кўтарилади.</b> Disinflation сигнали.',
-    xauInline: 'Кучсиз реакция — кўпинча CPI муҳимроқ деб баҳоланади.',
+    brief: 'Ishlab chiqaruvchi narxlari (PPI)',
+    full: 'Ishlab chiqaruvchilar narxi. CPI uchun oldindan koʻrsatkich — tovarlar sayohati: PPI → CPI → inflyatsiya. Fed diqqatida.',
+    xauHigh: '<b>XAU tushadi.</b> CPI uchun hawkish signal.',
+    xauLow: '<b>XAU koʻtariladi.</b> Disinflation signali.',
+    xauInline: 'Kuchsiz reaktsiya — koʻpincha CPI muhimroq deb baholanadi.',
     swing: '$8-15',
-    timing: '5-30 минут.',
+    timing: '5-30 minut.',
   },
   fomc: {
-    brief: 'Fed мажлиси (FOMC)',
-    full: 'Statement + Rate Decision + Press Conference. AQSh монетар сиёсати белгиланади, йилида 8 та мажлис. Айниқса dot plot ва Powell нутқи муҳим.',
-    xauHigh: '<b>Hawkish surprise → XAU кескин тушади.</b> Кутилмадан юқори ставка ёки келажак учун hawkish тил.',
-    xauLow: '<b>Dovish surprise → XAU кескин кўтарилади.</b> Кутилмадан паст ставка, кесиш сигнали ёки QE ишораси.',
-    xauInline: 'Statement-да dot plot ва Powell нутқидаги нюанслар қарор қилади. Initial reaction баъзан тескари бўлади.',
-    swing: '$20-50 — энг катта ҳаракат',
-    timing: 'Statement (18:00 UTC) → 5 мин спайк. Press conf (18:30) — Powell нутқи давомий 1-2 соат.',
+    brief: 'Fed majlisi (FOMC)',
+    full: 'Statement + Rate Decision + Press Conference. AQSh monetar siyosati belgilanadi, yilida 8 ta majlis. Ayniqsa dot plot va Powell nutqi muhim.',
+    xauHigh: '<b>Hawkish surprise → XAU keskin tushadi.</b> Kutilmadan yuqori stavka yoki kelajak uchun hawkish til.',
+    xauLow: '<b>Dovish surprise → XAU keskin koʻtariladi.</b> Kutilmadan past stavka, kesish signali yoki QE ishorasi.',
+    xauInline: 'Statement-da dot plot va Powell nutqidagi nyuanslar qaror qiladi. Initial reaction baʼzan teskari boʻladi.',
+    swing: '$20-50 — eng katta harakat',
+    timing: 'Statement (18:00 UTC) → 5 min spayk. Press conf (18:30) — Powell nutqi davomiy 1-2 soat.',
   },
   fomcSpeak: {
-    brief: 'Fed раҳбар нутқи',
-    full: 'FOMC члени тематик нутқи. Voting members (Powell, Williams, Jefferson) муҳимроқ. Hawkish/dovish ишораси бозорга таъсир қилади.',
-    xauHigh: '<b>Hawkish ишора → XAU тушади.</b> "Ставка узоқ ушлаш", "инфляция ҳалигача баланд" каби сўзлар.',
-    xauLow: '<b>Dovish ишора → XAU кўтарилади.</b> "Кесишга яқинмиз", "иш бозори совумоқда" каби сўзлар.',
-    xauInline: 'Кўп ҳолларда реакция кам. Non-voting members (Bowman, Goolsbee) кучсизроқ.',
+    brief: 'Fed rahbar nutqi',
+    full: 'FOMC chleni tematik nutqi. Voting members (Powell, Williams, Jefferson) muhimroq. Hawkish/dovish ishorasi bozorga taʼsir qiladi.',
+    xauHigh: '<b>Hawkish ishora → XAU tushadi.</b> "Stavka uzoq ushlash", "inflyatsiya haligacha baland" kabi soʻzlar.',
+    xauLow: '<b>Dovish ishora → XAU koʻtariladi.</b> "Kesishga yaqinmiz", "ish bozori sovumoqda" kabi soʻzlar.',
+    xauInline: 'Koʻp hollarda reaktsiya kam. Non-voting members (Bowman, Goolsbee) kuchsizroq.',
     swing: '$5-15',
-    timing: '15-30 минут.',
+    timing: '15-30 minut.',
   },
   retailSales: {
-    brief: 'Ритейл сотув',
-    full: 'Истеъмолчи харжлари ўсиши. AQSh ЯИМ-нинг ~70% — истеъмолчилардан. Strong retail = strong economy.',
-    xauHigh: '<b>XAU тушади.</b> Strong consumer → economy strong → Fed hawkish.',
-    xauLow: '<b>XAU кўтарилади.</b> Weak consumer → recession fears → safe haven.',
-    xauInline: 'Кучсиз реакция.',
+    brief: 'Riteyl sotuv',
+    full: 'Isteʼmolchi xarjlari oʻsishi. AQSh YAIM-ning ~70% — isteʼmolchilardan. Strong retail = strong economy.',
+    xauHigh: '<b>XAU tushadi.</b> Strong consumer → economy strong → Fed hawkish.',
+    xauLow: '<b>XAU koʻtariladi.</b> Weak consumer → recession fears → safe haven.',
+    xauInline: 'Kuchsiz reaktsiya.',
     swing: '$8-15',
-    timing: '15-45 минут.',
+    timing: '15-45 minut.',
   },
   gdp: {
-    brief: 'ЯИМ ўсиши',
-    full: 'AQSh ЯИМ чорак-сайин ўсиш фоизи. Иқтисод соғлиги индикатори. Final GDP олдинги маълумот, лекин Advance/Prelim муҳим.',
-    xauHigh: '<b>XAU тушади.</b> Strong growth → Fed hawkish.',
-    xauLow: '<b>XAU кўтарилади.</b> Weak growth → recession → safe haven.',
-    xauInline: 'Кутилгандек бўлса реакция кам.',
+    brief: 'YAIM oʻsishi',
+    full: 'AQSh YAIM chorak-sayin oʻsish foizi. Iqtisod sogʻligi indikatori. Final GDP oldingi maʼlumot, lekin Advance/Prelim muhim.',
+    xauHigh: '<b>XAU tushadi.</b> Strong growth → Fed hawkish.',
+    xauLow: '<b>XAU koʻtariladi.</b> Weak growth → recession → safe haven.',
+    xauInline: 'Kutilgandek boʻlsa reaktsiya kam.',
     swing: '$10-20',
-    timing: '15-45 минут.',
+    timing: '15-45 minut.',
   },
   ismManu: {
     brief: 'ISM Manufacturing PMI',
-    full: 'AQSh ишлаб чиқариш индекси. >50 = ўсиш, <50 = қисқариш. Lead indicator манфаатидан, лекин manufacturing AQSh иқтисодининг ~12% — Servicesдан кам муҳим.',
-    xauHigh: '<b>>52 → XAU тушади.</b> Manufacturing strong → economy good → USD↑.',
-    xauLow: '<b><48 → XAU кўтарилади.</b> Manufacturing recession → Fed dovish.',
-    xauInline: '50 атрофида — реакция кам.',
+    full: 'AQSh ishlab chiqarish indeksi. >50 = oʻsish, <50 = qisqarish. Lead indicator manfaatidan, lekin manufacturing AQSh iqtisodining ~12% — Servicesdan kam muhim.',
+    xauHigh: '<b>>52 → XAU tushadi.</b> Manufacturing strong → economy good → USD↑.',
+    xauLow: '<b><48 → XAU koʻtariladi.</b> Manufacturing recession → Fed dovish.',
+    xauInline: '50 atrofida — reaktsiya kam.',
     swing: '$5-12',
-    timing: '10-30 минут.',
+    timing: '10-30 minut.',
   },
   ismServ: {
     brief: 'ISM Services PMI',
-    full: 'AQSh хизматлар индекси. Services иқтисоднинг ~75%, шунинг учун Manufacturingдан муҳимроқ. >50 ўсиш, <50 қисқариш.',
-    xauHigh: '<b>>54 → XAU тушади.</b> Services strong → economy expand → Fed hawkish.',
-    xauLow: '<b><50 → XAU кўтарилади.</b> Services қисқариш → recession сигнали.',
-    xauInline: 'Орадаги қийматда реакция кам.',
+    full: 'AQSh xizmatlar indeksi. Services iqtisodning ~75%, shuning uchun Manufacturingdan muhimroq. >50 oʻsish, <50 qisqarish.',
+    xauHigh: '<b>>54 → XAU tushadi.</b> Services strong → economy expand → Fed hawkish.',
+    xauLow: '<b><50 → XAU koʻtariladi.</b> Services qisqarish → recession signali.',
+    xauInline: 'Oradagi qiymatda reaktsiya kam.',
     swing: '$8-15',
-    timing: '10-30 минут.',
+    timing: '10-30 minut.',
   },
   unemploymentRate: {
-    brief: 'Ишсизлик даражаси',
-    full: 'AQSh иш топа олмаганлар фоизи. NFP билан бирга чиқади (12:30 UTC). Fed dual mandateнинг иккинчи қисми.',
-    xauHigh: '<b>Юқори → XAU кўтарилади.</b> Ишсизлик ўсиши → economy weakening → Fed dovish.',
-    xauLow: '<b>Паст → XAU тушади.</b> Иш бозори strong → wage pressure → Fed hawkish.',
-    xauInline: 'Кутилгандек бўлса NFP реакцияси билан кечади.',
+    brief: 'Ishsizlik darajasi',
+    full: 'AQSh ish topa olmaganlar foizi. NFP bilan birga chiqadi (12:30 UTC). Fed dual mandatening ikkinchi qismi.',
+    xauHigh: '<b>Yuqori → XAU koʻtariladi.</b> Ishsizlik oʻsishi → economy weakening → Fed dovish.',
+    xauLow: '<b>Past → XAU tushadi.</b> Ish bozori strong → wage pressure → Fed hawkish.',
+    xauInline: 'Kutilgandek boʻlsa NFP reaktsiyasi bilan kechadi.',
     swing: '$8-15',
-    timing: 'NFP билан бирга — реакция йиғилади.',
+    timing: 'NFP bilan birga — reaktsiya yigʻiladi.',
   },
   earnings: {
-    brief: 'Иш ҳақи ўсиши (AHE)',
-    full: 'Average Hourly Earnings — ўртача соатлик иш ҳақи ўсиши. CPI учун олдин кўрсаткич — wage-price spiral муҳим. Fed диққатида.',
-    xauHigh: '<b>XAU тушади.</b> Wage growth →  inflation → Fed hawkish.',
-    xauLow: '<b>XAU кўтарилади.</b> Wage growth slowing → инфляция тушади → Fed dovish.',
-    xauInline: 'NFP билан бирга чиқади — иккаласи биргаликда таҳлил қилинади.',
+    brief: 'Ish haqi oʻsishi (AHE)',
+    full: 'Average Hourly Earnings — oʻrtacha soatlik ish haqi oʻsishi. CPI uchun oldin koʻrsatkich — wage-price spiral muhim. Fed diqqatida.',
+    xauHigh: '<b>XAU tushadi.</b> Wage growth →  inflation → Fed hawkish.',
+    xauLow: '<b>XAU koʻtariladi.</b> Wage growth slowing → inflyatsiya tushadi → Fed dovish.',
+    xauInline: 'NFP bilan birga chiqadi — ikkalasi birgalikda tahlil qilinadi.',
     swing: '$10-20',
-    timing: 'NFP билан бирга — реакция йиғилади.',
+    timing: 'NFP bilan birga — reaktsiya yigʻiladi.',
   },
   jolts: {
-    brief: 'JOLTS — очиқ иш ўринлари',
-    full: 'Job Openings — очиқ иш ўринлари сони. Иш бозори tightnessи индикатори. Powell бу маълумотга алоҳида аҳамият беради.',
-    xauHigh: '<b>Юқори → XAU тушади.</b> Tight labor market → wage pressure → Fed hawkish.',
-    xauLow: '<b>Паст → XAU кўтарилади.</b> Labor market easing → Fed dovish сигнал.',
-    xauInline: 'Кутилгандек бўлса кучсиз реакция.',
+    brief: 'JOLTS — ochiq ish oʻrinlari',
+    full: 'Job Openings — ochiq ish oʻrinlari soni. Ish bozori tightnessi indikatori. Powell bu maʼlumotga alohida ahamiyat beradi.',
+    xauHigh: '<b>Yuqori → XAU tushadi.</b> Tight labor market → wage pressure → Fed hawkish.',
+    xauLow: '<b>Past → XAU koʻtariladi.</b> Labor market easing → Fed dovish signal.',
+    xauInline: 'Kutilgandek boʻlsa kuchsiz reaktsiya.',
     swing: '$5-12',
-    timing: '10-20 минут.',
+    timing: '10-20 minut.',
   },
   adp: {
-    brief: 'ADP — NFP-олди',
-    full: 'Хусусий иш ўринлари (NFPдан 2 кун олдин). Илгари NFP учун яхши олди-кўрсаткич эди, лекин охирги йилларда корреляция сусайди.',
-    xauHigh: '<b>Юқори → XAU кучсиз тушади.</b> NFP учун hawkish ишора.',
-    xauLow: '<b>Паст → XAU кучсиз кўтарилади.</b>',
-    xauInline: 'Кучсиз реакция. ADP-NFP корреляция охирги йилларда 0.4-0.5 атрофида.',
+    brief: 'ADP — NFP-oldi',
+    full: 'Xususiy ish oʻrinlari (NFPdan 2 kun oldin). Ilgari NFP uchun yaxshi oldi-koʻrsatkich edi, lekin oxirgi yillarda korrelyatsiya susaydi.',
+    xauHigh: '<b>Yuqori → XAU kuchsiz tushadi.</b> NFP uchun hawkish ishora.',
+    xauLow: '<b>Past → XAU kuchsiz koʻtariladi.</b>',
+    xauInline: 'Kuchsiz reaktsiya. ADP-NFP korrelyatsiya oxirgi yillarda 0.4-0.5 atrofida.',
     swing: '$5-12',
-    timing: '10-30 минут.',
+    timing: '10-30 minut.',
   },
   jobless: {
-    brief: 'Иш ўринсизлик аризалари',
-    full: 'Initial Jobless Claims — янги ишсизлик аризалари. Ҳар Пайшанба чиқади, тенденция учун 4-week average муҳим.',
-    xauHigh: '<b>Юқори → XAU кам кўтарилади.</b> Ишсизлик ўсиши.',
-    xauLow: '<b>Паст → XAU кам тушади.</b> Иш бозори strong.',
-    xauInline: 'Реакция кам, фақат катта ўзгариш бўлса',
-    swing: '$3-8 (паст impact)',
-    timing: '5-15 минут.',
+    brief: 'Ish oʻrinsizlik arizalari',
+    full: 'Initial Jobless Claims — yangi ishsizlik arizalari. Har Payshanba chiqadi, tendentsiya uchun 4-week average muhim.',
+    xauHigh: '<b>Yuqori → XAU kam koʻtariladi.</b> Ishsizlik oʻsishi.',
+    xauLow: '<b>Past → XAU kam tushadi.</b> Ish bozori strong.',
+    xauInline: 'Reaktsiya kam, faqat katta oʻzgarish boʻlsa',
+    swing: '$3-8 (past impact)',
+    timing: '5-15 minut.',
   },
   uomSent: {
     brief: 'UoM Consumer Sentiment',
-    full: 'Истеъмолчи иштиҳоси — Мичиган университетидан. Кейинги 6 ой Retail Sales учун предиктив.',
-    xauHigh: '<b>Юқори → XAU тушади.</b> Confident consumer → strong economy.',
-    xauLow: '<b>Паст → XAU кўтарилади.</b> Worried consumer → recession fear.',
-    xauInline: 'Кучсиз реакция.',
+    full: 'Isteʼmolchi ishtihosi — Michigan universitetidan. Keyingi 6 oy Retail Sales uchun prediktiv.',
+    xauHigh: '<b>Yuqori → XAU tushadi.</b> Confident consumer → strong economy.',
+    xauLow: '<b>Past → XAU koʻtariladi.</b> Worried consumer → recession fear.',
+    xauInline: 'Kuchsiz reaktsiya.',
     swing: '$5-10',
-    timing: '5-15 минут.',
+    timing: '5-15 minut.',
   },
   uomInfl: {
     brief: 'UoM Inflation Expectations',
-    full: 'Истеъмолчиларнинг 1-yil ва 5-yil инфляция кутилмалари. Powell бу кўрсаткичга алоҳида эътибор беради — agar кутилмалар деакр бўлса, инфляция дам этмайди.',
-    xauHigh: '<b>Юқори → XAU мураккаб реакция.</b> Аввал тушади (real yields), кейин кўтарилиши мумкин (inflation hedge).',
-    xauLow: '<b>Паст → XAU тушади.</b> Real yields ўсади → XAU тушади.',
-    xauInline: 'Кучсиз реакция.',
+    full: 'Isteʼmolchilarning 1-yil va 5-yil inflyatsiya kutilmalari. Powell bu koʻrsatkichga alohida eʼtibor beradi — agar kutilmalar deakr boʻlsa, inflyatsiya dam etmaydi.',
+    xauHigh: '<b>Yuqori → XAU murakkab reaktsiya.</b> Avval tushadi (real yields), keyin koʻtarilishi mumkin (inflation hedge).',
+    xauLow: '<b>Past → XAU tushadi.</b> Real yields oʻsadi → XAU tushadi.',
+    xauInline: 'Kuchsiz reaktsiya.',
     swing: '$5-15',
-    timing: '5-20 минут.',
+    timing: '5-20 minut.',
   },
   rba: {
     brief: 'RBA — Cash Rate',
-    full: 'Австралия Резерв Банки stavkа қарори. AUD ўзгариши орқали XAU га таъсир қилади.',
-    xauHigh: '<b>Hawkish → AUD↑ → DXY↓ → XAU↑.</b> Лекин global hawkish ҳам мумкин.',
+    full: 'Avstraliya Rezerv Banki stavka qarori. AUD oʻzgarishi orqali XAU ga taʼsir qiladi.',
+    xauHigh: '<b>Hawkish → AUD↑ → DXY↓ → XAU↑.</b> Lekin global hawkish ham mumkin.',
     xauLow: '<b>Dovish → AUD↓ → DXY↑ → XAU↓.</b>',
-    xauInline: 'Реакция кам.',
+    xauInline: 'Reaktsiya kam.',
     swing: '$3-8',
-    timing: '15-30 минут.',
+    timing: '15-30 minut.',
   },
   boc: {
-    brief: 'BOC — Канада ставкаси',
-    full: 'Канада Банки stavkа қарори ёки Macklem нутқи. CAD корреляция орқали XAU га кам таъсир.',
-    xauHigh: '<b>Hawkish → CAD↑ → DXY кам ўзгаради.</b>',
-    xauLow: '<b>Dovish → CAD↓ → DXY кам ўзгаради.</b>',
-    xauInline: 'Реакция кам.',
+    brief: 'BOC — Kanada stavkasi',
+    full: 'Kanada Banki stavka qarori yoki Macklem nutqi. CAD korrelyatsiya orqali XAU ga kam taʼsir.',
+    xauHigh: '<b>Hawkish → CAD↑ → DXY kam oʻzgaradi.</b>',
+    xauLow: '<b>Dovish → CAD↓ → DXY kam oʻzgaradi.</b>',
+    xauInline: 'Reaktsiya kam.',
     swing: '$3-8',
-    timing: '10-20 минут.',
+    timing: '10-20 minut.',
   },
   boe: {
-    brief: 'BOE — England Банки',
-    full: 'England Банки раҳбари нутқи ёки stavkа қарори. GBP орқали DXY ўзгариши XAU га таъсир.',
+    brief: 'BOE — England Banki',
+    full: 'England Banki rahbari nutqi yoki stavka qarori. GBP orqali DXY oʻzgarishi XAU ga taʼsir.',
     xauHigh: '<b>Hawkish → GBP↑ → DXY↓ → XAU↑.</b>',
     xauLow: '<b>Dovish → GBP↓ → DXY↑ → XAU↓.</b>',
-    xauInline: 'Аралаш бўлса реакция кучсиз.',
+    xauInline: 'Aralash boʻlsa reaktsiya kuchsiz.',
     swing: '$5-15',
-    timing: '15-45 минут.',
+    timing: '15-45 minut.',
   },
   ecb: {
     brief: 'ECB — Lagarde',
-    full: 'Европа Маркази Банки. Lagarde нутқи ёки stavkа қарори. EUR орқали DXY ўзгариши XAU га катта таъсир (DXY-нинг ~58% EUR).',
-    xauHigh: '<b>Hawkish → EUR↑ → DXY↓ → XAU↑.</b> DXY-да EURнинг улкан вазни сабабли таъсир катта.',
+    full: 'Evropa Markazi Banki. Lagarde nutqi yoki stavka qarori. EUR orqali DXY oʻzgarishi XAU ga katta taʼsir (DXY-ning ~58% EUR).',
+    xauHigh: '<b>Hawkish → EUR↑ → DXY↓ → XAU↑.</b> DXY-da EURning ulkan vazni sababli taʼsir katta.',
     xauLow: '<b>Dovish → EUR↓ → DXY↑ → XAU↓.</b>',
-    xauInline: 'Аралаш сигнал бўлса реакция секин.',
+    xauInline: 'Aralash signal boʻlsa reaktsiya sekin.',
     swing: '$5-15',
-    timing: '15-60 минут.',
+    timing: '15-60 minut.',
   },
   rbnz: {
     brief: 'RBNZ — Yangi Zelandia',
-    full: 'Yangi Zelandia ставкаси. NZD ўзгаради, XAU га кам таъсир.',
-    xauHigh: 'Реакция кучсиз.',
-    xauLow: 'Реакция кучсиз.',
-    xauInline: 'XAU учун муҳим эмас.',
+    full: 'Yangi Zelandia stavkasi. NZD oʻzgaradi, XAU ga kam taʼsir.',
+    xauHigh: 'Reaktsiya kuchsiz.',
+    xauLow: 'Reaktsiya kuchsiz.',
+    xauInline: 'XAU uchun muhim emas.',
     swing: '$2-5',
-    timing: '10-20 минут.',
+    timing: '10-20 minut.',
   },
   cadEmployment: {
-    brief: 'Канада иш ўринлари',
-    full: 'Канада иш ўринлари ўзгариши. NFP билан бирга чиқади, CAD корреляция орқали XAU га таъсир.',
+    brief: 'Kanada ish oʻrinlari',
+    full: 'Kanada ish oʻrinlari oʻzgarishi. NFP bilan birga chiqadi, CAD korrelyatsiya orqali XAU ga taʼsir.',
     xauHigh: '<b>Strong → CAD↑ → USD/CAD↓ → DXY↓ → XAU↑.</b>',
     xauLow: '<b>Weak → CAD↓ → USD/CAD↑ → DXY↑ → XAU↓.</b>',
-    xauInline: 'NFP реакцияси билан кечади.',
+    xauInline: 'NFP reaktsiyasi bilan kechadi.',
     swing: '$3-8',
-    timing: 'NFP билан бирга.',
+    timing: 'NFP bilan birga.',
   },
   durable: {
-    brief: 'Узоқ муддат товарлар',
-    full: 'Durable Goods Orders — узоқ муддат фойдаланиладиган товарлар буюртмалари. Бизнес инвестиция кўрсаткичи.',
-    xauHigh: '<b>XAU тушади.</b> Strong business investment → strong economy.',
-    xauLow: '<b>XAU кўтарилади.</b> Weak investment → recession fears.',
-    xauInline: 'Volатил кўрсаткич, реакция кам.',
+    brief: 'Uzoq muddat tovarlar',
+    full: 'Durable Goods Orders — uzoq muddat foydalaniladigan tovarlar buyurtmalari. Biznes investitsiya koʻrsatkichi.',
+    xauHigh: '<b>XAU tushadi.</b> Strong business investment → strong economy.',
+    xauLow: '<b>XAU koʻtariladi.</b> Weak investment → recession fears.',
+    xauInline: 'Volatil koʻrsatkich, reaktsiya kam.',
     swing: '$5-12',
-    timing: '10-30 минут.',
+    timing: '10-30 minut.',
   },
   consumerConf: {
-    brief: 'Истеъмолчи ишончи',
-    full: 'Conference Board Consumer Confidence — UoMдан фарқли манба. Бозор иккаласини солиштиради.',
-    xauHigh: '<b>Юқори → XAU тушади.</b>',
-    xauLow: '<b>Паст → XAU кўтарилади.</b>',
-    xauInline: 'Кучсиз реакция.',
+    brief: 'Isteʼmolchi ishonchi',
+    full: 'Conference Board Consumer Confidence — UoMdan farqli manba. Bozor ikkalasini solishtiradi.',
+    xauHigh: '<b>Yuqori → XAU tushadi.</b>',
+    xauLow: '<b>Past → XAU koʻtariladi.</b>',
+    xauInline: 'Kuchsiz reaktsiya.',
     swing: '$3-8',
-    timing: '5-15 минут.',
+    timing: '5-15 minut.',
   },
 };
 
@@ -275,56 +275,56 @@ function buildAnalysisHtml(ev) {
     const delta = f - p;
     const dir = delta > 0 ? '↑' : delta < 0 ? '↓' : '═';
     const trendCls = delta > 0 ? 'up' : delta < 0 ? 'dn' : 'flat';
-    const trend = delta > 0 ? 'олдингидан ўсиш кутилмоқда' : delta < 0 ? 'олдингидан тушиш кутилмоқда' : 'ўзгармаслик';
+    const trend = delta > 0 ? 'oldingidan oʻsish kutilmoqda' : delta < 0 ? 'oldingidan tushish kutilmoqda' : 'oʻzgarmaslik';
     momentumHtml = `<div class="nd-section">
-      <div class="nd-h">📊 ТЕНДЕНЦИЯ</div>
+      <div class="nd-h">📊 TENDENTSIYA</div>
       <div class="nd-trend ${trendCls}"><b>${dir} ${ev.forecast}</b> vs <b>${ev.previous}</b> · ${trend} (${delta >= 0 ? '+' : ''}${delta.toFixed(2)})</div>
     </div>`;
   }
   if (!info) {
     return `<div class="news-detail">
       <div class="nd-section">
-        <div class="nd-h">📊 ИВЕНТ ҲАҚИДА</div>
-        <div class="nd-p">Бу ивент учун чуқур таҳлил тайёрланмаган. Қуйидаги маълумотлардан фойдаланинг:</div>
+        <div class="nd-h">📊 IVENT HAQIDA</div>
+        <div class="nd-p">Bu ivent uchun chuqur tahlil tayyorlanmagan. Quyidagi maʼlumotlardan foydalaning:</div>
       </div>
       <div class="nd-section">
-        <div class="nd-h">📈 ҚИЙМАТЛАР</div>
+        <div class="nd-h">📈 QIYMATLAR</div>
         <div class="nd-grid">
-          <div><span class="nd-l">Импакт:</span> <b>${ev.impact.toUpperCase()}</b></div>
-          <div><span class="nd-l">Валюта:</span> <b>${ev.currency}</b></div>
-          <div><span class="nd-l">Прогноз:</span> <b>${ev.forecast || '—'}</b></div>
-          <div><span class="nd-l">Олдинги:</span> <b>${ev.previous || '—'}</b></div>
+          <div><span class="nd-l">Impakt:</span> <b>${ev.impact.toUpperCase()}</b></div>
+          <div><span class="nd-l">Valyuta:</span> <b>${ev.currency}</b></div>
+          <div><span class="nd-l">Prognoz:</span> <b>${ev.forecast || '—'}</b></div>
+          <div><span class="nd-l">Oldingi:</span> <b>${ev.previous || '—'}</b></div>
         </div>
       </div>
       ${momentumHtml}
       <div class="nd-section">
-        <div class="nd-h">🔮 УМУМИЙ ҚОИДА</div>
-        <div class="nd-scen flat">${ev.impact === 'high' ? 'Юқори импакт ивент. Кутилмадан фарқлаш катта реакция келтириши мумкин ($10-25 swing).' : ev.impact === 'med' ? 'Ўрта импакт. Реакция кучсиз ($3-10 swing).' : 'Паст импакт. Реакция деярли йўқ.'}</div>
+        <div class="nd-h">🔮 UMUMIY QOIDA</div>
+        <div class="nd-scen flat">${ev.impact === 'high' ? 'Yuqori impakt ivent. Kutilmadan farqlash katta reaktsiya keltirishi mumkin ($10-25 swing).' : ev.impact === 'med' ? 'Oʻrta impakt. Reaktsiya kuchsiz ($3-10 swing).' : 'Past impakt. Reaktsiya deyarli yoʻq.'}</div>
       </div>
     </div>`;
   }
   return `<div class="news-detail">
     <div class="nd-section">
-      <div class="nd-h">📊 НИМА ЁЗИЛАДИ</div>
+      <div class="nd-h">📊 NIMA YOZILADI</div>
       <div class="nd-p">${info.full}</div>
     </div>
     <div class="nd-section">
-      <div class="nd-h">📈 ҚИЙМАТЛАР</div>
+      <div class="nd-h">📈 QIYMATLAR</div>
       <div class="nd-grid">
-        <div><span class="nd-l">Прогноз:</span> <b>${ev.forecast || '—'}</b></div>
-        <div><span class="nd-l">Олдинги:</span> <b>${ev.previous || '—'}</b></div>
+        <div><span class="nd-l">Prognoz:</span> <b>${ev.forecast || '—'}</b></div>
+        <div><span class="nd-l">Oldingi:</span> <b>${ev.previous || '—'}</b></div>
       </div>
     </div>
     ${momentumHtml}
     <div class="nd-section">
-      <div class="nd-h">🔮 XAUUSD УЧУН СЕНАРИЙЛАР</div>
-      <div class="nd-scen up">↑ <b>Натижа &gt; Прогноз:</b> ${info.xauHigh}</div>
-      <div class="nd-scen flat">═ <b>Натижа = Прогноз:</b> ${info.xauInline}</div>
-      <div class="nd-scen dn">↓ <b>Натижа &lt; Прогноз:</b> ${info.xauLow}</div>
+      <div class="nd-h">🔮 XAUUSD UCHUN SENARIYLAR</div>
+      <div class="nd-scen up">↑ <b>Natija &gt; Prognoz:</b> ${info.xauHigh}</div>
+      <div class="nd-scen flat">═ <b>Natija = Prognoz:</b> ${info.xauInline}</div>
+      <div class="nd-scen dn">↓ <b>Natija &lt; Prognoz:</b> ${info.xauLow}</div>
     </div>
     <div class="nd-section">
-      <div class="nd-h">⏱ ОДАТДАГИ ҲАРАКАТ</div>
-      <div class="nd-stats">📏 Свинг: <b>${info.swing}</b><br>⏰ ${info.timing}</div>
+      <div class="nd-h">⏱ ODATDAGI HARAKAT</div>
+      <div class="nd-stats">📏 Sving: <b>${info.swing}</b><br>⏰ ${info.timing}</div>
     </div>
   </div>`;
 }
@@ -367,19 +367,19 @@ async function fetchRealCalendar() {
       clearTimeout(timeoutId);
       if (!res.ok) { lastError = `${via}:HTTP ${res.status}`; continue; }
       const xml = await res.text();
-      if (!xml || xml.length < 500) { lastError = `${via}:бўш`; continue; }
-      if (!xml.includes('<event>')) { lastError = `${via}:нотўғри XML`; continue; }
+      if (!xml || xml.length < 500) { lastError = `${via}:boʻsh`; continue; }
+      if (!xml.includes('<event>')) { lastError = `${via}:notoʻgʻri XML`; continue; }
       const events = parseFFXml(xml);
       if (events.length > 0) {
-        log('INFO', `✅ ${events.length} ивент юкланди (${via})`);
+        log('INFO', `✅ ${events.length} ivent yuklandi (${via})`);
         return events;
       }
-      lastError = `${via}:ивент йўқ`;
+      lastError = `${via}:ivent yoʻq`;
     } catch(e) {
       lastError = `${via}:${e.name === 'AbortError' ? 'timeout' : (e.message||'').slice(0,30)}`;
     }
   }
-  log('WARN', `Янгиликлар юкланмади — охирги хато: ${lastError}`);
+  log('WARN', `Yangiliklar yuklanmadi — oxirgi xato: ${lastError}`);
   return null;
 }
 
@@ -397,7 +397,7 @@ function parseFFXml(xml) {
       const impactRaw = get('impact').toLowerCase();
       const forecast = get('forecast');
       const previous = get('previous');
-      const actual = get('actual');  // ← ForexFactory релиздан кейин tо'lдиради
+      const actual = get('actual');  // ← ForexFactory relizdan keyin to'ldiradi
       // Filter to majors that move XAU
       if (!['USD','EUR','GBP','JPY','AUD','CHF','CAD','NZD'].includes(country)) return;
       // Skip Bank Holidays (low signal value)
@@ -456,9 +456,9 @@ function buildFallbackCalendar() {
     );
     if (isNFP) {
       events.push({date:new Date(Date.UTC(yr,mo,dom,12,30)), name:'Non-Farm Employment Change', impact:'high', currency:'USD', auto:true, desc:EVENT_INFO['NFP'].desc, forecast:'', previous:''});
-      events.push({date:new Date(Date.UTC(yr,mo,dom,12,30)), name:'Average Hourly Earnings m/m', impact:'high', currency:'USD', auto:true, desc:'Иш ҳақи ўсиши. Юқори → инфляция → Fed hawkish', forecast:'', previous:''});
+      events.push({date:new Date(Date.UTC(yr,mo,dom,12,30)), name:'Average Hourly Earnings m/m', impact:'high', currency:'USD', auto:true, desc:'Ish haqi oʻsishi. Yuqori → inflyatsiya → Fed hawkish', forecast:'', previous:''});
       events.push({date:new Date(Date.UTC(yr,mo,dom,12,30)), name:'Unemployment Rate', impact:'high', currency:'USD', auto:true, desc:EVENT_INFO['Unemployment'].desc, forecast:'', previous:''});
-      events.push({date:new Date(Date.UTC(yr,mo,dom,12,30)), name:'CAD Employment Change', impact:'high', currency:'CAD', auto:true, desc:'Канада иш ўринлари — NFP билан бирга чиқади', forecast:'', previous:''});
+      events.push({date:new Date(Date.UTC(yr,mo,dom,12,30)), name:'CAD Employment Change', impact:'high', currency:'CAD', auto:true, desc:'Kanada ish oʻrinlari — NFP bilan birga chiqadi', forecast:'', previous:''});
     }
     // CPI: 2nd Tuesday/Wednesday
     if ((dow === 2 || dow === 3) && wom === 2) events.push({date:new Date(Date.UTC(yr,mo,dom,12,30)), name:`US CPI (${dow===2?'Tue':'Wed'})`, impact:'high', currency:'USD', auto:true, desc:EVENT_INFO['CPI'].desc, forecast:'', previous:''});
@@ -477,7 +477,7 @@ async function buildCalendar() {
   } else {
     events = buildFallbackCalendar();
     CAL.source = 'pattern';
-    log('INFO', '📅 ForexFactory улаб бўлмади — паттерн режим');
+    log('INFO', '📅 ForexFactory ulab boʻlmadi — pattern rejim');
   }
   // Add user custom events
   try {
@@ -528,7 +528,7 @@ function trackPastImpacts() {
       CAL.past.unshift(rec);
       if (CAL.past.length > 30) CAL.past.pop();
       try { localStorage.setItem('qumash_past_impacts', JSON.stringify(CAL.past)); } catch(_) {}
-      log('INFO', `📊 Ивент ёзилди: ${ev.name}`, `swing $${totalSwing.toFixed(2)} ${direction.toUpperCase()}`);
+      log('INFO', `📊 Ivent yozildi: ${ev.name}`, `swing $${totalSwing.toFixed(2)} ${direction.toUpperCase()}`);
     }
   }
 }
@@ -540,7 +540,7 @@ function addCustomEvent(ev) {
     localStorage.setItem('qumash_custom_events', JSON.stringify(custom));
     buildCalendar();
     refreshNewsUI();
-  } catch(e) { log('ERR', 'Ивент сақланмади', e.message); }
+  } catch(e) { log('ERR', 'Ivent saqlanmadi', e.message); }
 }
 
 export { CAL, EVENT_INFO, getDeepEventInfo, getEventInfo, buildAnalysisHtml, isUSDST, fetchRealCalendar, parseFFXml, buildFallbackCalendar, buildCalendar, trackPastImpacts, addCustomEvent };

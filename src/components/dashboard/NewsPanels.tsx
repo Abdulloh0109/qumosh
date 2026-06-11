@@ -46,11 +46,11 @@ const IMP_SWING_DIR: Record<string, string> = {
 function formatWhen(ms: number): string {
   if (ms < 0) {
     const m = Math.floor(-ms / 60000);
-    return m < 60 ? `${m}мин олдин` : `${Math.floor(m / 60)}с олдин`;
+    return m < 60 ? `${m}min oldin` : `${Math.floor(m / 60)}s oldin`;
   }
   const hrs = Math.floor(ms / 3600000);
   const mins = Math.floor((ms % 3600000) / 60000);
-  return hrs > 0 ? `${hrs}с ${mins}м` : `${mins}мин кейин`;
+  return hrs > 0 ? `${hrs}s ${mins}m` : `${mins}min keyin`;
 }
 
 export function NewsForecast() {
@@ -68,7 +68,7 @@ export function NewsForecast() {
   });
 
   const srcLabel =
-    CAL.source === 'forexfactory' ? `🟢 FF · ${events.length}` : `🟡 паттерн · ${events.length}`;
+    CAL.source === 'forexfactory' ? `🟢 FF · ${events.length}` : `🟡 pattern · ${events.length}`;
 
   const refresh = async () => {
     setLoading(true);
@@ -79,12 +79,12 @@ export function NewsForecast() {
 
   return (
     <Card col={4} color="red">
-      <CardTitle title="ЯНГИЛИКЛАР ПРОГНОЗИ" acc={srcLabel} />
+      <CardTitle title="YANGILIKLAR PROGNOZI" acc={srcLabel} />
       <div className={NEWS_LIST}>
         {events.length === 0 ? (
           <div className={NEWS_EMPTY}>
-            Бугун воқеа йўқ
-            {CAL.source === 'pattern' ? ' (паттерн режим — 🔄 босиб синаб кўринг)' : ''}
+            Bugun voqea yoʻq
+            {CAL.source === 'pattern' ? ' (pattern rejim — 🔄 bosib sinab koʻring)' : ''}
           </div>
         ) : (
           events.map((ev) => {
@@ -131,10 +131,10 @@ export function NewsForecast() {
                     )}
                     <div className="mt-1 flex flex-wrap gap-[10px] font-mono text-[16px] text-mute [&_b]:font-bold [&_b]:text-cyan">
                       <span>
-                        Прогноз: <b>{ev.forecast || '—'}</b>
+                        Prognoz: <b>{ev.forecast || '—'}</b>
                       </span>
                       <span>
-                        Олдинги: <b>{ev.previous || '—'}</b>
+                        Oldingi: <b>{ev.previous || '—'}</b>
                       </span>
                     </div>
                   </div>
@@ -150,10 +150,10 @@ export function NewsForecast() {
       </div>
       <div
         className="mt-[7px] cursor-pointer rounded-[7px] border border-dashed border-cyan/25 bg-cyan/[0.05] p-[7px] text-center text-[16px] font-bold tracking-[1px] text-cyan transition-all duration-150 hover:bg-cyan/10"
-        title="ForexFactory'дан қайта юклаш"
+        title="ForexFactory'dan qayta yuklash"
         onClick={refresh}
       >
-        {loading ? '⏳ Юкланмоқда...' : '🔄 Янгиликларни янгилаш'}
+        {loading ? '⏳ Yuklanmoqda...' : '🔄 Yangiliklarni yangilash'}
       </div>
     </Card>
   );
@@ -164,10 +164,10 @@ export function PastEvents() {
   const past = CAL.past as any[];
   return (
     <Card col={3}>
-      <CardTitle title="ЎТГАН ВОҚЕАЛАР" acc={past.length} />
+      <CardTitle title="OʻTGAN VOQEALAR" acc={past.length} />
       <div className={NEWS_LIST}>
         {past.length === 0 ? (
-          <div className={NEWS_EMPTY}>Воқеа кутилмоқда</div>
+          <div className={NEWS_EMPTY}>Voqea kutilmoqda</div>
         ) : (
           past.slice(0, 8).map((p, i) => {
             const dirIcon = p.direction === 'up' ? '↑' : p.direction === 'dn' ? '↓' : '═';

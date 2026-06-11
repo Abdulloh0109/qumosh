@@ -27,5 +27,5 @@ export function log(typ, msg, extra = '') {
 export function copyLog() {
   const txt = ST.logs.map((l) => `[${l.ts}][${l.typ}] ${l.msg} ${l.extra}`).join('\n');
   navigator.clipboard?.writeText(txt);
-  log('INFO', '📋 Лог нусхаланди');
+  log('INFO', '📋 Log nusxalandi');
 }

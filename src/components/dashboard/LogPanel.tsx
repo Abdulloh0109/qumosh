@@ -30,7 +30,7 @@ export function LogPanel() {
 
   return (
     <Card col={4}>
-      <CardTitle title="ЛОГ" acc={logs.length} />
+      <CardTitle title="LOG" acc={logs.length} />
       <div
         className="h-60 overflow-y-auto rounded-lg border border-white/[0.05] bg-black/[0.18] px-3 py-2 font-mono text-[16px] leading-[1.55]"
         ref={paneRef}

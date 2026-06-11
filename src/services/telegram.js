@@ -3,7 +3,7 @@ import { fmtPx, log } from '../core/utils.js';
 import { PATTERN_NAMES } from '../core/filters.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v5 PRO — Telegram алертлар
+// QUMASH v5 PRO — Telegram alertlar
 // Globals: tgSend, tgSendEntry, tgSendTP, tgSendSL
 // ═══════════════════════════════════════════════════════════════════
 
@@ -15,7 +15,7 @@ async function tgSend(text) {
       method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({chat_id:CFG.tgChat, text, parse_mode:'HTML'}),
     });
-    log('TG', '📤 юборилди');
+    log('TG', '📤 yuborildi');
   } catch (e) { log('ERR', '❌ TG', e.message || ''); }
 }
 
@@ -40,8 +40,8 @@ function tgSendEntry() {
 📊 Combined Score: <b>${nm.combined}/100</b>
 ├─ News (50%): ${nm.newsComponent}
 └─ Tech (50%): ${nm.techComponent}
-💰 Риск: <b>${s.risk}%</b>
-🌀 Регим: ${s.regime}
+💰 Risk: <b>${s.risk}%</b>
+🌀 Regim: ${s.regime}
 ⚖️ ${s.pdZone} (${(s.pdPos*100).toFixed(0)}%)
 ━━━━━━━━━━━━
 🎯 Entry: <code>${fmtPx(s.entry)}</code>
@@ -50,7 +50,7 @@ function tgSendEntry() {
 🟢 TP2: <code>${fmtPx(s.tp2)}</code> (${CFG.qtyTP2}%)
 🟢 TP3: <code>${fmtPx(s.tp3)}</code> (${CFG.qtyTP3}%)
 ━━━━━━━━━━━━
-⚠ <i>News mode — кенг spread кутинг</i>
+⚠ <i>News mode — keng spread kuting</i>
 🤖 QUMASH v7 NEWS`;
     tgSend(newsTxt);
     return;
@@ -121,15 +121,15 @@ function tgSendEntry() {
   if (s.newsPhase === 2) {
     v12Parts.push(`📰 Phase 2 (T+5..T+15) — faqat NEWS_DRIVEN`);
   } else if (s.newsPhase === 3) {
-    v12Parts.push(`📰 Phase 3 (T+15..T+45) — news+tech ҳаммаси`);
+    v12Parts.push(`📰 Phase 3 (T+15..T+45) — news+tech hammasi`);
   }
   if (v12Parts.length) v12Line = '\n' + v12Parts.map(p => '🟢 v12: ' + p).join('\n');
-  const tpSrcLine = s.tpSource && s.tpSource !== 'ATR' ? `\n🎯 TP манбаси: ${s.tpSource}` : '';
+  const tpSrcLine = s.tpSource && s.tpSource !== 'ATR' ? `\n🎯 TP manbasi: ${s.tpSource}` : '';
   const txt = `${dir} <b>XAUUSD</b> — ${s.tier}
 ━━━━━━━━━━━━
 📊 Score: <b>${s.score.toFixed(0)}/100</b>
-💰 Риск: <b>${s.risk}%</b>${trigLine}
-🌀 Регим: ${s.regime}
+💰 Risk: <b>${s.risk}%</b>${trigLine}
+🌀 Regim: ${s.regime}
 🔄 SMC: ${s.structEvent}
 📦 OB: ${s.obActive}
 📐 OTE: ${s.inOTE}
@@ -148,7 +148,7 @@ function tgSendEntry() {
 }
 
 function tgSendTP(n, price) {
-  const txt = `✅ <b>TP${n} урилди!</b>\n🎯 ${fmtPx(price)}\n${n===1?'🛡 BE':n===2?'↗ Trail':'🏆 ТЎЛИҚ'}\n🤖 QUMASH`;
+  const txt = `✅ <b>TP${n} urildi!</b>\n🎯 ${fmtPx(price)}\n${n===1?'🛡 BE':n===2?'↗ Trail':'🏆 TOʻLIQ'}\n🤖 QUMASH`;
   tgSend(txt);
 }
 function tgSendSL(price, wasBE) {

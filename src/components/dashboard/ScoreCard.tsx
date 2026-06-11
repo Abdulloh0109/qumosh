@@ -32,7 +32,7 @@ export function ScoreCard() {
 
   return (
     <Card col={3} color="gold">
-      <CardTitle title="БАЛЛ" acc={`${bestSide} ${bestScore.toFixed(0)} (${bestTier.tier})`} />
+      <CardTitle title="BALL" acc={`${bestSide} ${bestScore.toFixed(0)} (${bestTier.tier})`} />
       <div className="grid grid-cols-2 gap-[7px]">
         <div className={cx(sideBase, bestSide === 'LONG' && 'border-cyan')}>
           <div className={lblBase} style={{ color: 'var(--green)' }}>
@@ -67,7 +67,7 @@ export function ScoreCard() {
       </div>
       <div className="mt-2 flex items-center justify-between rounded-lg bg-white/[0.02] px-[11px] py-2 text-[16px]">
         <span className="text-[16px] font-bold tracking-[1.2px] text-dim uppercase">
-          Тавсия риски
+          Tavsiya riski
         </span>
         <span className={cx('text-[16px] font-extrabold text-purple', 'mono')}>
           {bestTier.risk.toFixed(1)}%

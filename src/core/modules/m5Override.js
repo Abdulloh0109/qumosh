@@ -6,10 +6,10 @@ import { checkPsychBlock } from './psychology.js';
 // Globals: M5_STATE, evaluateM5Reversal, checkOverrideHierarchy
 // ═══════════════════════════════════════════════════════════════════
 // CONCEPT 1: M5 Intraday Reversals
-//   - M5 feed уланади (M15 билан параллел)
-//   - M5'да микро-разворотлар: CHoCH, sweep, OB, FVG
-//   - M15 HTF confluence — фон, бирим bias
-//   - Натижа: 6-15 signal/day (M15 only 1-3)
+//   - M5 feed ulanadi (M15 bilan parallel)
+//   - M5'da mikro-razvorotlar: CHoCH, sweep, OB, FVG
+//   - M15 HTF confluence — fon, birim bias
+//   - Natija: 6-15 signal/day (M15 only 1-3)
 //
 // CONCEPT 2: Override Hierarchy
 //   - Strong model triggers override weak filter conflicts
@@ -353,14 +353,14 @@ function overrideAppliesToGate(gateFail, overrideLevel) {
   }
   // LEVEL 2 (HIGH): override session, regime, CHOP, sessionFilter
   if (overrideLevel === 2) {
-    if (fail.includes('сеанс') || fail.includes('session')) return true;
-    if (fail.includes('режим') || fail.includes('regime')) return true;
+    if (fail.includes('seans') || fail.includes('session')) return true;
+    if (fail.includes('rejim') || fail.includes('regime')) return true;
     if (fail.includes('chop')) return true;
     return false;
   }
   // LEVEL 3 (MEDIUM): override session quality only
   if (overrideLevel === 3) {
-    if (fail.includes('сеанс:') || fail.includes('session quality')) return true;
+    if (fail.includes('seans:') || fail.includes('session quality')) return true;
     return false;
   }
   return false;

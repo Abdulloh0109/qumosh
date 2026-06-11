@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v7 REVERSAL HUNTER — Конфигурация ва ҳолат
+// QUMASH v7 REVERSAL HUNTER — Konfiguratsiya va holat
 // Globals: SYMBOLS, CFG, ST, FILTERS
-// Битта оптимал режим: small SL + wide TP + reversal triggers
+// Bitta optimal rejim: small SL + wide TP + reversal triggers
 // ═══════════════════════════════════════════════════════════════════
 
 const SYMBOLS = {
@@ -15,11 +15,11 @@ const SYMBOLS = {
 };
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v7 — REVERSAL HUNTER (битта режим, мукаммал тунинг)
+// QUMASH v7 — REVERSAL HUNTER (bitta rejim, mukammal tuning)
 // ═══════════════════════════════════════════════════════════════════
-// Фалсафа: кичик SL (FVG/OB edge'да) + кенг TP (ATR×8 гача) + разворот
-// триггерлар мажбурий (Sweep / CHoCH / FVG'дан камида биттаси). Тренд
-// давомидаги setup'лар фақат T1 даражасида қабул қилинади.
+// Falsafa: kichik SL (FVG/OB edge'da) + keng TP (ATR×8 gacha) + razvorot
+// triggerlar majburiy (Sweep / CHoCH / FVG'dan kamida bittasi). Trend
+// davomidagi setup'lar faqat T1 darajasida qabul qilinadi.
 // ═══════════════════════════════════════════════════════════════════
 const CFG = {
   granularity: 900, htfMult: 4, count: 5000, countCorr: 1000,
@@ -31,32 +31,32 @@ const CFG = {
 
   // ── REVERSAL TP/SL ──────────────────────────────────────────────
   // SL = ATR×1.0 fallback (fallback only); Smart SL — FVG/OB edge → ~ATR×0.3-0.6
-  // TP — кенг: TP1=2R, TP2=4R, TP3=8R (ўртача R:R = 1:5+)
+  // TP — keng: TP1=2R, TP2=4R, TP3=8R (oʻrtacha R:R = 1:5+)
   slATR: 1.0, tp1ATR: 2.0, tp2ATR: 4.0, tp3ATR: 8.0,
   qtyTP1: 40, qtyTP2: 30, qtyTP3: 30,
-  beAfter: 'TP1', beBuffer: 0.03,            // TP1'да тезроқ BE
-  trailAfter: 'TP2', trailATR: 1.5,          // кенгроқ trail — катта ҳаракатни ушлаш
+  beAfter: 'TP1', beBuffer: 0.03,            // TP1'da tezroq BE
+  trailAfter: 'TP2', trailATR: 1.5,          // kengroq trail — katta harakatni ushlash
   blockReversal: true, cooldownBars: 2, minHoldBars: 2,
   swingLen: 7, equalLevelTolATR: 0.25, sweepCloseBackTolATR: 0.3,
   premiumDiscountFib: 0.5, swingLookback: 60, hurstWindow: 50,
   obDisplacementATR: 1.2, obLookback: 30,
   oteLow: 0.62, oteHigh: 0.79,
 
-  // ── ЯГОНА TIER СИСТЕМАСИ (soft/medium/hard ЙЎҚ) ─────────────────
-  // Reversal trigger мажбурий — score чегаралар шуни ҳисобга олиб тунинг қилинди
-  tier1: 50, tier1Risk: 1.5,    // 60 → 50 — энг кучли setup
-  tier2: 35, tier2Risk: 1.0,    // 45 → 35 — қабул қилиш минимуми (yumshatilgan)
-  // T3 ва T4 ОЛИБ ТАШЛАНДИ — паст балли setup'лар умуман очилмайди
+  // ── YAGONA TIER SISTEMASI (soft/medium/hard YOʻQ) ─────────────────
+  // Reversal trigger majburiy — score chegaralar shuni hisobga olib tuning qilindi
+  tier1: 50, tier1Risk: 1.5,    // 60 → 50 — eng kuchli setup
+  tier2: 35, tier2Risk: 1.0,    // 45 → 35 — qabul qilish minimumi (yumshatilgan)
+  // T3 va T4 OLIB TASHLANDI — past balli setup'lar umuman ochilmaydi
   // ─── BACKTEST/SIGNAL THRESHOLDS — yumshatilgan (v12.2) ───────────
   minRR: 1.5,                    // 3.0 → 1.5 (TP1=2R, 1.5R minimum)
   // NOTE: `minScoreDiff` was declared twice in the original config; JS keeps the
   // last value (3, see below). The earlier `minScoreDiff: 0` was a dead override
   // and has been removed — effective runtime value is unchanged.
-  // Reversal Hunter mode (мерос — мавжудлигини белгилаш)
+  // Reversal Hunter mode (meros — mavjudligini belgilash)
   reversalMode: true,
 
   // ── FILTER WEIGHTS (max 100 score) ──────────────────────────────
-  // Reversal'нинг ядроси: Sweep + FVG + MSS + Pattern ўрни
+  // Reversal'ning yadrosi: Sweep + FVG + MSS + Pattern oʻrni
   wRegime: 14, wSweep: 16, wDXY: 12, wPremium: 12,
   wSession: 6, wLiquidity: 8, wAlmaSt: 10, wMomentum: 5,
   wMSS: 16, wOB: 12, wOTE: 10,
@@ -68,20 +68,20 @@ const CFG = {
   fvgLookback: 100, fvgMaxAge: 50,
   fvgMinSizeATR: 0.15, fvgMaxSizeATR: 3.0,
 
-  // Smart SL — МАЖБУРИЙ (faqaт fallback ATR×1.0 sifatida хизмат қилади)
+  // Smart SL — MAJBURIY (faqat fallback ATR×1.0 sifatida xizmat qiladi)
   smartSLenabled: true, smartSLbuffer: 0.20, smartSLminATR: 0.4,
 
   // ── NEWS MODE ───────────────────────────────────────────────────
-  // 'auto' = ҳамма муҳим янгиликда автоматик: 10 мин олдин блок,
-  // эълондан 3 мин кейин очилади ва news+tech синергиясига ўтади
+  // 'auto' = hamma muhim yangilikda avtomatik: 10 min oldin blok,
+  // eʼlondan 3 min keyin ochiladi va news+tech sinergiyasiga oʻtadi
   newsMode: 'auto',
-  newsActiveMinAgoMin: 3,         // эълондан 3 мин кейин очилади (тез)
-  newsActiveMaxAgoMin: 45,        // 45 мин гача news контекст актив
-  newsConfidenceMin: 25,          // news score min (паст эса tech ҳал қилади)
-  newsBlockBefore: 10,            // эълондан 10 мин олдин блок
-  newsBlockAfter: 3,              // эълондан 3 мин ичида (initial spike) блок
-  newsSplitNews: 0.5, newsSplitTech: 0.5,  // 50/50 — tech setup news билан мос
-  newsAlignmentRequired: true,    // tech yo'nалиши news yo'nалиши билан мос келиши керак
+  newsActiveMinAgoMin: 3,         // eʼlondan 3 min keyin ochiladi (tez)
+  newsActiveMaxAgoMin: 45,        // 45 min gacha news kontekst aktiv
+  newsConfidenceMin: 25,          // news score min (past esa tech hal qiladi)
+  newsBlockBefore: 10,            // eʼlondan 10 min oldin blok
+  newsBlockAfter: 3,              // eʼlondan 3 min ichida (initial spike) blok
+  newsSplitNews: 0.5, newsSplitTech: 0.5,  // 50/50 — tech setup news bilan mos
+  newsAlignmentRequired: true,    // tech yo'nalishi news yo'nalishi bilan mos kelishi kerak
   newsForecastDays: 7,
 
   // Adaptive
@@ -90,19 +90,19 @@ const CFG = {
   // Score-diff (long vs short)
   minScoreDiff: 3,
 
-  // Volatility — реал XAU M15 диапазон ҳисобга олинди
+  // Volatility — real XAU M15 diapazon hisobga olindi
   atrPctMin: 0.02,   // 0.04 → 0.02 (mualbore tinch vaqtlarni ham passuv)
-  atrPctMax: 1.20,   // 0.85 → 1.20 (катта news вақтини ҳам татбиқ кучайтиради)
+  atrPctMax: 1.20,   // 0.85 → 1.20 (katta news vaqtini ham tatbiq kuchaytiradi)
 
-  // ═══════ v8 — PDF'лардан янги модуллар ══════════════════════════
+  // ═══════ v8 — PDF'lardan yangi modullar ══════════════════════════
   // TTrades Model (CISD, candle 2/3 swing)
   ttradesEnabled: true,
-  wTTrades: 12,                         // CISD swing'нинг max contribution score
+  wTTrades: 12,                         // CISD swing'ning max contribution score
   // Daily Profile (London/NY Reversal)
   dailyProfileEnabled: true,
   wDailyProfile: 6,                     // confluence bonus
   // Monday rule (TTrades qoidasi)
-  mondayBlock: false,                   // true: Monday'да T2 signal'лар блок (T1 қолади)
+  mondayBlock: false,                   // true: Monday'da T2 signal'lar blok (T1 qoladi)
   // Compression (Hanzo Shadow Codes)
   compressionEnabled: true,
   wCompression: 6,
@@ -118,7 +118,7 @@ const CFG = {
   // Trail SL TTrades style (to opposing candle's swing)
   ttradesTrailEnabled: false,           // experimental — opposing candle trail
 
-  // ═══════ v9 — Yangi PDF модуллар (ICT Bible, Divergence, MMXM, etc.) ═══
+  // ═══════ v9 — Yangi PDF modullar (ICT Bible, Divergence, MMXM, etc.) ═══
   // Divergence Engine (RSI/MACD T1/T2 + Stinger)
   divergenceEnabled: true,
   wDivergence: 12,                      // Stinger eng kuchli (+10), T1·RSI (+6)
@@ -135,10 +135,10 @@ const CFG = {
   wICTBlocks: 8,                        // Breaker (+6) + Rejection (+4)
   // Psychology / Discipline
   psychEnabled: true,
-  psychBlock: false,                    // true: drawdown'да entry'ни блок
-  psychBlockStrict: false,              // true: REVENGE'да ҳам блок
+  psychBlock: false,                    // true: drawdown'da entry'ni blok
+  psychBlockStrict: false,              // true: REVENGE'da ham blok
 
-  // ═══════ v10 — Янги PDF модуллар (Chart Patterns, Fibonacci, Inducement) ═══
+  // ═══════ v10 — Yangi PDF modullar (Chart Patterns, Fibonacci, Inducement) ═══
   // Classical chart patterns (Double Top/Bot, H&S, Wedge, Triangle, Flag, Rectangle)
   chartPatternsEnabled: true,
   wChartPatterns: 10,                   // H&S confirmed (+8), Double Top (+6), etc.
@@ -172,9 +172,9 @@ const CFG = {
 
   // Mode flags
   strict: false, newsBlock: true, sessionFilter: true,
-  // Сессия — фақат сифатлилари (London/NY/Overlap)
+  // Sessiya — faqat sifatlilari (London/NY/Overlap)
   allowedSessions: {LONDON:true, NY:true, OVERLAP:true, NY_AFTER:true, ASIA:true, LUNCH:true, FRI_LATE:false, LATE:false, OTHER:true},
-  // Реверс овчи — CHOP режимида ҳам ишлайди (разворот'lar nай ko'p CHOP'да!)
+  // Revers ovchi — CHOP rejimida ham ishlaydi (razvorot'lar nay ko'p CHOP'da!)
   allowedRegimes: {TREND_UP:true, TREND_DN:true, RANGE:true, CHOP:true},
   // TG
   tgEnabled: false, tgToken: '', tgChat: '',

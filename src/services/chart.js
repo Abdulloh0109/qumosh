@@ -75,18 +75,18 @@ function initChart() {
           if (tickMarkType === 0) return String(d.getFullYear());
           if (tickMarkType === 1) {
             const months = [
-              'янв',
-              'фев',
-              'мар',
-              'апр',
-              'май',
-              'июн',
-              'июл',
-              'авг',
-              'сен',
-              'окт',
-              'ноя',
-              'дек',
+              'yanv',
+              'fev',
+              'mar',
+              'apr',
+              'may',
+              'iyun',
+              'iyul',
+              'avg',
+              'sen',
+              'okt',
+              'noya',
+              'dek',
             ];
             return months[d.getMonth()];
           }
@@ -102,18 +102,18 @@ function initChart() {
         timeFormatter: (time) => {
           const d = new Date(time * 1000);
           const months = [
-            'янв',
-            'фев',
-            'мар',
-            'апр',
-            'май',
-            'июн',
-            'июл',
-            'авг',
-            'сен',
-            'окт',
-            'ноя',
-            'дек',
+            'yanv',
+            'fev',
+            'mar',
+            'apr',
+            'may',
+            'iyun',
+            'iyul',
+            'avg',
+            'sen',
+            'okt',
+            'noya',
+            'dek',
           ];
           const day = String(d.getDate()).padStart(2, '0');
           const mon = months[d.getMonth()];
@@ -150,9 +150,9 @@ function initChart() {
       priceFormat: { type: 'price', precision: 3, minMove: 0.001 },
     });
     loadShapes();
-    log('INFO', '📈 График ишга тушди');
+    log('INFO', '📈 Grafik ishga tushdi');
   } catch (e) {
-    log('WARN', `⚠️ График фейл: ${e.message?.slice(0, 60)}`);
+    log('WARN', `⚠️ Grafik feyl: ${e.message?.slice(0, 60)}`);
   }
 }
 
@@ -384,7 +384,7 @@ async function toggleFullscreen() {
   } catch (_) {
     // Fallback: CSS fullscreen
     wrap.classList.add('fs-fallback');
-    log('INFO', '⛶ Тўлиқ экран (fallback) — ESC учун қайта босинг');
+    log('INFO', '⛶ Toʻliq ekran (fallback) — ESC uchun qayta bosing');
     const escHandler = (ev) => {
       if (ev.key === 'Escape') {
         wrap.classList.remove('fs-fallback');

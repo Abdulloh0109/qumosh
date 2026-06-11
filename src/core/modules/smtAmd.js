@@ -4,20 +4,20 @@ import { CFG, ST } from '../state.js';
 // QUMASH v9 — SMT DIVERGENCE + AMD POWER OF 3
 // Globals: detectSMT, detectAMD, scoreSMTandAMD
 // ═══════════════════════════════════════════════════════════════════
-// SMT (Smart Money Tool) Divergence (ICT'дан):
-//   Корреляция қилувчи активлар синхрон ҳаракат қилмаганда signal.
+// SMT (Smart Money Tool) Divergence (ICT'dan):
+//   Korrelyatsiya qiluvchi aktivlar sinxron harakat qilmaganda signal.
 //   - XAUUSD vs AUDUSD (+0.82 corr): birga o'sishi kerak
-//     - Agar XAU yangi high yaratса lekin AUD yaratmaса → SMT bearish (XAU SELL)
-//     - Agar XAU yangi low yaratса lekin AUD yaratmaса → SMT bullish (XAU BUY)
+//     - Agar XAU yangi high yaratsa lekin AUD yaratmasa → SMT bearish (XAU SELL)
+//     - Agar XAU yangi low yaratsa lekin AUD yaratmasa → SMT bullish (XAU BUY)
 //   - XAUUSD vs DXY synth (-0.85 corr): teskari harakat kerak
-//     - Agar XAU yangi high yaratса va DXY ham yangi high → no inverse → SMT bearish
-//     - Agar XAU yangi low yaratса va DXY ham yangi low → no inverse → SMT bullish
+//     - Agar XAU yangi high yaratsa va DXY ham yangi high → no inverse → SMT bearish
+//     - Agar XAU yangi low yaratsa va DXY ham yangi low → no inverse → SMT bullish
 //
-// AMD POWER OF 3 (ICT Bible'дан):
-//   Daily candle = 3 фаза:
-//     ACCUMULATION (Asia 00:00-07:00 UTC): kichik range, накопление
+// AMD POWER OF 3 (ICT Bible'dan):
+//   Daily candle = 3 faza:
+//     ACCUMULATION (Asia 00:00-07:00 UTC): kichik range, nakoplenie
 //     MANIPULATION (London 07:00-12:30 UTC): Judas swing - false move
-//     DISTRIBUTION (NY 12:30-17:00 UTC): asosiy ҳаракат - smart money chiqадi
+//     DISTRIBUTION (NY 12:30-17:00 UTC): asosiy harakat - smart money chiqadi
 //   Day classification:
 //     "SELL DAY":  high formed in Asia/London, then bearish distribution in NY
 //     "BUY DAY":   low formed in Asia/London, then bullish distribution in NY
@@ -151,7 +151,7 @@ function detectAMD(candles, currentTime) {
   }
 
   // Wait for at least London to form
-  if (!out.london) { out.why = 'London ҳали актив emas'; return out; }
+  if (!out.london) { out.why = 'London hali aktiv emas'; return out; }
 
   // Classify day:
   //   SELL DAY: London makes high above Asia, then closes below Asia close (manipulation up, distribution down)

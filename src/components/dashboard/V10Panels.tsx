@@ -12,8 +12,8 @@ export function V10PatternCard() {
 
   return (
     <Card col={6} color="gold">
-      <CardTitle title="v10: График шакллар + Фибоначчи" acc="Классик TA" />
-      <StrucRow name="График шакл">
+      <CardTitle title="v10: Grafik shakllar + Fibonachchi" acc="Klassik TA" />
+      <StrucRow name="Grafik shakl">
         {cpAll.length ? (
           (() => {
             const types = [...new Set(cpAll.map((x: any) => x.type))];
@@ -28,14 +28,14 @@ export function V10PatternCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Кириш/SL/Мақсад">
+      <StrucRow name="Kirish/SL/Maqsad">
         <StrucVal>
           {p && p.entry != null && p.target != null
             ? `E:${p.entry.toFixed(1)} SL:${p.sl ? p.sl.toFixed(1) : '—'} TP:${p.target.toFixed(1)}`
             : '—'}
         </StrucVal>
       </StrucRow>
-      <StrucRow name="Fib зонаси">
+      <StrucRow name="Fib zonasi">
         {fib && zone ? (
           <Tag kind={zone.pct >= 50 && zone.pct <= 78.6 ? 'tag-good' : 'tag-neut'}>
             {zone.pct.toFixed(1)}% @ {zone.price.toFixed(1)}
@@ -44,7 +44,7 @@ export function V10PatternCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Fib кенгайтма">
+      <StrucRow name="Fib kengaytma">
         <StrucVal>{ext ? `${ext.pct.toFixed(1)}% → ${ext.price.toFixed(1)}` : '—'}</StrucVal>
       </StrucRow>
     </Card>
@@ -79,10 +79,10 @@ export function V10IdmCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="v10 LONG балл">
+      <StrucRow name="v10 LONG ball">
         <StrucVal>{lScore.toFixed(0)}</StrucVal>
       </StrucRow>
-      <StrucRow name="v10 SHORT балл">
+      <StrucRow name="v10 SHORT ball">
         <StrucVal>{sScore.toFixed(0)}</StrucVal>
       </StrucRow>
     </Card>

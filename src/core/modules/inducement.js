@@ -2,7 +2,7 @@ import { CFG } from '../state.js';
 
 // ═══════════════════════════════════════════════════════════════════
 // QUMASH v10 — INDUCEMENT + ALGO CANDLE
-// (ICT_INSTITUTIONAL_SMC_TRADING_DAVID_WOODS.pdf + ICT__SMC_trading_book__Eng_.pdf'дан)
+// (ICT_INSTITUTIONAL_SMC_TRADING_DAVID_WOODS.pdf + ICT__SMC_trading_book__Eng_.pdf'dan)
 // Globals: detectAlgoCandle, detectInducement, scoreInducement
 // ═══════════════════════════════════════════════════════════════════
 // ALGO CANDLE (Vector Candle):

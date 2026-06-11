@@ -4,14 +4,14 @@ import { CFG } from '../state.js';
 // QUMASH v8 — COMPRESSION / HLQ / QMR
 // Globals: detectCompression, detectHLQ, detectQMR
 // ═══════════════════════════════════════════════════════════════════
-// Hanzo Shadow Codes PDF'дан:
-//   Compression — narх spring каби сиқилади. Шу пайтда buy/sell orderлар
-//   тозалаб тушади. Кейин news/event билан big spike → MPL зонага қарай.
-//   Compression buy → shadow spikeлар yuqori (orderлар тозалаб yuqori)
-//   Compression sell → shadow spikeлар pasт
+// Hanzo Shadow Codes PDF'dan:
+//   Compression — narx spring kabi siqiladi. Shu paytda buy/sell orderlar
+//   tozalab tushadi. Keyin news/event bilan big spike → MPL zonaga qaray.
+//   Compression buy → shadow spikelar yuqori (orderlar tozalab yuqori)
+//   Compression sell → shadow spikelar past
 //
-// HLQ (High Liquidity Zone) — қаерда Support ва Resistance бирлашади
-// (бу tизимда: OB + FVG + EQH/EQL ёки swing high+low жуфт)
+// HLQ (High Liquidity Zone) — qaerda Support va Resistance birlashadi
+// (bu tizimda: OB + FVG + EQH/EQL yoki swing high+low juft)
 //
 // QMR (Quasimodo Reversal) — TRADING_UZ.pdf:
 //   5-candle reversal: H → L → HH → LL → entry from L (shoulder)
@@ -36,7 +36,7 @@ function detectCompression(candles, atrNow) {
   const contracting = avg2 < avg1 * 0.75 && avg2 < atrNow * 0.8;
   if (!contracting) return out;
 
-  // Count shadow spikes — wick'и body'дан 2× катта бўлган candle'лар
+  // Count shadow spikes — wick'i body'dan 2× katta boʻlgan candle'lar
   let upSpikes = 0, downSpikes = 0;
   for (const c of recent) {
     const body = Math.abs(c.c - c.o);
@@ -47,11 +47,11 @@ function detectCompression(candles, atrNow) {
     if (downW > body * 1.5) downSpikes++;
   }
 
-  // Compression BUY = shadow spikes yuqori (sellлар trap қилинмоқда)
-  // Compression SELL = shadow spikes pasт (buyлар trap қилинмоқда)
+  // Compression BUY = shadow spikes yuqori (selllar trap qilinmoqda)
+  // Compression SELL = shadow spikes past (buylar trap qilinmoqda)
   if (upSpikes >= 3 && upSpikes > downSpikes) {
     out.detected = true;
-    out.dir = -1;  // selllar trap → reversal SHORT уч SHORT? Hanzo: shadow yuqori = COMPRESSION SELL
+    out.dir = -1;  // selllar trap → reversal SHORT uch SHORT? Hanzo: shadow yuqori = COMPRESSION SELL
     out.mpl = Math.max(...recent.map(c => c.h));
     out.strength = upSpikes / N;
     out.why = `Compression SELL (${upSpikes} yuqori spike, range -${((1-avg2/avg1)*100).toFixed(0)}%)`;
@@ -60,7 +60,7 @@ function detectCompression(candles, atrNow) {
     out.dir = 1;
     out.mpl = Math.min(...recent.map(c => c.l));
     out.strength = downSpikes / N;
-    out.why = `Compression BUY (${downSpikes} паст spike, range -${((1-avg2/avg1)*100).toFixed(0)}%)`;
+    out.why = `Compression BUY (${downSpikes} past spike, range -${((1-avg2/avg1)*100).toFixed(0)}%)`;
   }
 
   return out;
@@ -133,8 +133,8 @@ function detectHLQ(candles, atrNow, snap) {
 }
 
 // ─── QMR — QUASIMODO REVERSAL (TRADING_UZ.pdf) ──────────────────────
-// Classical QMR: пастки тренд (LLLLLL) → нарх HH ҳосил қилади → яна LL ҳосил қилади
-//   → Entry: L "shoulder" даражасида (oldingi H'дан pasт)
+// Classical QMR: pastki trend (LLLLLL) → narx HH hosil qiladi → yana LL hosil qiladi
+//   → Entry: L "shoulder" darajasida (oldingi H'dan past)
 // Returns: {detected, dir: +1/-1, entry, sl, why}
 function detectQMR(candles, atrNow) {
   const out = { detected: false, dir: 0, entry: null, sl: null, why: 'no' };

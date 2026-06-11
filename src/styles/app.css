@@ -168,7 +168,7 @@
   overflow: hidden;
 }
 #chartContainer:empty::after {
-  content: 'Юкланмоқда...';
+  content: 'Yuklanmoqda...';
   display: block;
   padding: 140px 0;
   text-align: center;

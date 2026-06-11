@@ -25,10 +25,10 @@ export function TradeCard() {
 
   return (
     <Card col={3} color="orange">
-      <CardTitle title="АКТИВ САВДО" acc={has ? `${st.barsSinceEntry} бар` : '—'} />
+      <CardTitle title="AKTIV SAVDO" acc={has ? `${st.barsSinceEntry} bar` : '—'} />
       <div>
         <div className={cx(ROW_BASE, ROW_ENTRY)}>
-          <span className={LBL}>◆ Кириш</span>
+          <span className={LBL}>◆ Kirish</span>
           <span className={cx(VAL_BASE, 'text-orange', 'mono')}>{v(snap?.entry)}</span>
         </div>
         <div className={cx(ROW_BASE, ROW_SL)}>

@@ -17,19 +17,19 @@ export function StructureCard() {
   if (!struct || !ob || !ote) {
     return (
       <Card col={3} color="purple">
-        <CardTitle title="SMC ТУЗИЛМА" acc="—" />
-        <div className="py-2 text-center text-[16px] text-mute">Маълумот йиғилмоқда…</div>
+        <CardTitle title="SMC TUZILMA" acc="—" />
+        <div className="py-2 text-center text-[16px] text-mute">Maʼlumot yigʻilmoqda…</div>
       </Card>
     );
   }
 
   const biasTxt =
     struct.bias === 'up'
-      ? '⬆ ЎСИШ'
+      ? '⬆ OʻSISH'
       : struct.bias === 'dn'
-        ? '⬇ ТУШИШ'
+        ? '⬇ TUSHISH'
         : struct.bias === 'mixed'
-          ? '↔ АРАЛАШ'
+          ? '↔ ARALASH'
           : '—';
   const biasCls = struct.bias === 'up' ? 'tag-up' : struct.bias === 'dn' ? 'tag-dn' : 'tag-neut';
   const lastCls = struct.event
@@ -58,11 +58,11 @@ export function StructureCard() {
 
   return (
     <Card col={3} color="purple">
-      <CardTitle title="SMC ТУЗИЛМА" acc={struct.event || '—'} />
-      <StrucRow name="Мойиллик">
+      <CardTitle title="SMC TUZILMA" acc={struct.event || '—'} />
+      <StrucRow name="Moyillik">
         <Tag kind={biasCls}>{biasTxt}</Tag>
       </StrucRow>
-      <StrucRow name="Сўнгги воқеа">
+      <StrucRow name="Soʻnggi voqea">
         <Tag kind={lastCls}>{struct.event || '—'}</Tag>
       </StrucRow>
       <StrucRow name="OB Bull">
@@ -75,15 +75,15 @@ export function StructureCard() {
           {ob.activeBear ? `${ob.activeBear.bot.toFixed(2)}-${ob.activeBear.top.toFixed(2)}` : '—'}
         </StrucVal>
       </StrucRow>
-      <StrucRow name="OTE зонаси">
+      <StrucRow name="OTE zonasi">
         <StrucVal>
           {ote.oteLow !== null && ote.oteHigh !== null
             ? `${ote.oteLow.toFixed(2)}-${ote.oteHigh.toFixed(2)}`
             : '—'}
         </StrucVal>
       </StrucRow>
-      <StrucRow name="✓ OTE ичидами?">
-        <Tag kind={ote.inOTE ? 'tag-up' : 'tag-neut'}>{ote.inOTE ? '✓ ҲА' : '✗ ЙЎҚ'}</Tag>
+      <StrucRow name="✓ OTE ichidami?">
+        <Tag kind={ote.inOTE ? 'tag-up' : 'tag-neut'}>{ote.inOTE ? '✓ HA' : '✗ YOʻQ'}</Tag>
       </StrucRow>
       <StrucRow name="MTF (HTF)">
         <span

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v5 PRO — Техник индикаторлар
+// QUMASH v5 PRO — Texnik indikatorlar
 // Globals: IND (EMA, ALMA, ATR, RSI, MACD, HA-SuperTrend, Pivots, Hurst)
 // ═══════════════════════════════════════════════════════════════════
 

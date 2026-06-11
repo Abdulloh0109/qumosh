@@ -1,7 +1,7 @@
 import { CFG } from '../state.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v10 — CLASSICAL CHART PATTERNS (All_Chart_Patterns.pdf'дан)
+// QUMASH v10 — CLASSICAL CHART PATTERNS (All_Chart_Patterns.pdf'dan)
 // Globals: detectChartPatterns, scoreChartPatterns
 // ═══════════════════════════════════════════════════════════════════
 // Reversal patterns:
@@ -97,7 +97,7 @@ function detectHeadShoulders(candles, atrNow) {
   const tol = atrNow * 0.4;
   const cur = candles[candles.length - 1].c;
 
-  // H&S: 3 highs где middle = highest, shoulders ~similar
+  // H&S: 3 highs gde middle = highest, shoulders ~similar
   if (highs.length >= 3) {
     const last3H = highs.slice(-3);
     const [ls, head, rs] = last3H;  // left shoulder, head, right shoulder
@@ -120,7 +120,7 @@ function detectHeadShoulders(candles, atrNow) {
     }
   }
 
-  // Inverse H&S: 3 lows где middle = lowest
+  // Inverse H&S: 3 lows gde middle = lowest
   if (lows.length >= 3) {
     const last3L = lows.slice(-3);
     const [ls, head, rs] = last3L;

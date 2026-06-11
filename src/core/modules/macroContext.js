@@ -5,19 +5,19 @@ import { detectSession, detectRegime } from '../filters.js';
 import { detectDailyProfile, detectWeeklyNarrative } from './dailyProfile.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v8 — MACRO CONTEXT (XAUUSD_Yangiliklar PDF'дан)
+// QUMASH v8 — MACRO CONTEXT (XAUUSD_Yangiliklar PDF'dan)
 // Globals: detectRiskRegime, buildDailyChecklist
 // ═══════════════════════════════════════════════════════════════════
-// Kathy Lien yangiliklar PDF'дан 2025-2026 XAUUSD ўзига хослиги:
-//   - DXY ~ -0.85 ўрта
-//   - AUDUSD ~ +0.82 (toy ҳамкори)
-//   - 10Y Treasury ~ -0.75 (yield тушса → oltin yuqori)
-//   - USDJPY ~ -0.60 (risk-off да yen ва oltin биргалик)
+// Kathy Lien yangiliklar PDF'dan 2025-2026 XAUUSD oʻziga xosligi:
+//   - DXY ~ -0.85 oʻrta
+//   - AUDUSD ~ +0.82 (toy hamkori)
+//   - 10Y Treasury ~ -0.75 (yield tushsa → oltin yuqori)
+//   - USDJPY ~ -0.60 (risk-off da yen va oltin birgalik)
 //   - VIX > 25 → risk-off → oltin yuqori
 //
 // Risk Regime:
-//   RISK_OFF: JPY кучли + аксиялар paст + DXY мухтож → oltin yuqori bias
-//   RISK_ON:  Аксиялар yuqori + JPY zaif → oltin bosимda
+//   RISK_OFF: JPY kuchli + aksiyalar past + DXY muxtoj → oltin yuqori bias
+//   RISK_ON:  Aksiyalar yuqori + JPY zaif → oltin bosimda
 //   NEUTRAL:  aralash
 // ═══════════════════════════════════════════════════════════════════
 
@@ -40,16 +40,16 @@ function detectRiskRegime(currentTime) {
     return (f[endIdx].c - f[endIdx - n].c) / f[endIdx - n].c;
   };
 
-  // 1) USDJPY tushishi = Yen кучли = risk-off = gold bullish (+)
+  // 1) USDJPY tushishi = Yen kuchli = risk-off = gold bullish (+)
   const dJpy = ch('USDJPY', 10);
   if (dJpy !== null) {
-    const w = -dJpy * 50;  // JPY кучли → +score
+    const w = -dJpy * 50;  // JPY kuchli → +score
     out.components.usdjpy = w;
     out.score += w * 0.25;
   }
 
   // 2) AUDUSD ko'tarilishi = risk-on commodity demand = gold bullish (+)
-  // Lekin commodity demand холиси сезgir, кам вазн
+  // Lekin commodity demand xolisi sezgir, kam vazn
   const dAud = ch('AUDUSD', 10);
   if (dAud !== null) {
     const w = dAud * 50;
@@ -65,7 +65,7 @@ function detectRiskRegime(currentTime) {
     out.score += w * 0.25;
   }
 
-  // 4) USDCHF tushishi = CHF safe-haven кучли = risk-off = gold bullish (+)
+  // 4) USDCHF tushishi = CHF safe-haven kuchli = risk-off = gold bullish (+)
   const dChf = ch('USDCHF', 10);
   if (dChf !== null) {
     const w = -dChf * 50;
@@ -84,13 +84,13 @@ function detectRiskRegime(currentTime) {
   // Normalize score to [-1, +1]
   out.score = Math.max(-1, Math.min(1, out.score));
 
-  if (out.score > 0.3) { out.regime = 'RISK_OFF'; out.why = 'JPY/CHF кучли, AUDJPY pasт → safe haven'; }
-  else if (out.score < -0.3) { out.regime = 'RISK_ON'; out.why = 'risk asset rally → oltin bosимda'; }
+  if (out.score > 0.3) { out.regime = 'RISK_OFF'; out.why = 'JPY/CHF kuchli, AUDJPY past → safe haven'; }
+  else if (out.score < -0.3) { out.regime = 'RISK_ON'; out.why = 'risk asset rally → oltin bosimda'; }
   else { out.regime = 'NEUTRAL'; out.why = 'aralash sentiment'; }
   return out;
 }
 
-// ─── DAILY 10-QUESTION CHECKLIST (Kathy Lien PDF'дан) ───────────────
+// ─── DAILY 10-QUESTION CHECKLIST (Kathy Lien PDF'dan) ───────────────
 // Returns array of {q, answer, signal: 'bull'|'bear'|'neutral', detail}
 function buildDailyChecklist(currentTime) {
   const items = [];
@@ -105,7 +105,7 @@ function buildDailyChecklist(currentTime) {
     return ((f[endIdx].c - f[endIdx - n].c) / f[endIdx - n].c) * 100;
   };
 
-  // 1) DXY (synth) йўналиши
+  // 1) DXY (synth) yoʻnalishi
   const dxyDir = (() => {
     const e = ch('EURUSD', 20), j = ch('USDJPY', 20), g = ch('GBPUSD', 20);
     if (e === null || j === null || g === null) return null;
@@ -113,10 +113,10 @@ function buildDailyChecklist(currentTime) {
   })();
   if (dxyDir !== null) {
     items.push({
-      q: '1. DXY йўналиши?',
-      answer: dxyDir < -0.3 ? `pasт ${dxyDir.toFixed(2)}%` : dxyDir > 0.3 ? `yuqori ${dxyDir.toFixed(2)}%` : `flat ${dxyDir.toFixed(2)}%`,
+      q: '1. DXY yoʻnalishi?',
+      answer: dxyDir < -0.3 ? `past ${dxyDir.toFixed(2)}%` : dxyDir > 0.3 ? `yuqori ${dxyDir.toFixed(2)}%` : `flat ${dxyDir.toFixed(2)}%`,
       signal: dxyDir < -0.3 ? 'bull' : dxyDir > 0.3 ? 'bear' : 'neutral',
-      detail: 'DXY pasт = oltin bullish',
+      detail: 'DXY past = oltin bullish',
     });
   }
 
@@ -124,8 +124,8 @@ function buildDailyChecklist(currentTime) {
   const audDir = ch('AUDUSD', 20);
   if (audDir !== null) {
     items.push({
-      q: '2. AUDUSD йўналиши?',
-      answer: audDir > 0.1 ? `yuqori ${audDir.toFixed(2)}%` : audDir < -0.1 ? `pasт ${audDir.toFixed(2)}%` : 'flat',
+      q: '2. AUDUSD yoʻnalishi?',
+      answer: audDir > 0.1 ? `yuqori ${audDir.toFixed(2)}%` : audDir < -0.1 ? `past ${audDir.toFixed(2)}%` : 'flat',
       signal: audDir > 0.1 ? 'bull' : audDir < -0.1 ? 'bear' : 'neutral',
       detail: 'AUD yuqori = oltin tasdiqlash',
     });
@@ -140,14 +140,14 @@ function buildDailyChecklist(currentTime) {
     detail: risk.why,
   });
 
-  // 4) JPY кучлилиги (safe-haven proxy)
+  // 4) JPY kuchliligi (safe-haven proxy)
   const jpyChg = ch('USDJPY', 20);
   if (jpyChg !== null) {
     items.push({
       q: '4. JPY (safe-haven)?',
-      answer: jpyChg < -0.2 ? `кучли (USDJPY ${jpyChg.toFixed(2)}%)` : 'oddiy',
+      answer: jpyChg < -0.2 ? `kuchli (USDJPY ${jpyChg.toFixed(2)}%)` : 'oddiy',
       signal: jpyChg < -0.2 ? 'bull' : 'neutral',
-      detail: 'JPY кучли = risk-off = oltin bullish',
+      detail: 'JPY kuchli = risk-off = oltin bullish',
     });
   }
 
@@ -162,29 +162,29 @@ function buildDailyChecklist(currentTime) {
       return t >= dayStart && t < dayEnd && (e.impact === 'high' || e.impact === 'High');
     });
     items.push({
-      q: '5. Бугун high-impact news?',
-      answer: todayEvents.length ? `${todayEvents.length} та: ${todayEvents.slice(0, 2).map(e => e.name).join(', ')}` : 'йўқ',
+      q: '5. Bugun high-impact news?',
+      answer: todayEvents.length ? `${todayEvents.length} ta: ${todayEvents.slice(0, 2).map(e => e.name).join(', ')}` : 'yoʻq',
       signal: 'neutral',
-      detail: todayEvents.length ? 'Эҳтиёт бўлинг, янгилик yaqin' : 'тоза кун',
+      detail: todayEvents.length ? 'Ehtiyot boʻling, yangilik yaqin' : 'toza kun',
     });
   }
 
-  // 6) Сеанс
+  // 6) Seans
   if (typeof detectSession === 'function') {
     const sess = detectSession(currentTime);
     items.push({
-      q: '6. Қайси сеанс?',
+      q: '6. Qaysi seans?',
       answer: sess.txt || sess.session,
       signal: sess.quality >= 0.8 ? 'bull' : sess.quality <= 0.4 ? 'bear' : 'neutral',
       detail: `Sifat: ${(sess.quality * 100).toFixed(0)}%`,
     });
   }
 
-  // 7) Регим (XAUUSD'нинг ўзи)
+  // 7) Regim (XAUUSD'ning oʻzi)
   if (ST.candles && ST.candles.length > 60 && typeof detectRegime === 'function') {
     const reg = detectRegime(ST.candles);
     items.push({
-      q: '7. XAUUSD режими?',
+      q: '7. XAUUSD rejimi?',
       answer: reg.kind,
       signal: reg.kind === 'CHOP' ? 'bear' : 'neutral',
       detail: `H=${reg.hurst?.toFixed(2)} ATR%=${(reg.atrPct * 100).toFixed(0)}%`,
@@ -206,8 +206,8 @@ function buildDailyChecklist(currentTime) {
   if (typeof detectWeeklyNarrative === 'function' && ST.candles && ST.candles.length > 200) {
     const wn = detectWeeklyNarrative(ST.candles, currentTime);
     items.push({
-      q: '9. Hafта narrative?',
-      answer: wn.expectThursdayReversal ? `Thu reversal kutилмоқда` : 'аниқ эмас',
+      q: '9. Hafta narrative?',
+      answer: wn.expectThursdayReversal ? `Thu reversal kutilmoqda` : 'aniq emas',
       signal: 'neutral',
       detail: wn.why,
     });
@@ -218,9 +218,9 @@ function buildDailyChecklist(currentTime) {
   const dow = new Date(now).getUTCDay();
   items.push({
     q: '10. Bugun Monday?',
-    answer: dow === 1 ? 'ҲА — эҳтиёт бўлинг' : 'йўқ',
+    answer: dow === 1 ? 'HA — ehtiyot boʻling' : 'yoʻq',
     signal: dow === 1 ? 'bear' : 'bull',
-    detail: dow === 1 ? 'TTrades qoidasi: Monday avoid' : 'савдо кунги',
+    detail: dow === 1 ? 'TTrades qoidasi: Monday avoid' : 'savdo kungi',
   });
 
   return items;
@@ -234,8 +234,8 @@ function scoreMacroContext(side, currentTime) {
   const risk = detectRiskRegime(currentTime);
   out.risk = risk;
   const isLong = side === 'L';
-  // Long: бизга RISK_OFF керак (gold safe haven)
-  // Short: бизга RISK_ON керак (gold bosимda)
+  // Long: bizga RISK_OFF kerak (gold safe haven)
+  // Short: bizga RISK_ON kerak (gold bosimda)
   if (isLong && risk.score > 0.3) {
     out.score = Math.round((CFG.wMacro || 4) * Math.min(1, risk.score));
     out.why = `Macro: RISK_OFF (${risk.score.toFixed(2)})`;
@@ -244,10 +244,10 @@ function scoreMacroContext(side, currentTime) {
     out.why = `Macro: RISK_ON (${risk.score.toFixed(2)})`;
   } else if (isLong && risk.score < -0.5) {
     out.score = -2;
-    out.why = `Macro: kuchli RISK_ON (qarши)`;
+    out.why = `Macro: kuchli RISK_ON (qarshi)`;
   } else if (!isLong && risk.score > 0.5) {
     out.score = -2;
-    out.why = `Macro: kuchli RISK_OFF (qarши)`;
+    out.why = `Macro: kuchli RISK_OFF (qarshi)`;
   }
   return out;
 }

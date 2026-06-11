@@ -16,7 +16,7 @@ export default function App() {
       if (st.connected) {
         e.preventDefault();
         e.returnValue =
-          'Тизим уланган. Чиқаётганингизга ишончингиз комилми? (Ҳолат сақланади — қайта улаш орқали тикланади)';
+          'Tizim ulangan. Chiqayotganingizga ishonchingiz komilmi? (Holat saqlanadi — qayta ulash orqali tiklanadi)';
         return e.returnValue;
       }
     };

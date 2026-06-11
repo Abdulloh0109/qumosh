@@ -23,8 +23,8 @@ export function V9DivCard() {
 
   return (
     <Card col={6} color="gold">
-      <CardTitle title="v9: Дивергенция + Асосий даражалар" acc="ICT Bible" />
-      <StrucRow name="Дивергенция">
+      <CardTitle title="v9: Divergentsiya + Asosiy darajalar" acc="ICT Bible" />
+      <StrucRow name="Divergentsiya">
         {allDivs.length ? (
           (() => {
             const types = [
@@ -107,8 +107,8 @@ export function V9SmtCard() {
 
   return (
     <Card col={6} color="purple">
-      <CardTitle title="v9: SMT + AMD + Блоклар + 🧠" acc="ICT + Psych" />
-      <StrucRow name="SMT дивергенцияси">
+      <CardTitle title="v9: SMT + AMD + Bloklar + 🧠" acc="ICT + Psych" />
+      <StrucRow name="SMT divergentsiyasi">
         {smt?.strongest ? (
           <Tag kind={smt.strongest.dir > 0 ? 'tag-good' : 'tag-bad'}>
             {smt.strongest.pair}: {smt.strongest.dir > 0 ? '↑' : '↓'}
@@ -117,7 +117,7 @@ export function V9SmtCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="AMD кун тури">
+      <StrucRow name="AMD kun turi">
         {amd ? (
           <Tag kind={amd.dir > 0 ? 'tag-good' : amd.dir < 0 ? 'tag-bad' : 'tag-neut'}>
             {amd.day || '—'}
@@ -126,7 +126,7 @@ export function V9SmtCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Breaker блоки">
+      <StrucRow name="Breaker bloki">
         {breaker ? (
           <Tag kind={breakerIsBull ? 'tag-good' : 'tag-bad'}>
             📦 {breakerIsBull ? 'BULL' : 'BEAR'} {breaker.top.toFixed(1)}
@@ -135,14 +135,14 @@ export function V9SmtCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Rejection блоки">
+      <StrucRow name="Rejection bloki">
         {recentRej.length ? (
           <Tag kind={rejIsBull ? 'tag-good' : 'tag-bad'}>🕯 {rejIsBull ? 'BULL' : 'BEAR'} wick</Tag>
         ) : (
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Психология ҳолати">
+      <StrucRow name="Psixologiya holati">
         {riskState ? (
           <Tag
             kind={
@@ -159,7 +159,7 @@ export function V9SmtCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Иқтибос">
+      <StrucRow name="Iqtibos">
         <span
           className="text-right font-mono text-[16px] font-bold"
           style={{ fontSize: 14, fontStyle: 'italic' }}
@@ -185,7 +185,10 @@ export function V9PsychList() {
   }
   return (
     <Card col={12}>
-      <CardTitle title="v9: Киришдан олдинги рўйхат (Mark Douglas + Falcon FX)" acc={data.state} />
+      <CardTitle
+        title="v9: Kirishdan oldingi roʻyxat (Mark Douglas + Falcon FX)"
+        acc={data.state}
+      />
       {data.warnings.length > 0 && (
         <div
           style={{
@@ -200,7 +203,7 @@ export function V9PsychList() {
           {data.warnings.join(' · ')}
         </div>
       )}
-      <ChecklistGrid items={data.items} placeholder="Битимлар бошлангач тўлади..." />
+      <ChecklistGrid items={data.items} placeholder="Bitimlar boshlangach toʻladi..." />
     </Card>
   );
 }

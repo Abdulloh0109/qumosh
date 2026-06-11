@@ -4,7 +4,6 @@ import { useLive, cfg } from '../app/hooks';
 import { changeTF, disconnect, exportData, importData } from '../app/controls';
 import { copyLog } from '../core/utils.js';
 import { cx } from '../app/cx';
-import { LangToggle } from '../app/lang';
 
 const TFS: [number, string][] = [
   [60, 'M1'],
@@ -89,20 +88,19 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-1.5">
-        <LangToggle />
-        <button className={BTN_ICON} title="Логни нусхалаш" onClick={() => copyLog()}>
+        <button className={BTN_ICON} title="Logni nusxalash" onClick={() => copyLog()}>
           📋
         </button>
         <button
           className={BTN_ICON}
-          title="Маълумотларни сақлаш (JSON юклаб олиш)"
+          title="Maʼlumotlarni saqlash (JSON yuklab olish)"
           onClick={() => exportData()}
         >
           💾
         </button>
         <button
           className={BTN_ICON}
-          title="JSON файлдан импорт қилиш"
+          title="JSON fayldan import qilish"
           onClick={() => fileRef.current?.click()}
         >
           📥
@@ -121,14 +119,14 @@ export function Header() {
         <button
           className={BTN_DANGER}
           onClick={() => {
-            toast.warning('Узишни тасдиқлайсизми?', {
+            toast.warning('Uzishni tasdiqlaysizmi?', {
               duration: Infinity,
-              action: { label: 'Ҳа, уз', onClick: () => disconnect() },
-              cancel: { label: 'Йўқ', onClick: () => {} },
+              action: { label: 'Ha, uz', onClick: () => disconnect() },
+              cancel: { label: 'Yoʻq', onClick: () => {} },
             });
           }}
         >
-          УЗИШ
+          UZISH
         </button>
       </div>
     </div>

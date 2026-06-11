@@ -2,11 +2,11 @@ import { CFG } from './state.js';
 import { CAL } from './calendar.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// NEWS ENGINE v1 — Янгиликни ўз-ўзидан таҳлил қилади (manual ввод йўқ)
+// NEWS ENGINE v1 — Yangilikni oʻz-oʻzidan tahlil qiladi (manual vvod yoʻq)
 // Source: ForexFactory XML (CAL.events)
 // ═══════════════════════════════════════════════════════════════════
 
-// Direction rules для XAUUSD
+// Direction rules dlya XAUUSD
 // dir = +1 → event "beat" (actual > forecast) → XAU bullish
 // dir = -1 → event "beat" → XAU bearish (USD strong)
 // dir = +0.5 / -0.5 → weak signal

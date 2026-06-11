@@ -28,21 +28,21 @@ export function HistoryTable() {
 
   return (
     <Card col={8}>
-      <CardTitle title="САВДО ТАРИХИ" acc={`${history.length} та`} />
+      <CardTitle title="SAVDO TARIXI" acc={`${history.length} ta`} />
       <div className="max-h-[240px] overflow-y-auto">
         <table className={HIST_TABLE}>
           <thead>
             <tr>
               <th>#</th>
-              <th>Вақт</th>
-              <th>Ё</th>
-              <th>Балл/T</th>
-              <th>Кириш</th>
+              <th>Vaqt</th>
+              <th>YO</th>
+              <th>Ball/T</th>
+              <th>Kirish</th>
               <th>SL</th>
               <th>TP3</th>
-              <th>Чиқиш</th>
+              <th>Chiqish</th>
               <th>R</th>
-              <th>Регим</th>
+              <th>Regim</th>
               <th>SMC</th>
             </tr>
           </thead>
@@ -50,7 +50,7 @@ export function HistoryTable() {
             {history.length === 0 ? (
               <tr>
                 <td colSpan={11} style={{ textAlign: 'center', color: 'var(--mute)', padding: 18 }}>
-                  Битимлар бўш
+                  Bitimlar boʻsh
                 </td>
               </tr>
             ) : (

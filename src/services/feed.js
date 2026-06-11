@@ -15,25 +15,25 @@ import { computeBaseIndicators, checkBarCloseExits, checkIntraBarExits, runSigna
 const WS_URL = 'wss://ws.binaryws.com/websockets/v3?app_id=1089';
 
 function wsConnect() {
-  log('WS', '🔌 Deriv-га уланмоқда...');
+  log('WS', '🔌 Deriv-ga ulanmoqda...');
   ST.ws = new WebSocket(WS_URL);
   ST.ws.onopen = () => {
-    log('WS', '✅ Уланди', 'app_id=1089');
+    log('WS', '✅ Ulandi', 'app_id=1089');
     ST.connected = true; setConnUI(true);
     requestAllHistory();
   };
   ST.ws.onmessage = (ev) => {
     let data;
     try { data = JSON.parse(ev.data); } catch (e) { return; }
-    if (data.error) { log('ERR', '❌ ' + (data.error.message || 'API хатоси'), data.error.code || ''); return; }
+    if (data.error) { log('ERR', '❌ ' + (data.error.message || 'API xatosi'), data.error.code || ''); return; }
     handleWsMessage(data);
   };
   ST.ws.onclose = () => {
-    log('WS', '⚠️ Алоқа узилди', 'қайта уланмоқда 3с');
+    log('WS', '⚠️ Aloqa uzildi', 'qayta ulanmoqda 3s');
     ST.connected = false; setConnUI(false);
     setTimeout(() => { if (!ST.connected) wsConnect(); }, 3000);
   };
-  ST.ws.onerror = () => log('ERR', '❌ WS хатоси');
+  ST.ws.onerror = () => log('ERR', '❌ WS xatosi');
 }
 
 function wsSend(obj) {
@@ -66,20 +66,20 @@ function requestAllHistory() {
     const r = wsSend({ticks_history:sym, adjust_start_time:1, count:CFG.countCorr, end:'latest', granularity:CFG.granularity, style:'candles', subscribe:1});
     ST._reqType[r] = 'feed:' + k;
   }
-  log('WS', '📡 10 та оқимга уланмоқда', `XAU(M15+M5) + ${Object.keys(SYMBOLS.feeds).length} корр`);
+  log('WS', '📡 10 ta oqimga ulanmoqda', `XAU(M15+M5) + ${Object.keys(SYMBOLS.feeds).length} korr`);
 }
 
 function handleWsMessage(data) {
   const reqType = ST._reqType?.[data.req_id];
   if (data.candles && reqType) {
     const arr = data.candles.map(c => ({epoch:c.epoch, o:+c.open, h:+c.high, l:+c.low, c:+c.close}));
-    if (reqType === 'primary') { ST.candles = arr; ST.lastPrice = arr[arr.length-1].c; log('INFO', `📊 ${arr.length} XAU шам`); }
-    else if (reqType === 'htf') { ST.candlesHTF = arr; log('INFO', `📊 ${arr.length} HTF шам`); }
+    if (reqType === 'primary') { ST.candles = arr; ST.lastPrice = arr[arr.length-1].c; log('INFO', `📊 ${arr.length} XAU sham`); }
+    else if (reqType === 'htf') { ST.candlesHTF = arr; log('INFO', `📊 ${arr.length} HTF sham`); }
     else if (reqType === 'm5') {
       // ⭐ v12: Push to M5_STATE
       if (typeof M5_STATE !== 'undefined') {
         M5_STATE.candles = arr;
-        log('INFO', `📊 ${arr.length} M5 шам`);
+        log('INFO', `📊 ${arr.length} M5 sham`);
       }
     }
     else if (reqType.startsWith('feed:')) { const k = reqType.split(':')[1]; ST.feeds[k] = arr; }
@@ -157,11 +157,11 @@ function checkWarmup() {
   if (feedReady < 5) return;
   if (!ST.warmedUp) {
     ST.warmedUp = true;
-    log('INFO', '✅ Тизим тайёр', `${ST.candles.length} XAU + ${feedReady}/8 корр`);
+    log('INFO', '✅ Tizim tayyor', `${ST.candles.length} XAU + ${feedReady}/8 korr`);
     initChart();
     seedChartData();
     buildCalendar().then(() => refreshNewsUI());
-    // Macro feeds DISABLED — synth DXY ишлатилади (96% мос)
+    // Macro feeds DISABLED — synth DXY ishlatiladi (96% mos)
     // ⭐ Restore active trade from previous session (browser refresh recovery)
     if (typeof restoreActiveTrade === 'function' && ST.condition === 0) {
       const restored = restoreActiveTrade();
@@ -190,7 +190,7 @@ function disconnect() {
     } catch(e) {}
   }
   setView('settings');
-  log('INFO', '🔌 Узилди');
+  log('INFO', '🔌 Uzildi');
 }
 
 export { WS_URL, wsConnect, wsSend, getHtfGranularity, requestAllHistory, handleWsMessage, upsertCandle, onPrimaryCandle, onHTFCandle, onFeedCandle, checkWarmup, disconnect };

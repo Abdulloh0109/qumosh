@@ -34,7 +34,7 @@ export function ChartPanel() {
     <div className="chart-wrap" ref={wrapRef}>
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex items-center gap-[7px] text-[16px] font-extrabold tracking-[2px] text-dim uppercase before:h-[11px] before:w-[3px] before:rounded-[2px] before:bg-cyan before:content-['']">
-          ЯПОНЧА ШАМЛАР · <span className="text-cyan">{tfLabel(cfg.granularity)}</span>
+          YAPONCHA SHAMLAR · <span className="text-cyan">{tfLabel(cfg.granularity)}</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <div className={CHART_MINI}>
@@ -57,10 +57,10 @@ export function ChartPanel() {
       <div className="mb-[7px] flex flex-wrap items-center gap-1 rounded-lg border border-white/[0.05] bg-black/[0.18] px-2 py-1.5">
         <button
           className="flex items-center gap-[5px] rounded-md border border-white/[0.09] bg-white/[0.04] px-[9px] py-[5px] font-sans text-[16px] font-bold tracking-[0.7px] text-dim uppercase transition duration-150 hover:border-white/[0.16] hover:bg-white/[0.08] hover:text-white"
-          title="Тўлиқ экран (ESC чиқиш)"
+          title="Toʻliq ekran (ESC chiqish)"
           onClick={() => toggleFullscreen()}
         >
-          <span className="[font-family:sans-serif] text-[16px] leading-none">⛶</span>Экран
+          <span className="[font-family:sans-serif] text-[16px] leading-none">⛶</span>Ekran
         </button>
       </div>
       <div className="chart-area">

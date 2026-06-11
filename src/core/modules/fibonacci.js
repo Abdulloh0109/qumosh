@@ -2,7 +2,7 @@ import { CFG } from '../state.js';
 
 // ═══════════════════════════════════════════════════════════════════
 // QUMASH v10 — FULL FIBONACCI SYSTEM
-// (FibonacciRetracementTradingStrategies.pdf + FIBONACCI_RETRACEMENT_GUIDE.pdf'дан)
+// (FibonacciRetracementTradingStrategies.pdf + FIBONACCI_RETRACEMENT_GUIDE.pdf'dan)
 // Globals: detectFibLevels, scoreFibonacci
 // ═══════════════════════════════════════════════════════════════════
 // Retracement levels (asosiy entry zones):
@@ -10,7 +10,7 @@ import { CFG } from '../state.js';
 // Extension levels (TP targets):
 //   127.2%, 161.8%, 261.8% (Golden Ratio = 1.618)
 //
-// Mavjud OTE filter faqat 62-79% — to'liq Fibonacci system эса:
+// Mavjud OTE filter faqat 62-79% — to'liq Fibonacci system esa:
 //   - Aniq retracement zonalarini topadi
 //   - TP'lar uchun extension levels
 //   - Bir nechta swing'lar combination

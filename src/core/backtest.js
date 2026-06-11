@@ -12,10 +12,10 @@ import {
 import { setBacktestProgress } from '../store/uiState.js';
 
 // ═══════════════════════════════════════════════════════════════════
-// QUMASH v7 — BACKTEST МОТОРИ (Reversal Hunter)
-// Битта мукаммал режим — тарихий маълумот бўйича симуляция қилади.
-// Жонли тизим билан **айни бир хил формула** ишлатилади (FVG, HTFEng,
-// candlestick — sliced candles'дан, look-ahead йўқ).
+// QUMASH v7 — BACKTEST MOTORI (Reversal Hunter)
+// Bitta mukammal rejim — tarixiy maʼlumot boʻyicha simulyatsiya qiladi.
+// Jonli tizim bilan **ayni bir xil formula** ishlatiladi (FVG, HTFEng,
+// candlestick — sliced candles'dan, look-ahead yoʻq).
 // ═══════════════════════════════════════════════════════════════════
 
 const BT = {
@@ -26,7 +26,7 @@ const BT = {
 
 async function runBacktest(opts = {}) {
   if (!ST.candles || ST.candles.length < 250) {
-    toast.warning('Маълумот етарли эмас. Бошида тизимни уланг ва ~5 минут кутинг.');
+    toast.warning('Maʼlumot etarli emas. Boshida tizimni ulang va ~5 minut kuting.');
     return;
   }
   if (BT.running) return;
@@ -34,10 +34,10 @@ async function runBacktest(opts = {}) {
   BT.progress = 0;
 
   const candles = ST.candles;
-  // HTF candles массив (агар backtest'да HTF Engulfing'ни ҳисоблаш керак бўлса)
+  // HTF candles massiv (agar backtest'da HTF Engulfing'ni hisoblash kerak boʻlsa)
   const htfCandlesAll = ST.candlesHTF || [];
 
-  log('BT', `▶ Backtest бошланди: REVERSAL HUNTER, ${candles.length} шам`);
+  log('BT', `▶ Backtest boshlandi: REVERSAL HUNTER, ${candles.length} sham`);
 
   const sim = {
     condition: 0, snap: null, slLine: 0,
@@ -141,9 +141,9 @@ async function runBacktest(opts = {}) {
       const struct = detectStructure(sliced);
       const ob = detectOrderBlocks(sliced, ind.atr);
       const ote = detectOTE(sliced);
-      // ⭐ FVG ва HTF Engulfing — backtest учун sliced'дан ҳисобланади (look-ahead йўқ)
+      // ⭐ FVG va HTF Engulfing — backtest uchun sliced'dan hisoblanadi (look-ahead yoʻq)
       const fvgs = detectFVGs(sliced, ind.atr);
-      // HTF candles'ни ҳам barTime'гача кесамиз
+      // HTF candles'ni ham barTime'gacha kesamiz
       let htfSliced = htfCandlesAll;
       if (htfCandlesAll.length > 0) {
         let endHtfIdx = htfCandlesAll.length - 1;
@@ -168,7 +168,7 @@ async function runBacktest(opts = {}) {
       const reversalL = hasReversalTrigger('L', sweep, struct, fvgs, ind, regime);
       const reversalS = hasReversalTrigger('S', sweep, struct, fvgs, ind, regime);
 
-      // ⭐ Score — sliced candles узатилади (look-ahead bias тузатилди)
+      // ⭐ Score — sliced candles uzatiladi (look-ahead bias tuzatildi)
       const scoreL = computeEurekaScore('L', ind, regime, sweep, corr, pd, ses, news, magnets, htf, struct, ob, ote, fvgs, htfEng, sliced);
       const scoreS = computeEurekaScore('S', ind, regime, sweep, corr, pd, ses, news, magnets, htf, struct, ob, ote, fvgs, htfEng, sliced);
 
@@ -177,7 +177,7 @@ async function runBacktest(opts = {}) {
       const mtfTh = 0.25;  // 0.4 → 0.25 (HTF align'i kamroq strict)
       const minDiff = CFG.minScoreDiff || 0;
 
-      // Tier: T2 фақат reversal trigger билан
+      // Tier: T2 faqat reversal trigger bilan
       const longTier = tierFor(scoreL.score, reversalL.length > 0);
       const shortTier = tierFor(scoreS.score, reversalS.length > 0);
 
@@ -206,7 +206,7 @@ async function runBacktest(opts = {}) {
       if (signalSide) {
         const isLong = signalSide === 'L';
         const entry = ind.close;
-        // ⭐ Smart SL — FVG → OB → ATR (live'дагидек)
+        // ⭐ Smart SL — FVG → OB → ATR (live'dagidek)
         let sl = isLong ? entry - ind.atr * CFG.slATR : entry + ind.atr * CFG.slATR;
         if (CFG.smartSLenabled && signalScore.breakdown && signalScore.breakdown._fvg) {
           const fvg = signalScore.breakdown._fvg;
@@ -229,7 +229,7 @@ async function runBacktest(opts = {}) {
         const tp1 = isLong ? entry + ind.atr*CFG.tp1ATR : entry - ind.atr*CFG.tp1ATR;
         const tp2 = isLong ? entry + ind.atr*CFG.tp2ATR : entry - ind.atr*CFG.tp2ATR;
         const tp3 = isLong ? entry + ind.atr*CFG.tp3ATR : entry - ind.atr*CFG.tp3ATR;
-        // Min R:R текшируви
+        // Min R:R tekshiruvi
         const rrEff = Math.abs(tp1 - entry) / slDistActual;
         if (rrEff < (CFG.minRR || 1.5)) continue;
 
@@ -237,7 +237,7 @@ async function runBacktest(opts = {}) {
           isLong, entry, sl, tp1, tp2, tp3, tp1Hit:false, tp2Hit:false,
           tier: signalTier.tier, score: signalScore.score, breakdown: {...signalScore.breakdown},
           regime: regime.kind, session: ses.session, entryTime: barTime,
-          atrAtEntry: ind.atr,           // R:R ҳисоблаш учун керак
+          atrAtEntry: ind.atr,           // R:R hisoblash uchun kerak
           triggers: signalTriggers || [],
         };
         sim.condition = isLong ? 1 : -1;
@@ -269,7 +269,7 @@ async function runBacktest(opts = {}) {
   BT.progress = 100;
   BT.running = false;
   BT.result = computeBacktestStats(sim, 'reversal');
-  log('BT', `✅ Тугатилди: ${sim.total} битим, WR ${(sim.rWinCount/Math.max(1,sim.total)*100).toFixed(1)}%, R сум ${sim.rSum.toFixed(2)}`);
+  log('BT', `✅ Tugatildi: ${sim.total} bitim, WR ${(sim.rWinCount/Math.max(1,sim.total)*100).toFixed(1)}%, R sum ${sim.rSum.toFixed(2)}`);
   return BT.result;
 }
 

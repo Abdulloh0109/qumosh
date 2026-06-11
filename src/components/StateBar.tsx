@@ -17,10 +17,10 @@ const STAGE = 'text-[16px] opacity-80 block mt-1 tracking-[1.3px] font-semibold'
 
 function stageText(cond: number): string {
   const a = Math.abs(cond);
-  if (a === 1.0) return '0/3 — TP1 кутилмоқда';
+  if (a === 1.0) return '0/3 — TP1 kutilmoqda';
   if (a === 1.1) return '1/3 — BE himoyada';
   if (a === 1.2) return '2/3 — Trailing';
-  return '3/3 — Тугади';
+  return '3/3 — Tugadi';
 }
 
 export function StateBar() {
@@ -34,13 +34,13 @@ export function StateBar() {
   return (
     <div className="mb-[10px] grid grid-cols-3 gap-1.5 max-md:grid-cols-1">
       <div className={cx(ITEM, isWait && ON.w)}>
-        КУТИЛМОҚДА<span className={STAGE}>{isWait ? 'сигнал излаяпти' : '—'}</span>
+        KUTILMOQDA<span className={STAGE}>{isWait ? 'signal izlayapti' : '—'}</span>
       </div>
       <div className={cx(ITEM, isLong && ON.l)}>
-        LONG ОЧИҚ<span className={STAGE}>{isLong ? stage : '—'}</span>
+        LONG OCHIQ<span className={STAGE}>{isLong ? stage : '—'}</span>
       </div>
       <div className={cx(ITEM, isShort && ON.s)}>
-        SHORT ОЧИҚ<span className={STAGE}>{isShort ? stage : '—'}</span>
+        SHORT OCHIQ<span className={STAGE}>{isShort ? stage : '—'}</span>
       </div>
     </div>
   );
