@@ -13,10 +13,10 @@ export function V11Panel() {
   let statusKind = 'tag-neut';
   if (activeList.length > 0) {
     if ((ndL?.score || 0) > 0 || (ndS?.score || 0) > 0) {
-      statusText = `ACTIVE ${ndL?.active ? '↑' : ''}${ndS?.active ? '↓' : ''}`;
+      statusText = `ФАОЛ ${ndL?.active ? '↑' : ''}${ndS?.active ? '↓' : ''}`;
       statusKind = (ndL?.score || 0) > 0 ? 'tag-good' : 'tag-bad';
     } else {
-      statusText = `${activeList.length} kuting`;
+      statusText = `${activeList.length} кутинг`;
       statusKind = 'tag-warn';
     }
   }
@@ -31,18 +31,18 @@ export function V11Panel() {
   return (
     <Card col={12} padStyle={{ border: '2px solid var(--gold)' }}>
       <CardTitle
-        title="v11: NEWS-DRIVEN SIGNAL ENGINE"
+        title="v11: ЯНГИЛИК АСОСИДА СИГНАЛ"
         acc={<Tag kind={statusKind}>{statusText}</Tag>}
       />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 6 }}>
         <div>
           <div style={{ fontSize: 14, color: 'var(--mute)', marginBottom: 4 }}>
-            ⏳ АКТИВ НEWS REACTIONS:
+            ⏳ ФАОЛ ЯНГИЛИК РЕАКЦИЯЛАРИ:
           </div>
           <div style={{ minHeight: 40 }}>
             {activeList.length === 0 ? (
               <div style={{ color: 'var(--mute)', fontSize: 14, padding: 4 }}>
-                Кучли news кутилмоқда...
+                Кучли янгилик кутилмоқда...
               </div>
             ) : (
               activeList.map((a, i) => {
@@ -78,12 +78,12 @@ export function V11Panel() {
               <Tag>—</Tag>
             )}
           </StrucRow>
-          <StrucRow name="Fib 50/61.8 levels">
+          <StrucRow name="Fib 50/61.8 даражалари">
             <StrucVal>
               {r ? `Fib50 ${r.fib50.toFixed(1)} · Fib618 ${r.fib618.toFixed(1)}` : '—'}
             </StrucVal>
           </StrucRow>
-          <StrucRow name="News Bonus">
+          <StrucRow name="Янгилик бонуси">
             <Tag kind={bonusKind}>{bonusText}</Tag>
           </StrucRow>
         </div>
@@ -99,10 +99,10 @@ export function V11Panel() {
           lineHeight: 1.5,
         }}
       >
-        🔄 <b>Жараён:</b> 🔴 USD news чиқади → 5 мин кутамиз → реакция кучи (ATR×2 = STRONG) →
-        50-61.8% Fib retracement'да entry → T+45 мин setup эскиради.
+        🔄 <b>Жараён:</b> 🔴 USD янгилиги чиқади → 5 мин кутамиз → реакция кучи (ATR×2 = STRONG) →
+        50-61.8% Fib retracement'да кириш → T+45 мин сетап эскиради.
         <br />
-        🎁 STRONG reaction = <b>+20 score bonus</b>, MILD reaction = +12.
+        🎁 STRONG реакция = <b>+20 балл бонус</b>, MILD реакция = +12.
       </div>
     </Card>
   );

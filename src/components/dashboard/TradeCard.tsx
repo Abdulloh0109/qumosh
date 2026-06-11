@@ -28,7 +28,7 @@ export function TradeCard() {
       <CardTitle title="АКТИВ САВДО" acc={has ? `${st.barsSinceEntry} бар` : '—'} />
       <div>
         <div className={cx(ROW_BASE, ROW_ENTRY)}>
-          <span className={LBL}>◆ Entry</span>
+          <span className={LBL}>◆ Кириш</span>
           <span className={cx(VAL_BASE, 'text-orange', 'mono')}>{v(snap?.entry)}</span>
         </div>
         <div className={cx(ROW_BASE, ROW_SL)}>

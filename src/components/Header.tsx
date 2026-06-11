@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { toast } from 'sonner';
 import { useLive, cfg } from '../app/hooks';
 import { changeTF, disconnect, exportData, importData } from '../app/controls';
 import { copyLog } from '../core/utils.js';
@@ -41,7 +42,7 @@ export function Header() {
   };
 
   return (
-    <div className="mb-[11px] flex flex-wrap items-center justify-between gap-[14px] rounded-2xl border border-white/[0.09] bg-white/[0.025] px-4 py-[9px] backdrop-blur-[10px]">
+    <div className="mb-[11px] flex flex-wrap items-center justify-between gap-[14px] rounded-lg border border-[#2b3139] bg-bg2 px-4 py-[9px]">
       <div className="flex flex-shrink-0 items-baseline gap-[10px]">
         <div className="text-[16px] leading-none font-black tracking-[-0.5px] md:text-[19px]">
           <span className="text-cyan glow-cyan">QUMASH</span>{' '}
@@ -120,7 +121,11 @@ export function Header() {
         <button
           className={BTN_DANGER}
           onClick={() => {
-            if (confirm('Узишни тасдиқлайсизми?')) disconnect();
+            toast.warning('Узишни тасдиқлайсизми?', {
+              duration: Infinity,
+              action: { label: 'Ҳа, уз', onClick: () => disconnect() },
+              cancel: { label: 'Йўқ', onClick: () => {} },
+            });
           }}
         >
           УЗИШ

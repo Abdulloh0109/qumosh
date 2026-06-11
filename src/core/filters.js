@@ -62,7 +62,7 @@ function detectLiquiditySweep(candles, atrNow) {
     return {detected:true, dir:-1, level:recentHigh, why:`Sell sweep @${recentHigh.toFixed(2)}`};
   if (last.l < recentLow && last.c > recentLow + closeBack && last.c > last.o)
     return {detected:true, dir:1, level:recentLow, why:`Buy sweep @${recentLow.toFixed(2)}`};
-  return {detected:false, dir:0, level:null, why:'нет'};
+  return {detected:false, dir:0, level:null, why:'йўқ'};
 }
 
 // ─── LAYER 3: DXY CORRELATION ────────────────────────────────────────

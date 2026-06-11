@@ -83,7 +83,7 @@ export function NewsForecast() {
       <div className={NEWS_LIST}>
         {events.length === 0 ? (
           <div className={NEWS_EMPTY}>
-            Бугун ивент йўқ
+            Бугун воқеа йўқ
             {CAL.source === 'pattern' ? ' (паттерн режим — 🔄 босиб синаб кўринг)' : ''}
           </div>
         ) : (
@@ -164,10 +164,10 @@ export function PastEvents() {
   const past = CAL.past as any[];
   return (
     <Card col={3}>
-      <CardTitle title="УТГАН ИВЕНТЛАР" acc={past.length} />
+      <CardTitle title="ЎТГАН ВОҚЕАЛАР" acc={past.length} />
       <div className={NEWS_LIST}>
         {past.length === 0 ? (
-          <div className={NEWS_EMPTY}>Ивент кутилмоқда</div>
+          <div className={NEWS_EMPTY}>Воқеа кутилмоқда</div>
         ) : (
           past.slice(0, 8).map((p, i) => {
             const dirIcon = p.direction === 'up' ? '↑' : p.direction === 'dn' ? '↓' : '═';

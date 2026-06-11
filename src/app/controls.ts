@@ -1,6 +1,7 @@
 // Imperative controls bridging React events to the trading core. Ported from
 // js/11-boot.js: timeframe switching, connect/disconnect, snapshot export/import,
 // and the periodic refresh / news auto-refresh timers — with DOM wiring removed.
+import { toast } from 'sonner';
 import { cfg, st } from '../store/engine';
 import { log } from '../core/utils.js';
 import { wsConnect, wsSend, requestAllHistory, disconnect } from '../services/feed.js';
@@ -195,68 +196,88 @@ export function exportData(): void {
   a.href = url;
   a.click();
   URL.revokeObjectURL(url);
-  alert('💾 Снапшот юклаб олинди.\n\nФайлни data/ папкасига кучиринг (керак бўлса).');
+  toast.success('💾 Снапшот юклаб олинди.', {
+    description: 'Файлни data/ папкасига кучиринг (керак бўлса).',
+  });
 }
 
 export function importData(file: File): void {
   const reader = new FileReader();
   reader.onload = (e) => {
+    let snap: any;
     try {
-      const snap = JSON.parse(String(e.target?.result));
-      if (snap.version !== 'qumash_v5_pro') {
-        if (!confirm('Бу файл версияси номаълум. Импорт қилаверайми?')) return;
-      }
-      if (snap.adaptWeights) {
-        Object.assign(st.adaptWeights, snap.adaptWeights);
-        try {
-          localStorage.setItem('qumash_v5_adapt', JSON.stringify(st.adaptWeights));
-        } catch {
-          /* noop */
-        }
-      }
-      if (Array.isArray(snap.adaptHistory)) st.adaptHistory = snap.adaptHistory;
-      if (Array.isArray(snap.history)) st.history = snap.history;
-      if (Array.isArray(snap.pastImpacts)) {
-        CAL.past = snap.pastImpacts;
-        try {
-          localStorage.setItem('qumash_past_impacts', JSON.stringify(CAL.past));
-        } catch {
-          /* noop */
-        }
-      }
-      if (Array.isArray(snap.drawShapes)) {
-        DRAW.shapes = snap.drawShapes;
-        try {
-          localStorage.setItem('qumash_v5_shapes', JSON.stringify(DRAW.shapes));
-        } catch {
-          /* noop */
-        }
-      }
-      if (Array.isArray(snap.customEvents)) {
-        try {
-          localStorage.setItem('qumash_custom_events', JSON.stringify(snap.customEvents));
-        } catch {
-          /* noop */
-        }
-      }
-      if (snap.cfg && typeof snap.cfg === 'object') {
-        try {
-          localStorage.setItem('qumash_v5_cfg', JSON.stringify(snap.cfg));
-        } catch {
-          /* noop */
-        }
-      }
-      if (snap.stats) {
-        Object.assign(st, snap.stats);
-      }
-      alert('✅ Импорт муваффақиятли. Тизимни қайта ишга туширсангиз ўзгаришлар тўлиқ ишлайди.');
-      log(
-        'INFO',
-        '📥 Импорт',
-        `weights:${Object.keys(snap.adaptWeights || {}).length}, history:${(snap.history || []).length}`,
-      );
+      snap = JSON.parse(String(e.target?.result));
     } catch (err) {
-      alert('❌ Импорт хатоси: ' + (err as Error).message);
+      toast.error('❌ Импорт хатоси: ' + (err as Error).message);
+      return;
+    }
+
+    const applyImport = () => {
+      try {
+        if (snap.adaptWeights) {
+          Object.assign(st.adaptWeights, snap.adaptWeights);
+          try {
+            localStorage.setItem('qumash_v5_adapt', JSON.stringify(st.adaptWeights));
+          } catch {
+            /* noop */
+          }
+        }
+        if (Array.isArray(snap.adaptHistory)) st.adaptHistory = snap.adaptHistory;
+        if (Array.isArray(snap.history)) st.history = snap.history;
+        if (Array.isArray(snap.pastImpacts)) {
+          CAL.past = snap.pastImpacts;
+          try {
+            localStorage.setItem('qumash_past_impacts', JSON.stringify(CAL.past));
+          } catch {
+            /* noop */
+          }
+        }
+        if (Array.isArray(snap.drawShapes)) {
+          DRAW.shapes = snap.drawShapes;
+          try {
+            localStorage.setItem('qumash_v5_shapes', JSON.stringify(DRAW.shapes));
+          } catch {
+            /* noop */
+          }
+        }
+        if (Array.isArray(snap.customEvents)) {
+          try {
+            localStorage.setItem('qumash_custom_events', JSON.stringify(snap.customEvents));
+          } catch {
+            /* noop */
+          }
+        }
+        if (snap.cfg && typeof snap.cfg === 'object') {
+          try {
+            localStorage.setItem('qumash_v5_cfg', JSON.stringify(snap.cfg));
+          } catch {
+            /* noop */
+          }
+        }
+        if (snap.stats) {
+          Object.assign(st, snap.stats);
+        }
+        toast.success(
+          '✅ Импорт муваффақиятли. Тизимни қайта ишга туширсангиз ўзгаришлар тўлиқ ишлайди.',
+        );
+        log(
+          'INFO',
+          '📥 Импорт',
+          `weights:${Object.keys(snap.adaptWeights || {}).length}, history:${(snap.history || []).length}`,
+        );
+      } catch (err) {
+        toast.error('❌ Импорт хатоси: ' + (err as Error).message);
+      }
+    };
+
+    if (snap.version !== 'qumash_v5_pro') {
+      toast.warning('Бу файл версияси номаълум. Импорт қилаверайми?', {
+        duration: Infinity,
+        action: { label: 'Ҳа, импорт', onClick: applyImport },
+        cancel: { label: 'Йўқ', onClick: () => {} },
+      });
+    } else {
+      applyImport();
     }
   };
   reader.readAsText(file);

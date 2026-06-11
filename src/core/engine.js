@@ -847,12 +847,12 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
     breakdown:scoreObj.breakdown, bothSrc:scoreObj.dual,
     epoch:ST.candles[ST.candles.length-1].epoch, time:nowMs(),
     regime:snap.regime.kind,
-    sweep:snap.sweep.detected ? snap.sweep.why : 'нет',
+    sweep:snap.sweep.detected ? snap.sweep.why : 'йўқ',
     corrVerdict:snap.corr.verdictTxt,
     pdZone:snap.pd.zone, pdPos:snap.pd.pos,
-    structEvent:snap.struct.event || 'нет',
-    obActive: isLong ? (snap.ob.activeBull ? `${snap.ob.activeBull.bot.toFixed(1)}-${snap.ob.activeBull.top.toFixed(1)}` : 'нет') : (snap.ob.activeBear ? `${snap.ob.activeBear.bot.toFixed(1)}-${snap.ob.activeBear.top.toFixed(1)}` : 'нет'),
-    inOTE: snap.ote.inOTE ? 'да' : 'йўқ',
+    structEvent:snap.struct.event || 'йўқ',
+    obActive: isLong ? (snap.ob.activeBull ? `${snap.ob.activeBull.bot.toFixed(1)}-${snap.ob.activeBull.top.toFixed(1)}` : 'йўқ') : (snap.ob.activeBear ? `${snap.ob.activeBear.bot.toFixed(1)}-${snap.ob.activeBear.top.toFixed(1)}` : 'йўқ'),
+    inOTE: snap.ote.inOTE ? 'ха' : 'йўқ',
     candlestickPattern: scoreObj.breakdown._patternName || null,
     fvgInfo: scoreObj.breakdown._fvg || null,
     htfEngBull: snap.htfEng?.bull || false,
@@ -918,7 +918,7 @@ function fireSignal(side, ind, scoreObj, tier, snap) {
   const htfTxt = (ST.snap.htfEngBull && isLong) || (ST.snap.htfEngBear && !isLong) ? ' 🔄HTF-Eng' : '';
   const trigTxt = triggers.length ? ` [${triggers.join('+')}]` : '';
   log('SIG', `${isLong?'🟢 BUY':'🔴 SELL'} @${fmtPx(entry)}`, `${tier.tier} ${scoreObj.score.toFixed(0)} ${tier.risk}% [${slType} 1:${ST.snap.rrEffective}R]${trigTxt}${patTxt}${fvgTxt}${htfTxt}`);
-  log('FILT', `${snap.regime.kind} | ${snap.sweep.detected?'SWEEP':'no'} | DXY:${snap.corr.verdict} | ${snap.pd.zone} | ${snap.ses.txt} | ${snap.struct.event||'-'} | OB:${ST.snap.obActive!=='нет'?'✓':'-'} | OTE:${ST.snap.inOTE}${patTxt}${fvgTxt}${htfTxt}`);
+  log('FILT', `${snap.regime.kind} | ${snap.sweep.detected?'SWEEP':'no'} | DXY:${snap.corr.verdict} | ${snap.pd.zone} | ${snap.ses.txt} | ${snap.struct.event||'-'} | OB:${ST.snap.obActive!=='йўқ'?'✓':'-'} | OTE:${ST.snap.inOTE}${patTxt}${fvgTxt}${htfTxt}`);
   ST.history.unshift({
     ts: new Date().toLocaleTimeString('uz-UZ', {hour12:false, hour:'2-digit', minute:'2-digit'}),
     side, score:scoreObj.score.toFixed(0), tier:tier.tier,

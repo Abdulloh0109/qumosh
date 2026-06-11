@@ -16,8 +16,8 @@ export function V8TtCard() {
 
   return (
     <Card col={6} color="gold">
-      <CardTitle title="v8: TTrades + Daily Profile" acc="PDF'лардан" />
-      <StrucRow name="TTrades Swing">
+      <CardTitle title="v8: TTrades + Кунлик профил" acc="PDF'лардан" />
+      <StrucRow name="TTrades свинг">
         {tt?.swing ? (
           <Tag kind={tt.dir > 0 ? 'tag-good' : 'tag-bad'}>
             {tt.dir > 0 ? '🟢↑' : '🔴↓'} {tt.swing.type}{' '}
@@ -36,19 +36,19 @@ export function V8TtCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Target -2 / -4">
+      <StrucRow name="Мақсад -2 / -4">
         <StrucVal>
           {tt?.targets?.t2 ? `${tt.targets.t2.toFixed(1)} / ${tt.targets.t4.toFixed(1)}` : '—'}
         </StrucVal>
       </StrucRow>
-      <StrucRow name="London диапазон">
+      <StrucRow name="London оралиғи">
         <StrucVal>
           {dp?.londonRange
             ? `${dp.londonRange.low.toFixed(1)}-${dp.londonRange.high.toFixed(1)} (${dp.londonRange.rangeSize.toFixed(1)})`
             : '—'}
         </StrucVal>
       </StrucRow>
-      <StrucRow name="Daily Profile">
+      <StrucRow name="Кунлик профил">
         {dp ? (
           <Tag
             kind={
@@ -66,7 +66,7 @@ export function V8TtCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Hafta narrative">
+      <StrucRow name="Ҳафта сюжети">
         <StrucVal>{weekly}</StrucVal>
       </StrucRow>
     </Card>
@@ -89,11 +89,11 @@ export function V8ChlCard() {
 
   return (
     <Card col={6} color="purple">
-      <CardTitle title="v8: Compression + HLQ + QMR + Macro" acc="SMC+Macro" />
-      <StrucRow name="Compression">
+      <CardTitle title="v8: Сиқилиш + HLQ + QMR + Macro" acc="SMC+Macro" />
+      <StrucRow name="Сиқилиш">
         {comp ? <Tag kind={comp.dir > 0 ? 'tag-good' : 'tag-bad'}>{comp.why}</Tag> : <Tag>—</Tag>}
       </StrucRow>
-      <StrucRow name="HLQ zones">
+      <StrucRow name="HLQ зоналари">
         <StrucVal>
           {hlq?.zones?.length
             ? `${hlq.zones.length} зона (${hlq.zones
@@ -103,10 +103,10 @@ export function V8ChlCard() {
             : '—'}
         </StrucVal>
       </StrucRow>
-      <StrucRow name="QMR pattern">
+      <StrucRow name="QMR патерни">
         {qmr ? <Tag kind={qmr.dir > 0 ? 'tag-good' : 'tag-bad'}>{qmr.why}</Tag> : <Tag>—</Tag>}
       </StrucRow>
-      <StrucRow name="Risk Regime">
+      <StrucRow name="Риск режими">
         {macroAny ? (
           <Tag
             kind={
@@ -123,16 +123,16 @@ export function V8ChlCard() {
           <Tag>—</Tag>
         )}
       </StrucRow>
-      <StrucRow name="Macro bias">
+      <StrucRow name="Макро мойиллик">
         <StrucVal>{macroAny?.why || '—'}</StrucVal>
       </StrucRow>
-      <StrucRow name="Monday rule">
+      <StrucRow name="Душанба қоидаси">
         {mondayDow ? (
           <Tag kind={cfg.mondayBlock ? 'tag-bad' : 'tag-neut'}>
-            {cfg.mondayBlock ? '🚫 АКТИВ (T2 блок)' : 'Monday — кузатинг'}
+            {cfg.mondayBlock ? '🚫 АКТИВ (T2 блок)' : 'Душанба — кузатинг'}
           </Tag>
         ) : (
-          <Tag kind="tag-good">Monday эмас</Tag>
+          <Tag kind="tag-good">Душанба эмас</Tag>
         )}
       </StrucRow>
     </Card>
@@ -154,10 +154,10 @@ export function V8Checklist() {
   return (
     <Card col={12}>
       <CardTitle
-        title="v8: Kunlik 10 ta tekshiruv (Kathy Lien + TTrades)"
+        title="v8: Кунлик 10 та текширув (Kathy Lien + TTrades)"
         acc={items.length ? acc : '—'}
       />
-      <ChecklistGrid items={items} placeholder="Tizim ишга tushgandан кейин avtomatik to'lади..." />
+      <ChecklistGrid items={items} placeholder="Тизим ишга тушгандан кейин автоматик тўлади..." />
     </Card>
   );
 }

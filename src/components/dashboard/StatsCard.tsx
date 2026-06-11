@@ -41,12 +41,16 @@ export function StatsCard() {
       <CardTitle title="СТАТИСТИКА (ҲАЛОЛ)" acc={expTag} />
       <div className={STAT_GRID}>
         <Cell label="Жами" value={String(st.total)} />
-        <Cell label="TRUE WR" value={trueWR !== null ? `${trueWR.toFixed(0)}%` : '—'} cls="neut" />
-        <Cell label="BE Rate" value={beRate !== null ? `${beRate.toFixed(0)}%` : '—'} />
-        <Cell label="Loss Rate" value={lr !== null ? `${lr.toFixed(0)}%` : '—'} cls="bad" />
-        <Cell label="Avg Win" value={avgW !== null ? `+${avgW.toFixed(2)}R` : '—'} cls="good" />
-        <Cell label="Avg Loss" value={avgL !== null ? `-${avgL.toFixed(2)}R` : '—'} cls="bad" />
-        <Cell label="Expectancy" value={expTag} cls={expCls} />
+        <Cell
+          label="Ҳақиқий WR"
+          value={trueWR !== null ? `${trueWR.toFixed(0)}%` : '—'}
+          cls="neut"
+        />
+        <Cell label="BE даражаси" value={beRate !== null ? `${beRate.toFixed(0)}%` : '—'} />
+        <Cell label="Зарар даражаси" value={lr !== null ? `${lr.toFixed(0)}%` : '—'} cls="bad" />
+        <Cell label="Ўрт. ютуқ" value={avgW !== null ? `+${avgW.toFixed(2)}R` : '—'} cls="good" />
+        <Cell label="Ўрт. зарар" value={avgL !== null ? `-${avgL.toFixed(2)}R` : '—'} cls="bad" />
+        <Cell label="Кутилма" value={expTag} cls={expCls} />
         <Cell
           label="Бугун"
           value={`${st.todayR >= 0 ? '+' : ''}${st.todayR.toFixed(1)}R`}

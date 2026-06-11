@@ -9,6 +9,13 @@ import {
 } from '../app/settings';
 import { connect, shouldAutoReconnect } from '../app/controls';
 import { LangToggle } from '../app/lang';
+import { cx } from '../app/cx';
+import gbFlag from 'flag-icons/flags/4x3/gb.svg';
+import usFlag from 'flag-icons/flags/4x3/us.svg';
+import jpFlag from 'flag-icons/flags/4x3/jp.svg';
+
+/** Only the flags we actually use — bundling the full flag-icons CSS would pull in ~260 SVGs. */
+const FLAG_SRC: Record<string, string> = { gb: gbFlag, us: usFlag, jp: jpFlag };
 
 const SECTION_H =
   "mt-5 mb-[11px] flex items-center gap-2 border-b border-white/[0.05] pb-1.5 text-[16px] font-semibold uppercase tracking-[1px] text-dim before:h-[11px] before:w-[3px] before:rounded-[2px] before:bg-cyan before:content-['']";
@@ -42,26 +49,195 @@ interface RegimeMeta {
 }
 const REGIMES: RegimeMeta[] = [
   { key: 'TREND_UP', icon: '📈', name: 'TREND UP', hint: '(yuqori)' },
-  { key: 'TREND_DN', icon: '📉', name: 'TREND DN', hint: '(пастка)' },
+  { key: 'TREND_DN', icon: '📉', name: 'TREND DN', hint: '(пастга)' },
   { key: 'RANGE', icon: '═', name: 'RANGE', hint: '(чегарада)' },
   { key: 'CHOP', icon: '⊿', name: 'CHOP', hint: '(чалкаш)' },
 ];
 
+type SessionQuality = 'best' | 'good' | 'neutral' | 'warn';
 interface SessionMeta {
   key: SessionKey;
-  label: string;
-  hint: string;
+  /** ISO 3166-1 alpha-2 codes → flag-icons SVG (real flags; emoji flags don't render on Windows). */
+  cc?: string[];
+  /** Fallback icon for non-country sessions (lunch / Friday / late). */
+  emoji?: string;
+  name: string;
+  time?: string;
+  tz?: string;
+  quality: SessionQuality;
+  note?: string;
 }
 const SESSIONS: SessionMeta[] = [
-  { key: 'LONDON', label: '🇬🇧 Лондон', hint: '12:00-15:00 UZT ✅' },
-  { key: 'OVERLAP', label: '🌍 Лондон+NY', hint: '17:30-20:30 UZT ⭐' },
-  { key: 'NY', label: '🇺🇸 NY', hint: '20:30-22:00 UZT ✅' },
-  { key: 'NY_AFTER', label: 'NY кейин', hint: '22:00+ ⚠ -7R' },
-  { key: 'ASIA', label: '🇯🇵 Осиё', hint: '05:00-12:00 UZT' },
-  { key: 'LUNCH', label: '🍽 Туш', hint: '15:00-17:30 ⚠ -4R' },
-  { key: 'FRI_LATE', label: 'Жума охири', hint: '⚠ риск' },
-  { key: 'LATE', label: 'Кеч', hint: '22:00-05:00 UZT' },
+  { key: 'LONDON', cc: ['gb'], name: 'Лондон', time: '12:00–15:00', tz: 'UZT', quality: 'good' },
+  {
+    key: 'OVERLAP',
+    cc: ['gb', 'us'],
+    name: 'Лондон+Нью-Йорк',
+    time: '17:30–20:30',
+    tz: 'UZT',
+    quality: 'best',
+  },
+  { key: 'NY', cc: ['us'], name: 'Нью-Йорк', time: '20:30–22:00', tz: 'UZT', quality: 'good' },
+  {
+    key: 'NY_AFTER',
+    cc: ['us'],
+    name: 'Нью-Йорк кейин',
+    time: '22:00+',
+    tz: 'UZT',
+    quality: 'warn',
+    note: '-7R',
+  },
+  { key: 'ASIA', cc: ['jp'], name: 'Осиё', time: '05:00–12:00', tz: 'UZT', quality: 'neutral' },
+  {
+    key: 'LUNCH',
+    emoji: '🍽',
+    name: 'Туш',
+    time: '15:00–17:30',
+    tz: 'UZT',
+    quality: 'warn',
+    note: '-4R',
+  },
+  { key: 'FRI_LATE', emoji: '📅', name: 'Жума охири', quality: 'warn', note: 'риск' },
+  { key: 'LATE', emoji: '🌙', name: 'Кеч', time: '22:00–05:00', tz: 'UZT', quality: 'neutral' },
 ];
+
+/** Quality → visual accent (Binance-yellow theme: best=gold⭐, good=green✓, warn=red⚠). */
+const SESS_Q: Record<
+  SessionQuality,
+  { bar: string; badge: string; badgeCls: string; active: string; box: string }
+> = {
+  best: {
+    bar: 'bg-gold',
+    badge: '⭐',
+    badgeCls: 'bg-gold/20 text-gold',
+    active: 'border-gold/55 bg-gold/[0.08] shadow-[0_0_18px_-8px_var(--color-gold)]',
+    box: 'border-gold bg-gold',
+  },
+  good: {
+    bar: 'bg-green',
+    badge: '✓',
+    badgeCls: 'bg-green/[0.18] text-green',
+    active: 'border-green/50 bg-green/[0.07]',
+    box: 'border-green bg-green',
+  },
+  neutral: {
+    bar: 'bg-mute',
+    badge: '',
+    badgeCls: '',
+    active: 'border-cyan/50 bg-cyan/[0.07]',
+    box: 'border-cyan bg-cyan',
+  },
+  warn: {
+    bar: 'bg-red',
+    badge: '⚠',
+    badgeCls: 'bg-red/[0.18] text-red',
+    active: 'border-red/45 bg-red/[0.06]',
+    box: 'border-red bg-red',
+  },
+};
+
+/** Rich, colour-coded trading-session toggle: flag + name + quality badge on
+    top, clock + time + timezone (and any risk note) below. State-driven by `checked`. */
+function SessionCard({
+  ss,
+  checked,
+  onChange,
+}: {
+  ss: SessionMeta;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  const q = SESS_Q[ss.quality];
+  return (
+    <label
+      className={cx(
+        'group relative flex cursor-pointer flex-col gap-1.5 overflow-hidden rounded-md border py-2.5 pr-2.5 pl-3.5 transition',
+        'has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-cyan/40',
+        checked ? q.active : 'border-[#2b3139] bg-bg3/40 hover:border-[#383f49] hover:bg-bg3/70',
+      )}
+    >
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="sr-only"
+      />
+      {/* quality accent bar */}
+      <span
+        className={cx(
+          'absolute top-0 left-0 h-full w-[3px] transition-opacity',
+          q.bar,
+          checked ? 'opacity-100' : 'opacity-40',
+        )}
+      />
+      {/* row 1: checkbox · flag · name · quality badge */}
+      <div className="flex items-center gap-2">
+        <span
+          className={cx(
+            'flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[4px] border text-[12px] font-black transition',
+            checked ? cx(q.box, 'text-bg1') : 'border-[#383f49] bg-white/[0.03] text-transparent',
+          )}
+        >
+          ✓
+        </span>
+        <span
+          className={cx(
+            'flex shrink-0 items-center gap-0.5 transition',
+            checked ? 'opacity-100 grayscale-0' : 'opacity-70 grayscale-[0.55]',
+          )}
+        >
+          {ss.cc ? (
+            ss.cc.map((c) => (
+              <img
+                key={c}
+                src={FLAG_SRC[c]}
+                alt={c.toUpperCase()}
+                className="h-[15px] w-[20px] rounded-[2px] object-cover shadow-[0_0_0_1px_rgba(0,0,0,0.4)]"
+              />
+            ))
+          ) : (
+            <span className="text-[17px] leading-none">{ss.emoji}</span>
+          )}
+        </span>
+        <span
+          className={cx(
+            'text-[15px] font-semibold transition',
+            checked ? 'text-text' : 'text-text2',
+          )}
+        >
+          {ss.name}
+        </span>
+        {q.badge && (
+          <span
+            className={cx(
+              'ml-auto rounded px-1.5 py-[2px] text-[12px] leading-none font-bold',
+              q.badgeCls,
+            )}
+          >
+            {q.badge}
+          </span>
+        )}
+      </div>
+      {/* row 2: clock · time · timezone · risk note */}
+      <div className="flex items-center gap-1.5 pl-[26px] font-mono text-[12.5px] leading-none">
+        {ss.time ? (
+          <>
+            <span className="text-[12px] opacity-60">🕐</span>
+            <span className={checked ? 'text-text2' : 'text-dim'}>{ss.time}</span>
+            {ss.tz && <span className="text-[11px] text-mute">{ss.tz}</span>}
+          </>
+        ) : (
+          <span className="text-[12px] text-mute">ҳафта якуни</span>
+        )}
+        {ss.note && (
+          <span className="ml-auto rounded bg-red/10 px-1.5 py-[2px] text-[11.5px] font-bold text-red">
+            {ss.note}
+          </span>
+        )}
+      </div>
+    </label>
+  );
+}
 
 export function SettingsPanel() {
   const [s, setS] = useState<Settings>(loadSettings);
@@ -87,7 +263,7 @@ export function SettingsPanel() {
   return (
     <div
       id="settingsPanel"
-      className="mb-6 w-full rounded-[18px] border border-white/[0.09] bg-white/[0.04] px-[34px] py-[30px] backdrop-blur-[14px] max-md:mx-auto max-md:my-3 max-md:px-4 max-md:py-[22px]"
+      className="mb-6 w-full rounded-lg border border-[#2b3139] bg-bg2 px-[34px] py-[30px] max-md:mx-auto max-md:my-3 max-md:px-4 max-md:py-[22px]"
     >
       <div className="mb-3 flex justify-end">
         <LangToggle />
@@ -95,15 +271,17 @@ export function SettingsPanel() {
       <h1 className="mb-1.5 text-[30px] leading-[1.1] font-black tracking-[-0.7px]">
         <span className="text-cyan glow-cyan">QUMASH</span>{' '}
         <span className="text-gold glow-gold">REVERSAL HUNTER</span>{' '}
-        <span className="ml-2 inline-block rounded bg-[linear-gradient(135deg,var(--color-cyan),var(--color-blue))] px-2 py-[3px] align-middle text-[10px] font-extrabold tracking-[1.4px] text-white">
+        <span className="ml-2 inline-block rounded bg-cyan px-2 py-[3px] align-middle text-[10px] font-extrabold tracking-[1.4px] text-bg1">
           v7
         </span>
       </h1>
       <div className="mt-[9px] mb-[22px] text-[16px] leading-[1.55] text-dim [&_b]:font-semibold [&_b]:text-cyan">
-        <b>14 қатламли филтр + Reversal triggers (Sweep / FVG / CHoCH / MSS) + Auto News Mode</b>
+        <b>
+          14 қатламли филтр + Бурилиш триггерлари (Sweep / FVG / CHoCH / MSS) + Авто-янгилик режими
+        </b>
         <br />
-        Битта мукаммал тунинг қилинган режим. Smart SL — FVG/OB edge'ига; min R:R 1:3. T1 (≥60), T2
-        (≥45 + reversal). Sигналлар муҳим янгиликларда ҳам автоматик ишлайди.
+        Битта мукаммал созланган режим. Smart SL — FVG/OB четига; min R:R 1:3. T1 (≥60), T2 (≥45 +
+        бурилиш). Сигналлар муҳим янгиликларда ҳам автоматик ишлайди.
       </div>
 
       <div className={SECTION_H}>МАЪЛУМОТ МАНБАСИ</div>
@@ -158,19 +336,19 @@ export function SettingsPanel() {
       <div className="grid [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))] gap-2">
         <Toggle
           id="setNewsBlock"
-          label="Янгилик blackout (high-impact ивентлар)"
+          label="Янгилик блоки (юқори таъсирли воқеалар)"
           checked={s.newsBlock}
           onChange={(v) => set('newsBlock', v)}
         />
         <Toggle
           id="setSessionFilter"
-          label="Кам сифатли сеанс блокировка"
+          label="Кам сифатли сеансни блоклаш"
           checked={s.sessionFilter}
           onChange={(v) => set('sessionFilter', v)}
         />
         <Toggle
           id="setAdaptive"
-          label="Adaptive scoring (ўз-ўзини ривожлантириш)"
+          label="Мослашувчан баҳолаш (ўз-ўзини ривожлантириш)"
           checked={s.adaptive}
           onChange={(v) => set('adaptive', v)}
         />
@@ -185,159 +363,158 @@ export function SettingsPanel() {
         ))}
       </div>
       <div className="py-[5px] text-[16px] leading-[1.5] text-dim">
-        💡 XAU bullish трендда — TREND_DN режимдаги SHORT сигналлар кўпинча ёлғон. Backtest'дан
+        💡 XAU ўсувчи трендда — TREND_DN режимдаги SHORT сигналлар кўпинча ёлғон. Backtest бўйича
         қарши режимни ўчиринг.
       </div>
 
       <div className={SECTION_H}>ҚАЙСИ СЕАНСДА СИГНАЛ ҚАБУЛ ҚИЛИШ</div>
-      <div className="grid grid-cols-4 gap-1.5 max-md:grid-cols-2">
+      <div className="grid grid-cols-4 gap-2 max-md:grid-cols-2">
         {SESSIONS.map((ss) => (
-          <SessChk
+          <SessionCard
             key={ss.key}
+            ss={ss}
             checked={s.sessions[ss.key]}
             onChange={(v) => setSession(ss.key, v)}
-          >
-            {ss.label} <small className="text-[16px]">{ss.hint}</small>
-          </SessChk>
+          />
         ))}
       </div>
       <div className="py-[5px] text-[16px] leading-[1.5] text-dim">
-        💡 Тошкент вақтида (UTC+5). Энг яхши: <b className="text-green">17:30-22:00</b> (Лондон+NY
-        overlap + NY).
+        💡 Тошкент вақтида (UTC+5). Энг яхши: <b className="text-green">17:30-22:00</b>{' '}
+        (Лондон+Нью-Йорк кесишуви + Нью-Йорк).
       </div>
 
       <div className={SECTION_H}>v8: PDF МОДУЛЛАР (TTrades, Hanzo, 5SOP, Kathy Lien)</div>
       <div className="grid grid-cols-4 gap-2 max-md:grid-cols-2">
         <Toggle
           id="setTTrades"
-          label="🎯 TTrades CISD (C2/C3 swing + projections)"
+          label="🎯 TTrades CISD (C2/C3 свинг + проекциялар)"
           checked={s.ttrades}
           onChange={(v) => set('ttrades', v)}
         />
         <Toggle
           id="setDailyProfile"
-          label="🇬🇧🇺🇸 Daily Profile (London/NY Reversal)"
+          label="🇬🇧🇺🇸 Кунлик профил (London/New York бурилиши)"
           checked={s.dailyProfile}
           onChange={(v) => set('dailyProfile', v)}
         />
         <Toggle
           id="setMondayBlock"
-          label="🚫 Monday rule (T2'ни Monday'да блок)"
+          label="🚫 Душанба қоидаси (T2'ни душанбада блок)"
           checked={s.mondayBlock}
           onChange={(v) => set('mondayBlock', v)}
         />
         <Toggle
           id="setCompression"
-          label="🌀 Compression (Hanzo Shadow Codes)"
+          label="🌀 Сиқилиш (Hanzo Shadow Codes)"
           checked={s.compression}
           onChange={(v) => set('compression', v)}
         />
         <Toggle
           id="setHLQ"
-          label="🔥 HLQ Confluence (OB+FVG+EQ)"
+          label="🔥 HLQ уйғунлиги (OB+FVG+EQ)"
           checked={s.hlq}
           onChange={(v) => set('hlq', v)}
         />
         <Toggle
           id="setQMR"
-          label="📐 QMR Pattern (Quasimodo Reversal)"
+          label="📐 QMR патерни (Quasimodo Reversal)"
           checked={s.qmr}
           onChange={(v) => set('qmr', v)}
         />
         <Toggle
           id="setMacro"
-          label="🌍 Macro Context (Risk-Off/On regime)"
+          label="🌍 Макро контекст (Risk-Off/On режими)"
           checked={s.macro}
           onChange={(v) => set('macro', v)}
         />
       </div>
 
-      <div className={SECTION_H}>v9: ICT BIBLE + DIVERGENCE + MMXM + PSYCHOLOGY</div>
+      <div className={SECTION_H}>v9: ICT BIBLE + ДИВЕРГЕНЦИЯ + MMXM + ПСИХОЛОГИЯ</div>
       <div className="grid grid-cols-4 gap-2 max-md:grid-cols-2">
         <Toggle
           id="setDivergence"
-          label="🔥 Divergence Engine (RSI/MACD T1+T2+Stinger)"
+          label="🔥 Дивергенция механизми (RSI/MACD T1+T2+Stinger)"
           checked={s.divergence}
           onChange={(v) => set('divergence', v)}
         />
         <Toggle
           id="setKeyLevels"
-          label="📍 ICT Key Levels (PDH/PDL/PWH/PWL+Midnight Open)"
+          label="📍 ICT асосий даражалар (PDH/PDL/PWH/PWL+Midnight Open)"
           checked={s.keyLevels}
           onChange={(v) => set('keyLevels', v)}
         />
         <Toggle
           id="setSMT"
-          label="📊 SMT Divergence (XAU vs AUD/EUR)"
+          label="📊 SMT дивергенцияси (XAU vs AUD/EUR)"
           checked={s.smt}
           onChange={(v) => set('smt', v)}
         />
         <Toggle
           id="setAMD"
-          label="⚡ AMD Power of 3 (Asia/London/NY)"
+          label="⚡ AMD Power of 3 (Осиё/London/New York)"
           checked={s.amd}
           onChange={(v) => set('amd', v)}
         />
         <Toggle
           id="setICTBlocks"
-          label="📦 ICT Blocks (Breaker + Rejection)"
+          label="📦 ICT блоклари (Breaker + Rejection)"
           checked={s.ictBlocks}
           onChange={(v) => set('ictBlocks', v)}
         />
         <Toggle
           id="setPsychBlock"
-          label="🧠 Psychology Block (drawdown'да entry ўчирилади)"
+          label="🧠 Психология блоки (drawdown'да кириш ўчирилади)"
           checked={s.psychBlock}
           onChange={(v) => set('psychBlock', v)}
         />
       </div>
 
-      <div className={SECTION_H}>v10: CHART PATTERNS + FIBONACCI + INDUCEMENT</div>
+      <div className={SECTION_H}>v10: ГРАФИК ШАКЛЛАР + ФИБОНАЧЧИ + INDUCEMENT</div>
       <div className="grid [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))] gap-2">
         <Toggle
           id="setChartPatterns"
-          label="📐 Classical Chart Patterns (H&S, Double Top/Bot, Wedge, Triangle, Flag)"
+          label="📐 Классик график шакллар (H&S, Double Top/Bot, Wedge, Triangle, Flag)"
           checked={s.chartPatterns}
           onChange={(v) => set('chartPatterns', v)}
         />
         <Toggle
           id="setFibonacci"
-          label="📏 Full Fibonacci System (retracement + extension)"
+          label="📏 Тўлиқ Фибоначчи тизими (retracement + extension)"
           checked={s.fibonacci}
           onChange={(v) => set('fibonacci', v)}
         />
         <Toggle
           id="setInducement"
-          label="🎯 Inducement + Algo Candle (sifatли entry filter)"
+          label="🎯 Inducement + Algo Candle (сифатли кириш фильтри)"
           checked={s.inducement}
           onChange={(v) => set('inducement', v)}
         />
       </div>
 
-      <div className={SECTION_H}>v11–v12: NEWS-DRIVEN + M5 INTRADAY + OVERRIDE</div>
+      <div className={SECTION_H}>v11–v12: ЯНГИЛИК САВДОСИ + M5 КУН ИЧИ + УСТУНЛИК</div>
       <div className="grid grid-cols-3 gap-2 max-md:grid-cols-1">
         <Toggle
           id="setNewsDriven"
-          label="📰 News-Driven Trade Mode (5 мин кутиб news+тех анализ)"
+          label="📰 Янгилик асосида савдо режими (5 мин кутиб янгилик+техник таҳлил)"
           checked={s.newsDriven}
           onChange={(v) => set('newsDriven', v)}
         />
         <Toggle
           id="setM5"
-          label="⚡ M5 Intraday Reversal Detection (микро-CHoCH/sweep/FVG)"
+          label="⚡ M5 кун ичи бурилишни аниқлаш (микро-CHoCH/sweep/FVG)"
           checked={s.m5}
           onChange={(v) => set('m5', v)}
         />
         <Toggle
           id="setOverride"
-          label="🟢 Override Hierarchy (кучли модел trigger weak filter'ни bosib o'tadi)"
+          label="🟢 Устунлик иерархияси (кучли модел триггери заиф фильтрни босиб ўтади)"
           checked={s.override}
           onChange={(v) => set('override', v)}
         />
       </div>
 
       <button
-        className="mt-3.5 w-full cursor-pointer rounded-xl bg-[linear-gradient(135deg,var(--color-cyan),var(--color-blue))] p-3.5 font-sans text-[15px] font-extrabold tracking-[1.2px] text-white transition duration-200 hover:-translate-y-px hover:brightness-[1.18]"
+        className="mt-3.5 w-full cursor-pointer rounded-lg bg-cyan p-3.5 font-sans text-[15px] font-extrabold tracking-[1.2px] text-bg1 transition duration-200 hover:bg-gold hover:brightness-105"
         onClick={() => connect(s)}
       >
         DERIV'ГА УЛАНИШ ВА БОШЛАШ
@@ -356,7 +533,7 @@ export function SettingsPanel() {
         className="mt-2 cursor-pointer border-none bg-none text-[16px] text-dim"
         onClick={() => setS(structuredClone(DEFAULT_SETTINGS))}
       >
-        ↺ Default sozlamalar
+        ↺ Стандарт созламалар
       </button>
     </div>
   );

@@ -36,8 +36,8 @@ export function HistoryTable() {
               <th>#</th>
               <th>Вақт</th>
               <th>Ё</th>
-              <th>Score/T</th>
-              <th>Entry</th>
+              <th>Балл/T</th>
+              <th>Кириш</th>
               <th>SL</th>
               <th>TP3</th>
               <th>Чиқиш</th>

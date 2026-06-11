@@ -73,13 +73,13 @@ function handleWsMessage(data) {
   const reqType = ST._reqType?.[data.req_id];
   if (data.candles && reqType) {
     const arr = data.candles.map(c => ({epoch:c.epoch, o:+c.open, h:+c.high, l:+c.low, c:+c.close}));
-    if (reqType === 'primary') { ST.candles = arr; ST.lastPrice = arr[arr.length-1].c; log('INFO', `📊 ${arr.length} XAU свеча`); }
-    else if (reqType === 'htf') { ST.candlesHTF = arr; log('INFO', `📊 ${arr.length} HTF свеча`); }
+    if (reqType === 'primary') { ST.candles = arr; ST.lastPrice = arr[arr.length-1].c; log('INFO', `📊 ${arr.length} XAU шам`); }
+    else if (reqType === 'htf') { ST.candlesHTF = arr; log('INFO', `📊 ${arr.length} HTF шам`); }
     else if (reqType === 'm5') {
       // ⭐ v12: Push to M5_STATE
       if (typeof M5_STATE !== 'undefined') {
         M5_STATE.candles = arr;
-        log('INFO', `📊 ${arr.length} M5 свеча`);
+        log('INFO', `📊 ${arr.length} M5 шам`);
       }
     }
     else if (reqType.startsWith('feed:')) { const k = reqType.split(':')[1]; ST.feeds[k] = arr; }

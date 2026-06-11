@@ -32,7 +32,7 @@ export function ScoreCard() {
 
   return (
     <Card col={3} color="gold">
-      <CardTitle title="SCORE" acc={`${bestSide} ${bestScore.toFixed(0)} (${bestTier.tier})`} />
+      <CardTitle title="БАЛЛ" acc={`${bestSide} ${bestScore.toFixed(0)} (${bestTier.tier})`} />
       <div className="grid grid-cols-2 gap-[7px]">
         <div className={cx(sideBase, bestSide === 'LONG' && 'border-cyan')}>
           <div className={lblBase} style={{ color: 'var(--green)' }}>

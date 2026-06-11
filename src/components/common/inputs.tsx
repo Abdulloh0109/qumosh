@@ -27,7 +27,7 @@ export function Toggle({ id, label, checked, onChange }: ToggleProps) {
           onChange={(e) => onChange(e.target.checked)}
           className="peer sr-only"
         />
-        <span className="h-[22px] w-[40px] rounded-full bg-white/[0.12] transition-colors duration-200 peer-checked:bg-[linear-gradient(135deg,var(--color-cyan),var(--color-blue))] peer-focus-visible:ring-2 peer-focus-visible:ring-cyan/40" />
+        <span className="h-[22px] w-[40px] rounded-full bg-white/[0.12] transition-colors duration-200 peer-checked:bg-cyan peer-focus-visible:ring-2 peer-focus-visible:ring-cyan/40" />
         <span className="pointer-events-none absolute top-1/2 left-[3px] h-4 w-4 -translate-y-1/2 rounded-full bg-white shadow transition-transform duration-200 peer-checked:translate-x-[18px]" />
       </span>
     </label>

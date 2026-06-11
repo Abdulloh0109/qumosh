@@ -39,7 +39,7 @@ export function FilterGrid() {
   let curPat: { buy: any[]; sell: any[] } = { buy: [], sell: [] };
   if (st.candles && st.candles.length >= 3) curPat = detectCandlestickPatterns(st.candles);
   const allPat = [...curPat.buy, ...curPat.sell];
-  let patVal = 'нет';
+  let patVal = 'йўқ';
   let patStatus: FilterRow['status'] = 'neut';
   if (allPat.length > 0) {
     const strong = allPat.reduce((m, p) => (p.score > m.score ? p : m), allPat[0]);
@@ -48,7 +48,7 @@ export function FilterGrid() {
   }
 
   // FVG (live)
-  let fvgVal = 'нет';
+  let fvgVal = 'йўқ';
   let fvgStatus: FilterRow['status'] = 'neut';
   if (st.candles) {
     const fvgs = detectFVGs(st.candles, ind.atr);
@@ -73,7 +73,7 @@ export function FilterGrid() {
   }
 
   // HTF Engulfing (live)
-  let htfEngVal = 'нет';
+  let htfEngVal = 'йўқ';
   let htfEngStatus: FilterRow['status'] = 'neut';
   if (st.candlesHTF && st.candlesHTF.length >= 2) {
     const hte = detectHTFEngulfing(st.candlesHTF);
@@ -98,7 +98,7 @@ export function FilterGrid() {
       f: 'sweep',
       icon: '💧',
       name: 'Sweep',
-      val: sweep.detected ? sweep.why : 'нет',
+      val: sweep.detected ? sweep.why : 'йўқ',
       status: sweep.detected ? 'pass' : 'neut',
     },
     {
@@ -131,11 +131,11 @@ export function FilterGrid() {
         ? `↑${magnets.nearestAbove.price.toFixed(2)}`
         : magnets.nearestBelow
           ? `↓${magnets.nearestBelow.price.toFixed(2)}`
-          : 'нет',
+          : 'йўқ',
       status:
         magnets.nearestAbove?.count >= 2 || magnets.nearestBelow?.count >= 2 ? 'pass' : 'neut',
     },
-    { f: 'candlestick', icon: '🕯', name: 'Шамчa', val: patVal, status: patStatus },
+    { f: 'candlestick', icon: '🕯', name: 'Шамча', val: patVal, status: patStatus },
     { f: 'fvg', icon: '📦', name: 'FVG Gap', val: fvgVal, status: fvgStatus },
     { f: 'htf_eng', icon: '🔄', name: 'HTF Eng', val: htfEngVal, status: htfEngStatus },
   ];

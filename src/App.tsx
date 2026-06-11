@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Toaster } from 'sonner';
 import { useView } from './app/hooks';
 import { startNewsAutoRefresh } from './app/controls';
 import { st } from './store/engine';
@@ -28,6 +29,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full px-[18px] py-3.5 max-md:p-2.5">
+      <Toaster theme="dark" richColors closeButton position="top-right" />
       {view === 'dashboard' ? <Dashboard /> : <SettingsPanel />}
     </div>
   );

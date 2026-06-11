@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import { CFG, ST, FILTERS } from './state.js';
 import { log } from './utils.js';
 import {
@@ -25,7 +26,7 @@ const BT = {
 
 async function runBacktest(opts = {}) {
   if (!ST.candles || ST.candles.length < 250) {
-    alert('Маълумот етарли эмас. Бошида тизимни уланг ва ~5 минут кутинг.');
+    toast.warning('Маълумот етарли эмас. Бошида тизимни уланг ва ~5 минут кутинг.');
     return;
   }
   if (BT.running) return;

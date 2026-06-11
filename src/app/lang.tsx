@@ -9,7 +9,7 @@ interface LangCtx {
   lang: Lang;
   setLang: (l: Lang) => void;
 }
-const Ctx = createContext<LangCtx>({ lang: 'cyr', setLang: () => {} });
+const Ctx = createContext<LangCtx>({ lang: 'lat', setLang: () => {} });
 
 export function useLang(): LangCtx {
   return useContext(Ctx);
@@ -50,9 +50,10 @@ function eachText(root: Node, fn: (t: Text) => void): void {
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() => {
     try {
-      return localStorage.getItem(KEY) === 'lat' ? 'lat' : 'cyr';
+      // Default to Latin (Uzbek). Honour an explicit Cyrillic choice if stored.
+      return localStorage.getItem(KEY) === 'cyr' ? 'cyr' : 'lat';
     } catch {
-      return 'cyr';
+      return 'lat';
     }
   });
 

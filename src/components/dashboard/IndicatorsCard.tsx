@@ -40,7 +40,7 @@ export function IndicatorsCard() {
         <Cell name="ATR pct" value={`${(regime.atrPct * 100).toFixed(0)}%`} />
         <Cell name="RSI" value={ind.rsi !== null ? ind.rsi.toFixed(1) : '—'} />
         <Cell name="Hurst" value={regime.hurst.toFixed(2)} />
-        <Cell name="EMA200" value={ind.close > ind.ema200 ? 'ABOVE 🟢' : 'BELOW 🔴'} />
+        <Cell name="EMA200" value={ind.close > ind.ema200 ? 'ЮҚОРИ 🟢' : 'ПАСТ 🔴'} />
         <Cell
           name="MACD"
           value={
@@ -50,7 +50,7 @@ export function IndicatorsCard() {
         <Cell name="ALMA" value={ind.closeMA > ind.openMA ? '🟢 BULL' : '🔴 BEAR'} />
         <Cell name="HA-ST" value={ind.stTrend === 1 ? '🟢 UP' : '🔴 DN'} />
         <Cell name="FVG" value={ind.fvgBull ? '🟢 Bull' : ind.fvgBear ? '🔴 Bear' : '—'} />
-        <Cell name="HTF Bias" value={htf?.txt ?? '—'} />
+        <Cell name="HTF мойиллик" value={htf?.txt ?? '—'} />
       </div>
     </Card>
   );

@@ -34,7 +34,7 @@ const F_LABELS: Record<string, string> = {
   mss: 'MSS/BOS',
   ob: 'OrderBlk',
   ote: 'OTE',
-  candlestick: 'Шамчa',
+  candlestick: 'Шамча',
   fvg: 'FVG',
   htf_eng: 'HTF Eng',
 };
@@ -62,7 +62,7 @@ export function AdaptiveCard() {
 
   return (
     <Card col={4} color="purple">
-      <CardTitle title="ADAPTIVE WEIGHTS" acc="самообучение" />
+      <CardTitle title="МОСЛАШУВЧАН ВАЗНЛАР" acc="ўз-ўзини ўрганиш" />
       <div>
         <div className={ADAPT_HEADER}>
           <span className={ADAPT_REGIME_LABEL}>

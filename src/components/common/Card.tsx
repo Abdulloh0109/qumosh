@@ -47,14 +47,13 @@ export function Card({ col, color = '', children, padStyle }: CardProps) {
     <div
       className={cx(
         COL_SPAN[col] ?? 'col-span-12',
-        'relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.025] backdrop-blur-xl',
-        'shadow-[0_10px_34px_-16px_rgba(0,0,0,0.75)] transition-colors duration-200',
-        'hover:border-white/[0.12] hover:bg-white/[0.035]',
+        'relative overflow-hidden rounded-lg border border-[#2b3139] bg-bg2',
+        'transition-colors duration-150 hover:border-[#383f49]',
         "before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:to-transparent before:content-['']",
         SHEEN[color] ?? SHEEN[''],
       )}
     >
-      <div className="px-4 py-3.5" style={padStyle}>
+      <div className="px-3.5 py-3" style={padStyle}>
         {children}
       </div>
     </div>

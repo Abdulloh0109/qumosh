@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { Card, CardTitle } from '../common/Card';
 import { st } from '../../app/hooks';
 import { useBacktestProgress } from '../../app/hooks';
@@ -197,9 +198,9 @@ function Results({ r }: { r: any }) {
         {stat('Жами битимлар', r.total)}
         {stat('Жами R', `${r.rSum >= 0 ? '+' : ''}${r.rSum.toFixed(2)}`, rColor)}
         {stat('WR (фойдали)', `${wrPct}%`, wrColor)}
-        {stat('TP3 толиқ', `${tp3Pct}%`)}
+        {stat('TP3 тўлиқ', `${tp3Pct}%`)}
         {stat('Profit Factor', pf, pfColor)}
-        {stat('Expectancy/трейд', `${r.exp >= 0 ? '+' : ''}${exp}R`, expColor)}
+        {stat('Expectancy/битим', `${r.exp >= 0 ? '+' : ''}${exp}R`, expColor)}
         {stat('Max DD', `-${r.maxDD.toFixed(2)}R`, 'var(--red)')}
         {stat(
           'TP3 / BE / SL / TO',
@@ -298,11 +299,11 @@ export function BacktestPanel() {
 
   const run = async () => {
     if (BT.running) {
-      alert('Allaqachon ишламоқда...');
+      toast.warning('Аллақачон ишламоқда...');
       return;
     }
     if (!st.candles || st.candles.length < 250) {
-      alert('Маълумот етарли эмас. Bошида тизимни уланг ва ~5 минут кутинг.');
+      toast.warning('Маълумот етарли эмас. Бошида тизимни уланг ва ~5 минут кутинг.');
       return;
     }
     setRunning(true);
@@ -349,8 +350,7 @@ export function BacktestPanel() {
           className="mb-[10px] rounded-[7px] border border-dashed border-cyan bg-cyan/[0.06] px-[11px] py-[9px] text-[16px] leading-[1.5] text-[#cbd5e1]"
           style={{ display: 'block' }}
         >
-          Юкланган свечалар бўйича сигналлар симуляция қилинади. Хулоса учун камида 100+ битим
-          керак.
+          Юкланган шамлар бўйича сигналлар симуляция қилинади. Хулоса учун камида 100+ битим керак.
         </div>
       )}
       {result && <Results r={result} />}

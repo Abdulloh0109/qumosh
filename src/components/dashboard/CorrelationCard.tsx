@@ -30,7 +30,7 @@ export function CorrelationCard() {
   if (!corr) {
     return (
       <Card col={4}>
-        <CardTitle title="КОРРЕЛЯЦИЯ" acc="мулти-актив" />
+        <CardTitle title="КОРРЕЛЯЦИЯ" acc="кўп актив" />
         <div className={cx(VERDICT_BASE, VERDICT.flat)}>МАЪЛУМОТ ЙИҒИЛМОҚДА</div>
       </Card>
     );
@@ -44,7 +44,7 @@ export function CorrelationCard() {
 
   return (
     <Card col={4}>
-      <CardTitle title="КОРРЕЛЯЦИЯ" acc="мулти-актив" />
+      <CardTitle title="КОРРЕЛЯЦИЯ" acc="кўп актив" />
       <div className={COR_ROW}>
         <span className={COR_NAME}>DXY (synth)</span>
         <span>
@@ -55,7 +55,7 @@ export function CorrelationCard() {
         </span>
       </div>
       <div className={COR_ROW}>
-        <span className={COR_NAME}>Risk index</span>
+        <span className={COR_NAME}>Риск индекси</span>
         <span>
           <span className={cx(COR_VAL, 'mono')}>
             {corr.risk !== null ? pct(corr.risk, 2) : '—'}
@@ -66,7 +66,7 @@ export function CorrelationCard() {
         </span>
       </div>
       <div className={COR_ROW}>
-        <span className={COR_NAME}>Safe haven</span>
+        <span className={COR_NAME}>Хавфсиз бошпана</span>
         <span>
           <span className={cx(COR_VAL, 'mono')}>
             {corr.safe !== null ? pct(corr.safe, 2) : '—'}
@@ -77,7 +77,7 @@ export function CorrelationCard() {
         </span>
       </div>
       <div className={COR_ROW}>
-        <span className={COR_NAME}>Yields proxy</span>
+        <span className={COR_NAME}>Даромадлилик</span>
         <span>
           <span className={cx(COR_VAL, 'mono')}>
             {corr.yields !== null ? pct(corr.yields, 2) : '—'}
